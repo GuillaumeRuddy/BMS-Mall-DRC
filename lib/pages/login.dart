@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/register.dart';
 import 'package:mall_drc/widgets/loading.dart';
@@ -42,6 +43,7 @@ class _LoginState extends State<Login> {
         ? Loading()
         : Center(
             child: Scaffold(
+              backgroundColor: AppColors.blueR,
               key: key,
               body: SafeArea(
                 child: SingleChildScrollView(
@@ -50,31 +52,20 @@ class _LoginState extends State<Login> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 30,
+                        Image(
+                          image: AssetImage("assets/splash_icon.png"),
+                          height: MediaQuery.of(context).size.height / 3,
+                          width: MediaQuery.of(context).size.width,
                         ),
-                        CircleAvatar(
+                        /*CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.red.shade200,
-                          backgroundImage: AssetImage("assets/splash_icon.png"),
-                          /* child: Icon(CupertinoIcons.person_alt_circle,
+                          backgroundImage: AssetImage("assets/splash_icon.png"),*/
+                        /* child: Icon(CupertinoIcons.person_alt_circle,
                       color: Colors.red,
                       size: 60,),*/
-                        ),
                         SizedBox(
                           height: 5,
-                        ),
-                        Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "MALL DRC",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.blue[900],
-                                  fontWeight: FontWeight.bold),
-                            )),
-                        SizedBox(
-                          height: 60,
                         ),
                         Container(
                             alignment: Alignment.topLeft,
@@ -92,7 +83,7 @@ class _LoginState extends State<Login> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                autofocus: true,
+                                autofocus: false,
                                 controller: userController,
                                 keyboardType: TextInputType.text,
                                 textAlignVertical: TextAlignVertical.bottom,
@@ -134,7 +125,7 @@ class _LoginState extends State<Login> {
                           height: 12,
                         ),
                         TextField(
-                          autofocus: true,
+                          autofocus: false,
                           controller: passwordController,
                           keyboardType: TextInputType.visiblePassword,
                           textAlignVertical: TextAlignVertical.bottom,
@@ -189,11 +180,6 @@ class _LoginState extends State<Login> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Avez vous un compte?",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.blue[900],
-                                    fontWeight: FontWeight.bold)),
                             TextButton(
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -201,8 +187,18 @@ class _LoginState extends State<Login> {
                                 },
                                 child: Text("Inscription",
                                     style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.red[900],
+                                        fontSize: 16,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold))),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => Register()));
+                                },
+                                child: Text("Mot de passe oublier ?",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.ecrit,
                                         fontWeight: FontWeight.bold))),
                           ],
                         ),
@@ -219,8 +215,8 @@ class _LoginState extends State<Login> {
                                   //Prend la couleur bleu si numero valid sinon grise
                                   primary:
                                       valid == true && validPassword == true
-                                          ? Colors.green[700]
-                                          : Colors.blue),
+                                          ? AppColors.ecrit
+                                          : Colors.blueGrey),
                               onPressed: () {
                                 mdp = passwordController.text;
                                 user = userController.text;

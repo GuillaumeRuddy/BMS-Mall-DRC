@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Mall DRC',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      /*theme: ThemeData(
+        primarySwatch: Colors.transparent,
+      ),*/
       home: Demarage(timing: 5),
     );
   }

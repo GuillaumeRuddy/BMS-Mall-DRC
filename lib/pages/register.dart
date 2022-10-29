@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/login.dart';
 import 'package:mall_drc/widgets/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,6 +53,7 @@ class _RegisterState extends State<Register> {
         ? Loading()
         : Center(
             child: Scaffold(
+              backgroundColor: AppColors.blueR,
               key: key,
               body: SafeArea(
                 child: SingleChildScrollView(
@@ -60,33 +62,35 @@ class _RegisterState extends State<Register> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 30,
+                        Image(
+                          image: AssetImage("assets/splash_icon.png"),
+                          height: MediaQuery.of(context).size.height / 3,
+                          width: MediaQuery.of(context).size.width,
                         ),
-                        CircleAvatar(
+                        /*CircleAvatar(
                           radius: 30,
                           backgroundColor: Colors.red.shade200,
-                          backgroundImage: AssetImage("assets/splash_icon.png"),
-                          /* child: Icon(CupertinoIcons.person_alt_circle,
+                          backgroundImage: AssetImage("assets/splash_icon.png"),*/
+                        /* child: Icon(CupertinoIcons.person_alt_circle,
                       color: Colors.red,
                       size: 60,),*/
-                        ),
+
                         /*SizedBox(
                           height: 5,
                         ),*/
                         SizedBox(
-                          height: 40,
+                          height: 1,
                         ),
                         Container(
                             alignment: Alignment.topLeft,
-                            child: Text("Register.",
+                            child: Text("Création compte.",
                                 style: GoogleFonts.poppins(
                                   color: Colors.blue[800],
-                                  fontSize: 50,
+                                  fontSize: 35,
                                   fontWeight: FontWeight.bold,
                                 ))),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         Row(
                           children: [
@@ -410,7 +414,7 @@ class _RegisterState extends State<Register> {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (_) => Login()));
                                 },
-                                child: Text("Connexion",
+                                child: Text("CONNEXION",
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: Colors.red[900],
@@ -446,7 +450,7 @@ class _RegisterState extends State<Register> {
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Enregistrer",
+                                  "CREER UN COMPTE",
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontSize: 15,
