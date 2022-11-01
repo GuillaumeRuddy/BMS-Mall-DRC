@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/pages/panier.dart';
 import 'package:mall_drc/widgets/drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mall_drc/model/category.dart';
@@ -33,6 +34,8 @@ class _HomeState extends State<Home> {
               onPressed: () /*async*/ {
                 /*final pref = await SharedPreferences.getInstance();
                 pref.setBool("showPres", false);*/
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => Panier()));
               },
               icon: Icon(Icons.card_giftcard_sharp))
         ],
@@ -104,10 +107,10 @@ class _HomeState extends State<Home> {
                     onPressed: () {},
                     child: Text(
                       "voir plus",
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                           color: Colors.red[800],
                           fontSize: 15,
-                          fontWeight: FontWeight.w900),
+                          fontWeight: FontWeight.w700),
                     ),
                   )
                 ],
@@ -121,94 +124,109 @@ class _HomeState extends State<Home> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    child: Column(
-                      children: [
-                        Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black),
-                            child: Center(
-                                child: Icon(
-                              Icons.shopping_bag,
-                              color: Colors.white,
-                            ))),
-                        Text("Boutique")
-                      ],
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.black),
+                              child: Center(
+                                  child: Icon(
+                                Icons.shopping_bag,
+                                color: Colors.white,
+                              ))),
+                          Text("Boutique")
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black),
-                            child: Center(
-                                child: Icon(
-                              Icons.restaurant,
-                              color: Colors.white,
-                            ))),
-                        Text("Restaurant")
-                      ],
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.black),
+                              child: Center(
+                                  child: Icon(
+                                Icons.restaurant,
+                                color: Colors.white,
+                              ))),
+                          Text("Restaurant")
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black),
-                            child: Center(
-                                child: Icon(
-                              Icons.shopping_cart,
-                              color: Colors.white,
-                            ))),
-                        Text("Marcher")
-                      ],
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.black),
+                              child: Center(
+                                  child: Icon(
+                                Icons.shopping_cart,
+                                color: Colors.white,
+                              ))),
+                          Text("Marcher")
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black),
-                            child: Center(
-                                child: Icon(
-                              Icons.local_pharmacy,
-                              color: Colors.white,
-                            ))),
-                        Text("Pharmacie")
-                      ],
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.black),
+                              child: Center(
+                                  child: Icon(
+                                Icons.local_pharmacy,
+                                color: Colors.white,
+                              ))),
+                          Text("Pharmacie")
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.black),
-                            child: Center(
-                                child: Icon(
-                              Icons.dashboard,
-                              color: Colors.white,
-                            ))),
-                        Text("Autres")
-                      ],
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.black),
+                              child: Center(
+                                  child: Icon(
+                                Icons.dashboard,
+                                color: Colors.white,
+                              ))),
+                          Text("Autres")
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -227,14 +245,17 @@ class _HomeState extends State<Home> {
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "voir plus",
-                      style: GoogleFonts.poppins(
-                          color: Colors.red[800],
-                          fontSize: 15,
-                          fontWeight: FontWeight.w900),
+                  InkWell(
+                    onTap: () {},
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "voir plus",
+                        style: TextStyle(
+                            color: Colors.red[800],
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700),
+                      ),
                     ),
                   )
                 ],
@@ -242,6 +263,7 @@ class _HomeState extends State<Home> {
             ),
             GridView.builder(
               shrinkWrap: true,
+              //scrollDirection: Axis.horizontal,
               itemCount: categoryList.length,
               physics: NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(
@@ -272,11 +294,11 @@ class _HomeState extends State<Home> {
           items: [
             BottomNavigationBarItem(
               activeIcon: Icon(
-                Icons.home_outlined,
+                Icons.home,
                 size: 24.0,
               ),
               icon: Icon(
-                Icons.home,
+                Icons.home_outlined,
                 size: 24.0,
               ),
               label: "Accueil",

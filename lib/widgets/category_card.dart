@@ -31,21 +31,27 @@ class CategoryCard extends StatelessWidget {
               alignment: Alignment.topRight,
               child: Image.asset(
                 category.thumbnail,
-                height: 100.0,
+                height: 80.0,
               ),
             ),
             SizedBox(
-              height: 10.0,
+              height: 5.0,
             ),
             Text(
               category.name,
+              maxLines: 2,
               style: GoogleFonts.poppins(
                   color: AppColors.blueR,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700),
             ),
             SizedBox(
-              height: 5.0,
+              height: 0.0,
+            ),
+            Text(
+              category.noOfCourses.toString() + " USD",
+              style: GoogleFonts.poppins(
+                  color: Colors.red, fontSize: 15, fontWeight: FontWeight.w700),
             ),
             Expanded(
                 child: Container(
