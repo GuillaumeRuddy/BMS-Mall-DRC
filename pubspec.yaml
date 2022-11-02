@@ -45,6 +45,7 @@ dependencies:
   flutter_dropdown: ^1.0.0+hotfix.1
   flutter_launcher_icons: ^0.10.0
   image_picker: 
+  badges: ^2.0.3 
 
 dev_dependencies:
   flutter_test:

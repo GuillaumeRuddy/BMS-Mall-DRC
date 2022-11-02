@@ -116,11 +116,18 @@ class _RegisterState extends State<Register> {
                                   }
                                 },
                                 decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                      Icons.account_circle_sharp,
+                                      color: Colors.blue,
+                                      size: 26,
+                                    ),
                                     contentPadding: EdgeInsets.only(
                                         bottom: 10, top: 22, left: 10),
                                     //counterText: '$counterText/09',
                                     counterStyle: TextStyle(fontSize: 10),
                                     labelText: 'Pseudo',
+                                    filled: true,
+                                    fillColor: Colors.white,
                                     hintText:
                                         'Entrez le pseudo de l\'utilisateur',
                                     border: OutlineInputBorder(
@@ -159,11 +166,18 @@ class _RegisterState extends State<Register> {
                             }
                           },
                           decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.account_circle,
+                                color: Colors.blue,
+                                size: 26,
+                              ),
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, top: 22, left: 10),
                               //counterText: '$counterText/09',
                               counterStyle: TextStyle(fontSize: 10),
                               labelText: 'Nom',
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: 'Entrez le nom d\'utilisateur',
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -198,11 +212,18 @@ class _RegisterState extends State<Register> {
                             }
                           },
                           decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.account_circle,
+                                color: Colors.blue,
+                                size: 26,
+                              ),
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, top: 22, left: 10),
                               //counterText: '$counterText/09',
                               counterStyle: TextStyle(fontSize: 10),
                               labelText: 'Prenom',
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: 'Entrez le prenom d\'utilisateur',
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -237,11 +258,18 @@ class _RegisterState extends State<Register> {
                             }
                           },
                           decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.home,
+                                color: Colors.blue,
+                                size: 26,
+                              ),
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, top: 22, left: 10),
                               //counterText: '$counterText/09',
                               counterStyle: TextStyle(fontSize: 10),
                               labelText: 'Adresse',
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: 'Entrez l\'Adresse',
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -259,7 +287,7 @@ class _RegisterState extends State<Register> {
                         TextField(
                           autofocus: true,
                           controller: userController,
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.number,
                           textAlignVertical: TextAlignVertical.bottom,
                           //maxLength: 9,
                           onChanged: (value) {
@@ -276,11 +304,18 @@ class _RegisterState extends State<Register> {
                             }
                           },
                           decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.phone,
+                                color: Colors.blue,
+                                size: 26,
+                              ),
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, top: 22, left: 10),
                               //counterText: '$counterText/09',
                               counterStyle: TextStyle(fontSize: 10),
                               labelText: 'Telephone',
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: 'Entrez le numéro de téléphone',
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -316,11 +351,18 @@ class _RegisterState extends State<Register> {
                             }
                           },
                           decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.security,
+                                color: Colors.blue,
+                                size: 26,
+                              ),
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, top: 22, left: 10),
                               // counterText: '$counterText/09',
                               counterStyle: TextStyle(fontSize: 10),
                               labelText: 'Mot de passe',
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: 'Tapez votre mot de passe',
                               suffixIcon: IconButton(
                                 icon: Icon(
@@ -369,11 +411,18 @@ class _RegisterState extends State<Register> {
                             }
                           },
                           decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.security,
+                                color: Colors.blue,
+                                size: 26,
+                              ),
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, top: 22, left: 10),
                               // counterText: '$counterText/09',
                               counterStyle: TextStyle(fontSize: 10),
                               labelText: 'Répéter mot de passe',
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: 'Tapez encore votre mot de passe',
                               suffixIcon: IconButton(
                                 icon: Icon(
@@ -401,26 +450,6 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 15.0,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Deja inscrit?",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.blue[900],
-                                    fontWeight: FontWeight.bold)),
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => Login()));
-                                },
-                                child: Text("CONNEXION",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.red[900],
-                                        fontWeight: FontWeight.bold))),
-                          ],
-                        ),
                         Padding(
                           padding: EdgeInsets.all(12.0),
                           //ce bouton fonctionne uniquement si le numero est valid
@@ -428,11 +457,11 @@ class _RegisterState extends State<Register> {
                             absorbing: valid == true ? false : true,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                //Prend la couleur bleu si numero valid sinon grise
-                                primary: valid == true && validPassword == true
-                                    ? Colors.green[700]
-                                    : Colors.grey,
-                              ),
+                                  //Prend la couleur bleu si numero valid sinon grise
+                                  primary:
+                                      valid == true && validPassword == true
+                                          ? AppColors.ecrit
+                                          : Colors.blueGrey),
                               onPressed: () {
                                 mdp = passwordController.text;
                                 user = userController.text;
@@ -460,6 +489,29 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                           ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Déja inscrit?",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => Login()));
+                                },
+                                child: Text("CONNEXION",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold))),
+                          ],
                         ),
                       ],
                     ),

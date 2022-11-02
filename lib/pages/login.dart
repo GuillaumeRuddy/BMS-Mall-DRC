@@ -86,6 +86,7 @@ class _LoginState extends State<Login> {
                                 autofocus: false,
                                 controller: userController,
                                 keyboardType: TextInputType.text,
+                                cursorColor: Colors.white,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 //maxLength: 9,
                                 onChanged: (value) {
@@ -102,11 +103,18 @@ class _LoginState extends State<Login> {
                                   }
                                 },
                                 decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                      Icons.account_circle_sharp,
+                                      color: Colors.blue,
+                                      size: 26,
+                                    ),
                                     contentPadding: EdgeInsets.only(
                                         bottom: 10, top: 22, left: 10),
                                     //counterText: '$counterText/09',
                                     counterStyle: TextStyle(fontSize: 10),
                                     labelText: 'Utilisateur',
+                                    filled: true,
+                                    fillColor: Colors.white,
                                     hintText: 'Entrez le nom d\'utilisateur',
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
@@ -116,7 +124,7 @@ class _LoginState extends State<Login> {
                                         borderSide: BorderSide(
                                             color: Colors.blue, width: 1)),
                                     hintStyle: TextStyle(
-                                        fontSize: 10, color: Colors.grey)),
+                                        fontSize: 15, color: Colors.grey)),
                               ),
                             ),
                           ],
@@ -145,11 +153,18 @@ class _LoginState extends State<Login> {
                             }
                           },
                           decoration: InputDecoration(
+                              prefixIcon: const Icon(
+                                Icons.security,
+                                color: Colors.blue,
+                                size: 26,
+                              ),
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, top: 22, left: 10),
                               // counterText: '$counterText/09',
                               counterStyle: TextStyle(fontSize: 10),
                               labelText: 'Mot de passe',
+                              filled: true,
+                              fillColor: Colors.white,
                               hintText: 'Tapez votre mot de passe',
                               suffixIcon: IconButton(
                                 icon: Icon(
@@ -172,24 +187,14 @@ class _LoginState extends State<Login> {
                                   borderSide:
                                       BorderSide(color: Colors.blue, width: 1)),
                               hintStyle:
-                                  TextStyle(fontSize: 10, color: Colors.grey)),
+                                  TextStyle(fontSize: 15, color: Colors.grey)),
                         ),
                         SizedBox(
-                          height: 20.0,
+                          height: 10.0,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => Register()));
-                                },
-                                child: Text("Inscription",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold))),
                             TextButton(
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -203,7 +208,7 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Padding(
                           padding: EdgeInsets.all(12.0),
@@ -248,6 +253,32 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Vous n'avez pas de compte?",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => Register()));
+                                },
+                                child: Text("Inscription",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold))),
+                          ],
+                        )
                       ],
                     ),
                   ),

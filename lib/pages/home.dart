@@ -1,8 +1,10 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/pages/notification.dart';
 import 'package:mall_drc/pages/panier.dart';
 import 'package:mall_drc/widgets/drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,254 +37,309 @@ class _HomeState extends State<Home> {
                 /*final pref = await SharedPreferences.getInstance();
                 pref.setBool("showPres", false);*/
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => Panier()));
+                    .push(MaterialPageRoute(builder: (_) => Message()));
               },
               icon: Icon(Icons.card_giftcard_sharp))
+          /*Badge(
+            badgeColor: Colors.red,
+            padding: EdgeInsets.all(5),
+            badgeContent: Text(
+              "0",
+              style: TextStyle(color: Colors.white),
+            ),
+            child: IconButton(
+                onPressed: () /*async*/ {
+                  /*final pref = await SharedPreferences.getInstance();
+                pref.setBool("showPres", false);*/
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => Message()));
+                },
+                icon: Icon(Icons.card_giftcard_sharp)),
+          ),*/
         ],
       ),
       drawer: DrawerAdd(),
       body: SingleChildScrollView(
-        child: Container(
-          child: Center(
-              child: Column(children: [
-            Container(
-              padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-              height: 150,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [0.1, 0.5],
-                  colors: [
-                    AppColors.blue,
-                    AppColors.blueR,
-                  ],
-                ),
-              ),
-              child: Column(
+        child: Column(
+          children: [
+            /*Container(
+              color: AppColors.blueR,
+              padding: EdgeInsets.all(20),
+              //entete
+              child: Row(
                 children: [
-                  Row(
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 25.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      "Panier",
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                  Spacer(),
+                  Icon(
+                    Icons.more_vert,
+                    size: 25.0,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            ),*/
+            Container(
+              child: Center(
+                  child: Column(children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                  height: 150,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      stops: [0.1, 0.5],
+                      colors: [
+                        AppColors.blue,
+                        AppColors.blueR,
+                      ],
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Salut! Guillaume",
+                            style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          /*CircleButton(
+                            icon: Icons.account_circle,
+                            onPressed: () {},
+                          ),*/
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const SearchTextField()
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Salut! Guillaume",
+                        "CATEGORIE",
                         style: GoogleFonts.poppins(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400),
+                          color: AppColors.ecrit,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
-                      CircleButton(
-                        icon: Icons.account_circle,
+                      TextButton(
                         onPressed: () {},
+                        child: Text(
+                          "voir plus",
+                          style: TextStyle(
+                              color: Colors.red[800],
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 1,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.black),
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.shopping_bag,
+                                    color: Colors.white,
+                                  ))),
+                              Text("Boutique")
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.black),
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.restaurant,
+                                    color: Colors.white,
+                                  ))),
+                              Text("Restaurant")
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.black),
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.shopping_cart,
+                                    color: Colors.white,
+                                  ))),
+                              Text("Marcher")
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.black),
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.local_pharmacy,
+                                    color: Colors.white,
+                                  ))),
+                              Text("Pharmacie")
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.black),
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.dashboard,
+                                    color: Colors.white,
+                                  ))),
+                              Text("Autres")
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const SearchTextField()
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "CATEGORIE",
-                    style: GoogleFonts.poppins(
-                      color: AppColors.ecrit,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "voir plus",
-                      style: TextStyle(
-                          color: Colors.red[800],
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.black),
-                              child: Center(
-                                  child: Icon(
-                                Icons.shopping_bag,
-                                color: Colors.white,
-                              ))),
-                          Text("Boutique")
-                        ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "NOUVEAUTE",
+                        style: GoogleFonts.poppins(
+                          color: AppColors.ecrit,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
-                    ),
+                      InkWell(
+                        onTap: () {},
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "voir plus",
+                            style: TextStyle(
+                                color: Colors.red[800],
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.black),
-                              child: Center(
-                                  child: Icon(
-                                Icons.restaurant,
-                                color: Colors.white,
-                              ))),
-                          Text("Restaurant")
-                        ],
-                      ),
-                    ),
+                ),
+                GridView.builder(
+                  shrinkWrap: true,
+                  //scrollDirection: Axis.horizontal,
+                  itemCount: categoryList.length,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 8,
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.black),
-                              child: Center(
-                                  child: Icon(
-                                Icons.shopping_cart,
-                                color: Colors.white,
-                              ))),
-                          Text("Marcher")
-                        ],
-                      ),
-                    ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.8,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 24,
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.black),
-                              child: Center(
-                                  child: Icon(
-                                Icons.local_pharmacy,
-                                color: Colors.white,
-                              ))),
-                          Text("Pharmacie")
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.black),
-                              child: Center(
-                                  child: Icon(
-                                Icons.dashboard,
-                                color: Colors.white,
-                              ))),
-                          Text("Autres")
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                  itemBuilder: (context, index) {
+                    return CategoryCard(
+                      category: categoryList[index],
+                    );
+                  },
+                ),
+              ])),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "NOUVEAUTE",
-                    style: GoogleFonts.poppins(
-                      color: AppColors.ecrit,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "voir plus",
-                        style: TextStyle(
-                            color: Colors.red[800],
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            GridView.builder(
-              shrinkWrap: true,
-              //scrollDirection: Axis.horizontal,
-              itemCount: categoryList.length,
-              physics: NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 8,
-              ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.8,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 24,
-              ),
-              itemBuilder: (context, index) {
-                return CategoryCard(
-                  category: categoryList[index],
-                );
-              },
-            ),
-          ])),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -315,13 +372,39 @@ class _HomeState extends State<Home> {
               label: "Categorie",
             ),
             BottomNavigationBarItem(
-              activeIcon: Icon(
-                Icons.shopping_cart,
-                size: 24.0,
+              activeIcon: Badge(
+                badgeColor: Colors.red,
+                padding: EdgeInsets.all(5),
+                badgeContent: Text(
+                  "3",
+                  style: TextStyle(color: Colors.white),
+                ),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => Panier()));
+                    },
+                    child: Icon(
+                      Icons.shopping_cart,
+                      size: 30,
+                    )),
               ),
-              icon: Icon(
-                Icons.shopping_cart_outlined,
-                size: 24.0,
+              icon: Badge(
+                badgeColor: Colors.red,
+                padding: EdgeInsets.all(5),
+                badgeContent: Text(
+                  "3",
+                  style: TextStyle(color: Colors.white),
+                ),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => Panier()));
+                    },
+                    child: Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 30,
+                    )),
               ),
               label: "Panier",
             ),

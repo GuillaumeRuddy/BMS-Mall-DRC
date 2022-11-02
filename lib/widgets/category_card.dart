@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/model/category.dart';
+import 'package:mall_drc/pages/details.dart';
 
 class CategoryCard extends StatelessWidget {
   final Category category;
@@ -11,7 +12,10 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => Details()));
+      },
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -63,11 +67,11 @@ class CategoryCard extends StatelessWidget {
                       bottomRight: Radius.circular(10.0))),
               child: Center(
                 child: Text(
-                  "Details",
+                  "Détails",
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 18,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

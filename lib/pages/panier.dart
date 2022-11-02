@@ -45,12 +45,12 @@ class _PanierState extends State<Panier> {
                         color: Colors.white),
                   ),
                 ),
-                Spacer(),
+                /*Spacer(),
                 Icon(
                   Icons.more_vert,
                   size: 25.0,
                   color: Colors.white,
-                )
+                )*/
               ],
             ),
           ),
@@ -418,7 +418,7 @@ class _PanierState extends State<Panier> {
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
-                        color: Colors.red),
+                        color: Colors.red[900]),
                   )
                 ],
               ),
@@ -430,7 +430,7 @@ class _PanierState extends State<Panier> {
                     color: AppColors.blueR,
                     borderRadius: BorderRadius.circular(20)),
                 child: Text(
-                  "passer commande",
+                  "PASSE COMMANDE",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
