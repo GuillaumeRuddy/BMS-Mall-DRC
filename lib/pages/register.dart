@@ -64,7 +64,7 @@ class _RegisterState extends State<Register> {
                       children: [
                         Image(
                           image: AssetImage("assets/splash_icon.png"),
-                          height: MediaQuery.of(context).size.height / 3,
+                          height: MediaQuery.of(context).size.height / 5.5,
                           width: MediaQuery.of(context).size.width,
                         ),
                         /*CircleAvatar(

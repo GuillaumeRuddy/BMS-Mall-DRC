@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/pages/home.dart';
+import 'package:mall_drc/pages/success.dart';
 
 class Panier extends StatefulWidget {
   const Panier({Key? key}) : super(key: key);
@@ -414,7 +416,7 @@ class _PanierState extends State<Panier> {
                           fontSize: 22,
                           fontWeight: FontWeight.bold)),
                   Text(
-                    "300\$",
+                    "295\$",
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -422,19 +424,26 @@ class _PanierState extends State<Panier> {
                   )
                 ],
               ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: AppColors.blueR,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Text(
-                  "PASSE COMMANDE",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.ecrit,
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => Success()));
+                },
+                child: Container(
+                  height: 50,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: AppColors.blueR,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    "PASSE COMMANDE",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.ecrit,
+                    ),
                   ),
                 ),
               )

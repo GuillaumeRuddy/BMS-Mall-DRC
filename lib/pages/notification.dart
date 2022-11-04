@@ -53,15 +53,17 @@ class _MessageState extends State<Message> {
             ),
             //fin entete
           ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(15),
-            child: Text(
-              "Aucun Message",
-              style: GoogleFonts.poppins(
-                color: Colors.black,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(15),
+              child: Text(
+                "Aucun Message",
+                style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),

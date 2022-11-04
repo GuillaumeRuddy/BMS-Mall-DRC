@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/pages/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../pages/login.dart';
 
 class DrawerAdd extends StatelessWidget {
   /*final String userName;
@@ -10,9 +15,136 @@ class DrawerAdd extends StatelessWidget {
     /*required this.userName, required this.idUser*/
   }) : super(key: key);
 
+  Future recupSession() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getString("utilisateur");
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Drawer(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              color: AppColors.blueR,
+              padding: EdgeInsets.only(
+                  top: 24 + MediaQuery.of(context).padding.top, bottom: 24),
+              child: Column(
+                children: [
+                  CircleAvatar(
+                      radius: 52,
+                      backgroundImage: AssetImage("assets/splash_icon.png")),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  FutureBuilder(
+                      future: recupSession(),
+                      builder: (context, snapshot) {
+                        var user = snapshot.data;
+                        return Text(
+                          "$user",
+                          style: GoogleFonts.poppins(
+                              color: Colors.blue,
+                              fontSize: 23,
+                              fontWeight: FontWeight.w400),
+                        );
+                      }),
+                  FutureBuilder(
+                      future: recupSession(),
+                      builder: (context, snapshot) {
+                        var user = snapshot.data;
+                        return Text(
+                          "$user@gmail.com",
+                          style: GoogleFonts.poppins(
+                              color: Colors.blue,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400),
+                        );
+                      }),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(24),
+              child: Wrap(
+                spacing: 16,
+                children: [
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => Home()));
+                    },
+                    leading: Icon(
+                      Icons.home,
+                      color: Colors.blue,
+                    ),
+                    title: Text(
+                      "Accueil",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: null,
+                    leading: Icon(
+                      Icons.category,
+                      color: Colors.blue,
+                    ),
+                    title: Text(
+                      "Categorie",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  //Divider(height: 1.0, color: Colors.black),
+                  ListTile(
+                    onTap: null,
+                    leading: Icon(
+                      Icons.settings,
+                      color: Colors.blue,
+                    ),
+                    title: Text(
+                      "parametre",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  //Divider(height: 1.0, color: Colors.black),
+                  ListTile(
+                    onTap: null,
+                    leading: Icon(
+                      Icons.info,
+                      color: Colors.blue,
+                    ),
+                    title: Text(
+                      "A propos de nous",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  //Divider(height: 1.0, color: Colors.black),
+                  ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Login()));
+                    },
+                    leading: Icon(
+                      FontAwesomeIcons.signOutAlt,
+                      color: Colors.blue,
+                    ),
+                    title: Text(
+                      "Se deconnecter",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+
+    /*Column(
       children: [
         Container(
             color: AppColors.blueR,
@@ -109,6 +241,6 @@ class DrawerAdd extends StatelessWidget {
           title: Text("Se deconnecter"),
         )
       ],
-    );
+    );*/
   }
 }

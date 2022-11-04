@@ -44,7 +44,10 @@ class Demarage extends StatelessWidget {
             )),
             Text(
               'Version 1.0',
-              style: TextStyle(fontSize: 15, color: AppColors.darkWhite),
+              style: TextStyle(
+                  fontSize: 20,
+                  color: AppColors.darkWhite,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),

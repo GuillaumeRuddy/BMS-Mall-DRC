@@ -24,6 +24,20 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   var _selectedIndex = 0;
+  var utilisateur;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //recupSession();
+  }
+
+  Future recupSession() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getString("utilisateur");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,13 +139,23 @@ class _HomeState extends State<Home> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Salut! Guillaume",
-                            style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400),
-                          ),
+                          FutureBuilder(
+                              future: recupSession(),
+                              builder: (context, snapshot) {
+                                var user = snapshot.data;
+                                return Row(
+                                  children: [
+                                    Text(
+                                      "Salut! $user",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.blue,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                );
+                              }),
+
                           /*CircleButton(
                             icon: Icons.account_circle,
                             onPressed: () {},
@@ -155,7 +179,7 @@ class _HomeState extends State<Home> {
                         style: GoogleFonts.poppins(
                           color: AppColors.ecrit,
                           fontSize: 20,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       TextButton(
@@ -297,7 +321,7 @@ class _HomeState extends State<Home> {
                         style: GoogleFonts.poppins(
                           color: AppColors.ecrit,
                           fontSize: 20,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       InkWell(

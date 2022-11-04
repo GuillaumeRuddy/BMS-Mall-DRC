@@ -37,6 +37,11 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
+  Future savSession() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString("utilisateur", user);
+  }
+
   @override
   Widget build(BuildContext context) {
     return _loading
@@ -111,8 +116,11 @@ class _LoginState extends State<Login> {
                                     contentPadding: EdgeInsets.only(
                                         bottom: 10, top: 22, left: 10),
                                     //counterText: '$counterText/09',
-                                    counterStyle: TextStyle(fontSize: 10),
+                                    counterStyle: TextStyle(
+                                      fontSize: 10,
+                                    ),
                                     labelText: 'Utilisateur',
+                                    //labelStyle: ,
                                     filled: true,
                                     fillColor: Colors.white,
                                     hintText: 'Entrez le nom d\'utilisateur',
@@ -225,7 +233,7 @@ class _LoginState extends State<Login> {
                               onPressed: () {
                                 mdp = passwordController.text;
                                 user = userController.text;
-
+                                savSession();
                                 Navigator.of(context).push(
                                     MaterialPageRoute(builder: (_) => Home()));
 
