@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mall_drc/controler/utilisateurs/utilisateurController.dart';
 import 'package:mall_drc/pages/demarage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +13,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Mall DRC',
-      /*theme: ThemeData(
-        primarySwatch: Colors.transparent,
-      ),*/
-      home: Demarage(timing: 5),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UtilisateurController())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Mall DRC',
+        /*theme: ThemeData(
+          primarySwatch: Colors.transparent,
+        ),*/
+        home: Demarage(timing: 5),
+      ),
     );
   }
 }

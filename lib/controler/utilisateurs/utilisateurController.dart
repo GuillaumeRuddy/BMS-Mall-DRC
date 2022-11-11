@@ -7,8 +7,9 @@ import 'package:mall_drc/app/appUtil.dart';
 import 'package:http/http.dart' as http;
 
 class UtilisateurController with ChangeNotifier {
+  //Methode pour enregistrer un nouveau client
   EnregistrementClient(Map client) async {
-    var url = Uri.parse(ApiUrl().baseUrl + ApiUrl().enregistrement);
+    var url = Uri.parse(ApiUrl().enregistrement);
     try {
       String data = json.encode(client);
       var reponse =
@@ -29,8 +30,9 @@ class UtilisateurController with ChangeNotifier {
     }
   }
 
+  //Methode pour se connecter à l'application
   Connexion(Map client) async {
-    var url = Uri.parse(ApiUrl().baseUrl + ApiUrl().connexion);
+    var url = Uri.parse(ApiUrl().connexion);
     try {
       String data = json.encode(client);
       var reponse =

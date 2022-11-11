@@ -634,7 +634,7 @@ class _RegisterState extends State<Register> {
     print("ma residence ************ " + mdp);*/
 
     // le end point de ma methode pour enregistrer le client
-    var url = Uri.parse(ApiUrl().baseUrl + ApiUrl().enregistrement);
+    var url = Uri.parse(ApiUrl().enregistrement);
     print("url que jutilise pour enregistrer");
     print(url);
 
