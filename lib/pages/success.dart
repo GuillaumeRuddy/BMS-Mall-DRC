@@ -26,7 +26,7 @@ class _SuccessState extends State<Success> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(
-              image: AssetImage("assets/img/success.png"),
+              image: AssetImage("assets/img/success.gif"),
             ),
             Padding(
               padding: EdgeInsets.all(10.0),
@@ -51,7 +51,7 @@ class _SuccessState extends State<Success> {
               height: 30,
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: AppColors.ecrit),
+              style: ElevatedButton.styleFrom(primary: AppColors.blueR),
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (_) => Home()));

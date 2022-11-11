@@ -39,14 +39,14 @@ class _DetailsState extends State<Details> {
                 Padding(
                   padding: EdgeInsets.only(left: 20.0),
                   child: Text(
-                    "Details produits",
+                    "Détail produit",
                     style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
                 ),
-                Spacer(),
+                //Spacer(),
                 /*Icon(
                   Icons.more_vert,
                   size: 25.0,
@@ -57,7 +57,7 @@ class _DetailsState extends State<Details> {
             //fin entete
           ),
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(15),
             child: Image(
               image: AssetImage("assets/img/ps4_console_blue_1.png"),
               height: 305,

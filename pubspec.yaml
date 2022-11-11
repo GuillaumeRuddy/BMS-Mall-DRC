@@ -46,6 +46,11 @@ dependencies:
   flutter_launcher_icons: ^0.10.0
   image_picker: 
   badges: ^2.0.3 
+  connectivity: ^3.0.6
+  http: ^0.13.3
+  provider: ^6.0.4
+  get_storage: ^2.0.3
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
