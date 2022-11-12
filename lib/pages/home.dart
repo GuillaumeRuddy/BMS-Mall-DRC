@@ -4,8 +4,10 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/pages/categories.dart';
 import 'package:mall_drc/pages/notification.dart';
 import 'package:mall_drc/pages/panier.dart';
+import 'package:mall_drc/pages/profil.dart';
 import 'package:mall_drc/widgets/drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mall_drc/model/category.dart';
@@ -385,13 +387,25 @@ class _HomeState extends State<Home> {
               label: "Accueil",
             ),
             BottomNavigationBarItem(
-              activeIcon: Icon(
-                Icons.category,
-                size: 24.0,
+              activeIcon: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => Categorie()));
+                },
+                child: Icon(
+                  Icons.category,
+                  size: 24.0,
+                ),
               ),
-              icon: Icon(
-                Icons.category_outlined,
-                size: 24.0,
+              icon: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => Categorie()));
+                },
+                child: Icon(
+                  Icons.category_outlined,
+                  size: 24.0,
+                ),
               ),
               label: "Categorie",
             ),
@@ -433,13 +447,25 @@ class _HomeState extends State<Home> {
               label: "Panier",
             ),
             BottomNavigationBarItem(
-              activeIcon: Icon(
-                Icons.person,
-                size: 24.0,
+              activeIcon: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => DetailUser()));
+                },
+                child: Icon(
+                  Icons.person,
+                  size: 24.0,
+                ),
               ),
-              icon: Icon(
-                Icons.person_outline,
-                size: 24.0,
+              icon: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => DetailUser()));
+                },
+                child: Icon(
+                  Icons.person_outline,
+                  size: 24.0,
+                ),
               ),
               label: "Profil",
             ),

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:mall_drc/app/api.dart';
+import 'package:mall_drc/app/endPoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/model/produit.dart';
@@ -12,7 +12,7 @@ class ProduitController with ChangeNotifier {
   RecupProduit() async {
     var url = Uri.parse(ApiUrl().produit);
     try {
-      var reponse = await http.get(url, headers: utilitaire().header);
+      var reponse = await http.get(url, headers: utilitaire.header);
       print(reponse.body);
       List bodyList = [];
       if (reponse.statusCode == 200) {

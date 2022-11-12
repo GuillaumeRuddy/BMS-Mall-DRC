@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:mall_drc/app/api.dart';
+import 'package:mall_drc/app/endPoint.dart';
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,10 +9,11 @@ class UtilisateurController with ChangeNotifier {
   //Methode pour enregistrer un nouveau client
   EnregistrementClient(Map client) async {
     var url = Uri.parse(ApiUrl().enregistrement);
+    print("----- Mon URL est: $url ----");
     try {
+      print("debut try");
       String data = json.encode(client);
-      var reponse =
-          await http.post(url, headers: utilitaire().header, body: data);
+      var reponse = await http.post(url, body: data);
       print('Le Status est: **** ${reponse.statusCode}');
       Map body = json.decode(reponse.body);
       var msg = "";
@@ -35,8 +35,7 @@ class UtilisateurController with ChangeNotifier {
     var url = Uri.parse(ApiUrl().connexion);
     try {
       String data = json.encode(client);
-      var reponse =
-          await http.post(url, headers: utilitaire().header, body: data);
+      var reponse = await http.post(url, body: data);
       print('Le Status est: **** ${reponse.statusCode}');
       Map body = json.decode(reponse.body);
       var msg = "";

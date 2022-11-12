@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mall_drc/controler/produits/produitController.dart';
 import 'package:mall_drc/controler/utilisateurs/utilisateurController.dart';
 import 'package:mall_drc/pages/demarage.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UtilisateurController())
+        ChangeNotifierProvider(create: (_) => UtilisateurController()),
+        ChangeNotifierProvider(create: (_) => ProduitController())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
