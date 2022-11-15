@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ApiUrl {
   //Base URL
-  static String baseUrl = "http://127.0.0.1:8000";
+  static String baseUrl = "http://192.168.1.74:8000";
   //EndPoint pour enregistrement
   String enregistrement =
       "$baseUrl/api/mall/v1/client/inscription/d033e22ae348aeb5660fc2140aec35850c4da997";

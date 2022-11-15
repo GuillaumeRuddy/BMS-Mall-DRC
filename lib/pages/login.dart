@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                           children: [
                             Expanded(
                               flex: 2,
-                              child: TextField(
+                              child: TextFormField(
                                 autofocus: false,
                                 controller: userController,
                                 keyboardType: TextInputType.text,
@@ -124,11 +124,11 @@ class _LoginState extends State<Login> {
                                     filled: true,
                                     fillColor: Colors.white,
                                     hintText: 'Entrez le nom d\'utilisateur',
-                                    border: OutlineInputBorder(
+                                    border: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide: BorderSide(
                                             color: Colors.blue, width: 1)),
-                                    focusedBorder: OutlineInputBorder(
+                                    focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                             color: Colors.blue, width: 1)),
                                     hintStyle: TextStyle(
@@ -140,7 +140,7 @@ class _LoginState extends State<Login> {
                         SizedBox(
                           height: 12,
                         ),
-                        TextField(
+                        TextFormField(
                           autofocus: false,
                           controller: passwordController,
                           keyboardType: TextInputType.visiblePassword,
@@ -187,11 +187,11 @@ class _LoginState extends State<Login> {
                                   });
                                 },
                               ),
-                              border: OutlineInputBorder(
+                              border: UnderlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide:
                                       BorderSide(color: Colors.blue, width: 1)),
-                              focusedBorder: OutlineInputBorder(
+                              focusedBorder: UnderlineInputBorder(
                                   borderSide:
                                       BorderSide(color: Colors.blue, width: 1)),
                               hintStyle:
@@ -233,19 +233,14 @@ class _LoginState extends State<Login> {
                               onPressed: () {
                                 mdp = passwordController.text;
                                 user = userController.text;
+                                Map client = {
+                                  "utilisateur": user,
+                                  "motDePasse": mdp
+                                };
                                 savSession();
+                                Navigator.pop(context);
                                 Navigator.of(context).push(
                                     MaterialPageRoute(builder: (_) => Home()));
-
-                                //loger(user, mdp);
-
-                                /*Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Home(
-                                      userName: user,
-                                      idUser: "1",
-                                    )));*/
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
@@ -294,26 +289,6 @@ class _LoginState extends State<Login> {
               ),
             ),
           );
-  }
-
-  void toast(String msag) {
-    Fluttertoast.showToast(
-        msg: msag,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 2);
-  }
-
-  void snackBar(String msg) {
-    SnackBar snackBar = new SnackBar(
-        content: Text(msg),
-        duration: new Duration(seconds: 5),
-        backgroundColor: Color.fromARGB(255, 219, 25, 11),
-        behavior: SnackBarBehavior.floating,
-        action: SnackBarAction(
-            label: 'OK',
-            onPressed: ScaffoldMessenger.of(context).hideCurrentSnackBar));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   //Sauvegarde dans le préférence

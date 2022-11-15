@@ -13,16 +13,17 @@ class UtilisateurController with ChangeNotifier {
     try {
       print("debut try");
       String data = json.encode(client);
-      var reponse = await http.post(url, body: data);
+      var reponse =
+          await http.post(url, headers: utilitaire.header, body: data);
       print('Le Status est: **** ${reponse.statusCode}');
       Map body = json.decode(reponse.body);
       var msg = "";
-      if (reponse.statusCode == 200) {
+      /*if (reponse.statusCode == 200) {
         msg = body["msg"];
       } else {
         msg = body["msg"];
-      }
-      return {"msg": msg, "status": reponse.statusCode == 200};
+      }*/
+      return {"status": reponse.statusCode == 200};
     } catch (e, stack) {
       print(e);
       print("******* Détails probleme : ${stack}");

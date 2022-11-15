@@ -5,6 +5,7 @@ import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../pages/categories.dart';
 import '../pages/login.dart';
 
 class DrawerAdd extends StatelessWidget {
@@ -86,7 +87,11 @@ class DrawerAdd extends StatelessWidget {
                     ),
                   ),
                   ListTile(
-                    onTap: null,
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => Categorie()));
+                    },
                     leading: Icon(
                       Icons.category,
                       color: Colors.blue,

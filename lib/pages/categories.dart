@@ -76,13 +76,18 @@ class _CategorieState extends State<Categorie> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
                             height: MediaQuery.of(context).size.height / 4,
                             width: MediaQuery.of(context).size.width / 4,
                             margin: EdgeInsets.only(right: 15),
-                            child: Image(
-                              image: AssetImage("assets/img/shoes2.png"),
+                            child: Icon(
+                              Icons.shopping_bag,
+                              color: Colors.black,
+                              size: 80,
+                              /*Image(
+                              image: AssetImage("assets/img/fedex-express.png")*/
                             )),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
@@ -91,88 +96,26 @@ class _CategorieState extends State<Categorie> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Air NIKE",
+                                "Boutique",
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.ecrit,
                                 ),
                               ),
                               Text(
-                                "100\$",
+                                "Retrouver toutes vos produits \n en boutiques ici  ",
                                 style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black),
+                                    color: Colors.blue),
                               ),
                             ],
                           ),
                         ),
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  )),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.plus,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Text(
-                                      "01",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.minus,
-                                      size: 18,
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        )
+                        Container(
+                            alignment: Alignment.centerRight,
+                            child: Icon(Icons.arrow_forward_ios_rounded))
                       ],
                     ),
                   ),
@@ -184,14 +127,16 @@ class _CategorieState extends State<Categorie> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
                             height: MediaQuery.of(context).size.height / 4,
                             width: MediaQuery.of(context).size.width / 4,
                             margin: EdgeInsets.only(right: 15),
-                            child: Image(
-                              image: AssetImage(
-                                  "assets/img/ps4_console_blue_1.png"),
+                            child: Icon(
+                              Icons.restaurant,
+                              color: Colors.black,
+                              size: 80,
                             )),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
@@ -200,88 +145,26 @@ class _CategorieState extends State<Categorie> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "PLAYSTATION 4",
+                                "Restaurant",
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.ecrit,
                                 ),
                               ),
                               Text(
-                                "150\$",
+                                "Amoureux des bon mets \n le plus proche ici  ",
                                 style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
                             ],
                           ),
                         ),
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  )),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.plus,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Text(
-                                      "01",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.minus,
-                                      size: 18,
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        )
+                        Container(
+                            alignment: Alignment.centerRight,
+                            child: Icon(Icons.arrow_forward_ios_rounded))
                       ],
                     ),
                   ),
@@ -293,13 +176,16 @@ class _CategorieState extends State<Categorie> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
                             height: MediaQuery.of(context).size.height / 4,
                             width: MediaQuery.of(context).size.width / 4,
                             margin: EdgeInsets.only(right: 15),
-                            child: Image(
-                              image: AssetImage("assets/img/glap.png"),
+                            child: Icon(
+                              Icons.shopping_cart,
+                              color: Colors.black,
+                              size: 80,
                             )),
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
@@ -308,88 +194,165 @@ class _CategorieState extends State<Categorie> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "GANG MOTO",
+                                "Marcher",
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 28,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.ecrit,
                                 ),
                               ),
                               Text(
-                                "42\$",
+                                "Les prix de vos produits \n en marcher ici  ",
                                 style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black),
                               ),
                             ],
                           ),
                         ),
-                        Spacer(),
+                        Icon(Icons.arrow_forward_ios_rounded)
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 110,
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                            height: MediaQuery.of(context).size.height / 4,
+                            width: MediaQuery.of(context).size.width / 4,
+                            margin: EdgeInsets.only(right: 15),
+                            child: Icon(
+                              Icons.local_pharmacy,
+                              color: Colors.black,
+                              size: 80,
+                            )),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
+                          padding: EdgeInsets.symmetric(vertical: 10),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  )),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.plus,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Text(
-                                      "02",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.minus,
-                                      size: 18,
-                                    ),
-                                  )
-                                ],
-                              )
+                              Text(
+                                "Pharmacie",
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.ecrit,
+                                ),
+                              ),
+                              Text(
+                                "Problème de santé? \n vos pharmacies ici  ",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
                             ],
                           ),
-                        )
+                        ),
+                        Icon(Icons.arrow_forward_ios_rounded)
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 110,
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                            height: MediaQuery.of(context).size.height / 4,
+                            width: MediaQuery.of(context).size.width / 4,
+                            margin: EdgeInsets.only(right: 15),
+                            child: Icon(
+                              Icons.dashboard,
+                              color: Colors.black,
+                              size: 80,
+                            )),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Autres",
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.ecrit,
+                                ),
+                              ),
+                              Text(
+                                "Retrouver tous  \n vos produits divers ici  ",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(Icons.arrow_forward_ios_rounded)
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 110,
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                            height: MediaQuery.of(context).size.height / 4,
+                            width: MediaQuery.of(context).size.width / 4,
+                            margin: EdgeInsets.only(right: 15),
+                            child: Icon(
+                              Icons.car_crash,
+                              color: Colors.black,
+                              size: 80,
+                            )),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Livraison",
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.ecrit,
+                                ),
+                              ),
+                              Text(
+                                "Faite vous livré partout \n ici  ",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(Icons.arrow_forward_ios_rounded)
                       ],
                     ),
                   ),

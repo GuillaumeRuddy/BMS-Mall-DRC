@@ -96,9 +96,11 @@ class _RegisterState extends State<Register> {
                           SizedBox(
                             height: 30,
                           ),
-                          TextField(
+                          TextFormField(
                             autofocus: true,
                             controller: nomController,
+                            validator: (e) =>
+                                e!.isEmpty ? "Champ obligatoire" : null,
                             keyboardType: TextInputType.text,
                             textAlignVertical: TextAlignVertical.bottom,
                             //maxLength: 9,
@@ -129,11 +131,11 @@ class _RegisterState extends State<Register> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 hintText: 'Entrez le nom d\'utilisateur',
-                                border: OutlineInputBorder(
+                                border: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
                                 hintStyle: TextStyle(
@@ -491,7 +493,7 @@ class _RegisterState extends State<Register> {
 
     var userCtrl = context.read<UtilisateurController>();
     Map resultat = await userCtrl.EnregistrementClient(data);
-    utilitaire.snackBar(resultat['msg'], context);
+    utilitaire.snackBar(resultat['status'], context);
 
     //Sur une ligne
     //context.read<AgentController>().envoyerDonnerVersAPI(data);

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/categories.dart';
 import 'package:mall_drc/pages/notification.dart';
+import 'package:mall_drc/pages/nouveaute.dart';
 import 'package:mall_drc/pages/panier.dart';
 import 'package:mall_drc/pages/profil.dart';
 import 'package:mall_drc/widgets/drawer.dart';
@@ -185,7 +186,10 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => Categorie()));
+                        },
                         child: Text(
                           "voir plus",
                           style: TextStyle(
@@ -205,6 +209,7 @@ class _HomeState extends State<Home> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      //Boutique
                       InkWell(
                         onTap: () {},
                         child: Container(
@@ -226,6 +231,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+                      //Restaurant
                       InkWell(
                         onTap: () {},
                         child: Container(
@@ -247,6 +253,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+                      //Marcher
                       InkWell(
                         onTap: () {},
                         child: Container(
@@ -268,6 +275,7 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+                      //Pharmacie
                       InkWell(
                         onTap: () {},
                         child: Container(
@@ -329,7 +337,10 @@ class _HomeState extends State<Home> {
                       InkWell(
                         onTap: () {},
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => Nouveaute()));
+                          },
                           child: Text(
                             "voir plus",
                             style: TextStyle(
