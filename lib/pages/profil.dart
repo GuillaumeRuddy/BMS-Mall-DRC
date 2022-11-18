@@ -26,10 +26,44 @@ class _DetailUserState extends State<DetailUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: entete(),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              color: AppColors.blueR,
+              padding: EdgeInsets.all(15),
+              //entete
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 25.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      "Information utilisateur",
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                  /*Spacer(),
+                Icon(
+                  Icons.more_vert,
+                  size: 25.0,
+                  color: Colors.white,
+                )*/
+                ],
+              ),
+            ),
             SizedBox(
               height: 40,
             ),

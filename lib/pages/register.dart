@@ -414,9 +414,7 @@ class _RegisterState extends State<Register> {
                                         valid == true && validPassword == true
                                             ? AppColors.ecrit
                                             : Colors.blueGrey),
-                                onPressed: () {
-                                  envoyerDonnees();
-                                },
+                                onPressed: envoyerDonnees,
                                 child: Padding(
                                   padding: EdgeInsets.all(12.0),
                                   child: Text(
@@ -467,6 +465,21 @@ class _RegisterState extends State<Register> {
           );
   }
 
+  /*void signup() async {
+    try {
+      var response = await http.post(Uri.parse(ApiUrl().enregistrement), body: {
+        "nom": nomController.text,
+        "prenom": prenomController.text,
+        "email": emailController.text,
+        "telephone": telephoneController.text,
+        "motdepasse": passwordController.text
+      });
+      print(response.statusCode);
+    } catch (e) {
+      print(e);
+    }
+  }*/
+
   void envoyerDonnees() async {
     // verifier si tous les champs sont valides
     /*if (!key.currentState!.validate()) {
@@ -493,7 +506,7 @@ class _RegisterState extends State<Register> {
 
     var userCtrl = context.read<UtilisateurController>();
     Map resultat = await userCtrl.EnregistrementClient(data);
-    utilitaire.snackBar(resultat['status'], context);
+    utilitaire.afficherSnack(context, resultat["msg"], resultat["status"]);
 
     //Sur une ligne
     //context.read<AgentController>().envoyerDonnerVersAPI(data);

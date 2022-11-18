@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ApiUrl {
-  //Base URL
-  static String baseUrl = "http://192.168.1.74:8000";
+  //Base URL     https://malldrc.mithap.org/api/mall/v1/marchand/d033e22ae348aeb5660fc2140aec35850c4da997
+  static String baseUrl = "https://malldrc.mithap.org";
   //EndPoint pour enregistrement
   String enregistrement =
       "$baseUrl/api/mall/v1/client/inscription/d033e22ae348aeb5660fc2140aec35850c4da997";

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class utilitaire {
-  static Map<String, String> header = {"content-type": "application/json"};
+  static Map<String, String> header = {"Content-type": "application/json"};
 
   static toast(String msag) {
     Fluttertoast.showToast(
@@ -22,6 +22,16 @@ class utilitaire {
             label: 'OK',
             onPressed: ScaffoldMessenger.of(context).hideCurrentSnackBar));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  static afficherSnack(BuildContext context, String msg,
+      [Color color = Colors.red]) {
+    final scaffold = ScaffoldMessenger.of(context);
+    var snackbar = SnackBar(
+      backgroundColor: color,
+      content: Text(msg),
+    );
+    scaffold.showSnackBar(snackbar);
   }
 
   static lancerChargementDialog(BuildContext context) {
