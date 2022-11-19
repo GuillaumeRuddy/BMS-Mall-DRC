@@ -41,18 +41,27 @@ class UtilisateurController with ChangeNotifier {
   //Methode pour se connecter à l'application
   Connexion(Map client) async {
     var url = Uri.parse(ApiUrl().connexion);
+    print(url);
     try {
       String data = json.encode(client);
-      var reponse = await http.post(url, body: data);
+      print(data);
+      var reponse =
+          await http.post(url, headers: utilitaire.header, body: data);
       print('Le Status est: **** ${reponse.statusCode}');
       Map body = json.decode(reponse.body);
+      print(body);
       var msg = "";
       if (reponse.statusCode == 200) {
-        msg = body["msg"];
+        msg = "Connecter";
       } else {
-        msg = body["msg"];
+        msg = "email ou mot de passe incorrect";
       }
-      return {"msg": msg, "status": reponse.statusCode == 200};
+      Map retour = {
+        "msg": msg,
+        "status": reponse.statusCode == 200,
+        "utilisateur": body
+      };
+      return retour;
     } catch (e, stack) {
       print(e);
       print("Détail problème connexion ${stack}");

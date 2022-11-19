@@ -5,11 +5,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/register.dart';
 import 'package:mall_drc/widgets/loading.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../controler/utilisateurs/utilisateurController.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -87,6 +91,7 @@ class _LoginState extends State<Login> {
                           children: [
                             Expanded(
                               flex: 2,
+                              //user
                               child: TextFormField(
                                 autofocus: false,
                                 controller: userController,
@@ -140,6 +145,7 @@ class _LoginState extends State<Login> {
                         SizedBox(
                           height: 12,
                         ),
+                        //Motdepasse
                         TextFormField(
                           autofocus: false,
                           controller: passwordController,
@@ -205,8 +211,8 @@ class _LoginState extends State<Login> {
                           children: [
                             TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => Register()));
+                                  /*Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => Register()));*/
                                 },
                                 child: Text("Mot de passe oublier ?",
                                     style: TextStyle(
@@ -231,16 +237,8 @@ class _LoginState extends State<Login> {
                                           ? AppColors.ecrit
                                           : Colors.blueGrey),
                               onPressed: () {
-                                mdp = passwordController.text;
-                                user = userController.text;
-                                Map client = {
-                                  "utilisateur": user,
-                                  "motDePasse": mdp
-                                };
+                                envoyerDonnees();
                                 savSession();
-                                Navigator.pop(context);
-                                Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (_) => Home()));
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
@@ -289,6 +287,48 @@ class _LoginState extends State<Login> {
               ),
             ),
           );
+  }
+
+  void envoyerDonnees() async {
+    // verifier si tous les champs sont valides
+    /*if (!key.currentState!.validate()) {
+      utilitaire.snackBar("Tous les champs sont obligatoires", context);
+      return;
+    }*/
+
+    // lancer une boite de dialogue de chargement
+    // pour empecher l'utilisateur
+    // de faire une action inattendue
+    utilitaire.lancerChargementDialog(context);
+
+    // appel requete API
+
+    Map data = {
+      "email": userController.text,
+      "motdepasse": passwordController.text
+    };
+
+    print(data);
+
+    var userCtrl = context.read<UtilisateurController>();
+    Map resultat = await userCtrl.Connexion(data);
+    print('lutilisateur a afficher ++++++++++++');
+    print(resultat);
+    utilitaire.afficherSnack(context, resultat["msg"],
+        resultat["status"] ? Colors.green : Colors.red);
+
+    //Sur une ligne
+    //context.read<AgentController>().envoyerDonnerVersAPI(data);
+
+    await Future.delayed(Duration(milliseconds: 800));
+
+    // quitter la boite de dialogue de chargement
+    Navigator.pop(context);
+
+    if (resultat['status']) {
+      Navigator.pop(context, true);
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => Home()));
+    }
   }
 
   //Sauvegarde dans le préférence
