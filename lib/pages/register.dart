@@ -506,7 +506,8 @@ class _RegisterState extends State<Register> {
 
     var userCtrl = context.read<UtilisateurController>();
     Map resultat = await userCtrl.EnregistrementClient(data);
-    utilitaire.afficherSnack(context, resultat["msg"], resultat["status"]);
+    utilitaire.afficherSnack(context, resultat["msg"],
+        resultat["status"] ? Colors.green : Colors.red);
 
     //Sur une ligne
     //context.read<AgentController>().envoyerDonnerVersAPI(data);
