@@ -40,7 +40,7 @@ class utilitaire {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Text("Traitement en cours..."),
+          content: Text("Chargment..."),
         );
       },
     );

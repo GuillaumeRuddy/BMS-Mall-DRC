@@ -34,7 +34,7 @@ class UtilisateurController with ChangeNotifier {
     } catch (e, stack) {
       print(e);
       //print("******* Détails probleme : ${stack}");
-      return {"msg": "Erreur inattendue", "status": "false"};
+      return {"msg": "Erreur inattendue", "status": false};
     }
   }
 
@@ -65,7 +65,7 @@ class UtilisateurController with ChangeNotifier {
     } catch (e, stack) {
       print(e);
       print("Détail problème connexion ${stack}");
-      return {"msg": "Erreur inattendue", "status": "false"};
+      return {"msg": "Erreur inattendue", "status": false};
     }
   }
 }

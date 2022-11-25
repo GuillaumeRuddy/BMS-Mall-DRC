@@ -31,7 +31,8 @@ class _RegisterState extends State<Register> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController residenceontroller = new TextEditingController();
   TextEditingController telephoneController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
+  TextEditingController passwordController1 = new TextEditingController();
+  TextEditingController passwordController2 = new TextEditingController();
   TextEditingController userController = new TextEditingController();
 
   String counterText = '0';
@@ -96,8 +97,9 @@ class _RegisterState extends State<Register> {
                           SizedBox(
                             height: 30,
                           ),
+                          //nom utilisateur
                           TextFormField(
-                            autofocus: true,
+                            autofocus: false,
                             controller: nomController,
                             validator: (e) =>
                                 e!.isEmpty ? "Champ obligatoire" : null,
@@ -144,8 +146,9 @@ class _RegisterState extends State<Register> {
                           SizedBox(
                             height: 12,
                           ),
-                          TextField(
-                            autofocus: true,
+                          // prenom de l'utilisateur
+                          TextFormField(
+                            autofocus: false,
                             controller: prenomController,
                             keyboardType: TextInputType.text,
                             textAlignVertical: TextAlignVertical.bottom,
@@ -177,11 +180,11 @@ class _RegisterState extends State<Register> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 hintText: 'Entrez le prenom d\'utilisateur',
-                                border: OutlineInputBorder(
+                                border: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
                                 hintStyle: TextStyle(
@@ -190,10 +193,11 @@ class _RegisterState extends State<Register> {
                           SizedBox(
                             height: 12,
                           ),
-                          TextField(
-                            autofocus: true,
+                          //Email utilisateur
+                          TextFormField(
+                            autofocus: false,
                             controller: emailController,
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.emailAddress,
                             textAlignVertical: TextAlignVertical.bottom,
                             //maxLength: 9,
                             onChanged: (value) {
@@ -223,11 +227,11 @@ class _RegisterState extends State<Register> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 hintText: 'Entrez l\'Email',
-                                border: OutlineInputBorder(
+                                border: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
                                 hintStyle: TextStyle(
@@ -236,10 +240,12 @@ class _RegisterState extends State<Register> {
                           SizedBox(
                             height: 12,
                           ),
-                          TextField(
-                            autofocus: true,
+                          //Telephone utilisateur
+                          TextFormField(
+                            autofocus: false,
+                            maxLength: 15,
                             controller: telephoneController,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.phone,
                             textAlignVertical: TextAlignVertical.bottom,
                             //maxLength: 9,
                             onChanged: (value) {
@@ -269,22 +275,22 @@ class _RegisterState extends State<Register> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 hintText: 'Entrez le numéro de téléphone',
-                                border: OutlineInputBorder(
+                                border: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
                                 hintStyle: TextStyle(
                                     fontSize: 10, color: Colors.grey)),
                           ),
                           SizedBox(
-                            height: 12,
+                            height: 0,
                           ),
                           TextField(
-                            autofocus: true,
-                            controller: passwordController,
+                            autofocus: false,
+                            controller: passwordController1,
                             keyboardType: TextInputType.visiblePassword,
                             textAlignVertical: TextAlignVertical.bottom,
                             obscureText: showPassword,
@@ -329,11 +335,11 @@ class _RegisterState extends State<Register> {
                                     });
                                   },
                                 ),
-                                border: OutlineInputBorder(
+                                border: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
                                 hintStyle: TextStyle(
@@ -343,8 +349,8 @@ class _RegisterState extends State<Register> {
                             height: 12,
                           ),
                           TextField(
-                            autofocus: true,
-                            controller: passwordController,
+                            autofocus: false,
+                            controller: passwordController2,
                             keyboardType: TextInputType.visiblePassword,
                             textAlignVertical: TextAlignVertical.bottom,
                             obscureText: showPassword,
@@ -372,7 +378,7 @@ class _RegisterState extends State<Register> {
                                     bottom: 10, top: 22, left: 10),
                                 // counterText: '$counterText/09',
                                 counterStyle: TextStyle(fontSize: 10),
-                                labelText: 'Répéter mot de passe',
+                                labelText: 'Confirmer mot de passe',
                                 filled: true,
                                 fillColor: Colors.white,
                                 hintText: 'Tapez encore votre mot de passe',
@@ -389,11 +395,11 @@ class _RegisterState extends State<Register> {
                                     });
                                   },
                                 ),
-                                border: OutlineInputBorder(
+                                border: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.blue, width: 1)),
                                 hintStyle: TextStyle(
@@ -494,31 +500,37 @@ class _RegisterState extends State<Register> {
 
     // appel requete API
 
-    Map data = {
-      "nom": nomController.text,
-      "prenom": prenomController.text,
-      "email": emailController.text,
-      "telephone": telephoneController.text,
-      "motdepasse": passwordController.text
-    };
+    if (passwordController1.text == passwordController2.text) {
+      Map data = {
+        "nom": nomController.text,
+        "prenom": prenomController.text,
+        "email": emailController.text,
+        "telephone": telephoneController.text,
+        "motdepasse": passwordController1.text
+      };
 
-    print(data);
+      print(data);
 
-    var userCtrl = context.read<UtilisateurController>();
-    Map resultat = await userCtrl.EnregistrementClient(data);
-    utilitaire.afficherSnack(context, resultat["msg"],
-        resultat["status"] ? Colors.green : Colors.red);
+      var userCtrl = context.read<UtilisateurController>();
+      Map resultat = await userCtrl.EnregistrementClient(data);
+      utilitaire.afficherSnack(context, resultat["msg"],
+          resultat["status"] ? Colors.green : Colors.red);
 
-    //Sur une ligne
-    //context.read<AgentController>().envoyerDonnerVersAPI(data);
+      //Sur une ligne
+      //context.read<AgentController>().envoyerDonnerVersAPI(data);
 
-    await Future.delayed(Duration(milliseconds: 800));
+      await Future.delayed(Duration(milliseconds: 800));
 
-    // quitter la boite de dialogue de chargement
-    Navigator.pop(context);
+      // quitter la boite de dialogue de chargement
+      Navigator.pop(context);
 
-    if (resultat['status']) {
-      Navigator.pop(context, true);
+      if (resultat['status']) {
+        Navigator.pop(context, true);
+      }
+    } else {
+      Navigator.pop(context);
+      utilitaire.afficherSnack(
+          context, "les deux mots de passe ne concorde pas", Colors.red);
     }
   }
 }

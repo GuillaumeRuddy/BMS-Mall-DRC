@@ -33,6 +33,7 @@ class _LoginState extends State<Login> {
   String mdp = "";
   String user = "";
   var idUser;
+  Map resultat = {};
 
   GlobalKey<ScaffoldState> key = GlobalKey();
 
@@ -270,8 +271,8 @@ class _LoginState extends State<Login> {
                             ),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => Register()));
+                                  /*Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => Register()));*/
                                 },
                                 child: Text("Inscription",
                                     style: TextStyle(
@@ -311,7 +312,7 @@ class _LoginState extends State<Login> {
     print(data);
 
     var userCtrl = context.read<UtilisateurController>();
-    Map resultat = await userCtrl.Connexion(data);
+    resultat = await userCtrl.Connexion(data);
     print('lutilisateur a afficher ++++++++++++');
     print(resultat);
     utilitaire.afficherSnack(context, resultat["msg"],
@@ -327,6 +328,7 @@ class _LoginState extends State<Login> {
 
     if (resultat['status']) {
       Navigator.pop(context, true);
+      saveInfosPersonnel();
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => Home()));
     }
   }
@@ -335,9 +337,23 @@ class _LoginState extends State<Login> {
   void saveInfosPersonnel() async {
     print('Inside savepref');
     //_password = _passcontroller.text;
-    user = userController.text;
+    Map personne = resultat["utilisateur"];
+    print("******** dans le shared preference ***********");
+    print(personne);
+    print("******** le prenom ***********");
+    print(personne["prenom"]);
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user', user);
+    await prefs.setString('user', personne["prenom"]);
+    await prefs.setString('email', personne["email"]);
+    await prefs.setInt('id', personne["id"]);
+    await prefs.setString('telephone', personne["telephone"]);
   } //fin savepref
 
+  fermerClavier() {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
 }

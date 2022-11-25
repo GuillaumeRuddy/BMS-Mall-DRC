@@ -104,11 +104,11 @@ class _CategorieState extends State<Categorie> {
                                 ),
                               ),
                               Text(
-                                "Retrouver toutes vos produits \n en boutiques ici  ",
+                                "Retrouver toutes vos produits \nen boutiques ici  ",
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -153,7 +153,7 @@ class _CategorieState extends State<Categorie> {
                                 ),
                               ),
                               Text(
-                                "Amoureux des bon mets \n le plus proche ici  ",
+                                "Amoureux des bon mets \nle plus proche ici  ",
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -202,7 +202,7 @@ class _CategorieState extends State<Categorie> {
                                 ),
                               ),
                               Text(
-                                "Les prix de vos produits \n en marcher ici  ",
+                                "Les prix de vos produits \nen marcher ici  ",
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -249,7 +249,7 @@ class _CategorieState extends State<Categorie> {
                                 ),
                               ),
                               Text(
-                                "Problème de santé? \n vos pharmacies ici  ",
+                                "Problème de santé? \nvos pharmacies ici  ",
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -296,7 +296,7 @@ class _CategorieState extends State<Categorie> {
                                 ),
                               ),
                               Text(
-                                "Retrouver tous  \n vos produits divers ici  ",
+                                "Retrouver tous  \nvos produits divers ici  ",
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,

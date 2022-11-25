@@ -4,16 +4,20 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/controler/produits/produitController.dart';
 import 'package:mall_drc/pages/categories.dart';
 import 'package:mall_drc/pages/notification.dart';
 import 'package:mall_drc/pages/nouveaute.dart';
 import 'package:mall_drc/pages/panier.dart';
 import 'package:mall_drc/pages/profil.dart';
 import 'package:mall_drc/widgets/drawer.dart';
+import 'package:mall_drc/widgets/produit_card.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mall_drc/model/category.dart';
 
 import '../model/category.dart';
+import '../model/produit.dart';
 import '../widgets/category_card.dart';
 import '../widgets/circle_button.dart';
 import '../widgets/search_testfield.dart';
@@ -28,17 +32,31 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   var _selectedIndex = 0;
   var utilisateur;
+  List<Produit> listProduits = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     //recupSession();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await recupProduit();
+    });
+  }
+
+  Future recupProduit() async {
+    var prodCtrl = context.read<ProduitController>();
+    await prodCtrl.RecupProduit();
+    listProduits = prodCtrl.prod;
+    print("----------- les produits ----------");
+    print(listProduits);
+    print("------ fin list des produits ------");
+    setState(() {});
   }
 
   Future recupSession() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    return pref.getString("utilisateur");
+    return pref.getString("user");
   }
 
   @override
@@ -49,30 +67,32 @@ class _HomeState extends State<Home> {
         elevation: 0.0,
         backgroundColor: AppColors.blueR,
         actions: [
-          IconButton(
+          /*IconButton(
               onPressed: () /*async*/ {
                 /*final pref = await SharedPreferences.getInstance();
                 pref.setBool("showPres", false);*/
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (_) => Message()));
               },
-              icon: Icon(Icons.card_giftcard_sharp))
-          /*Badge(
-            badgeColor: Colors.red,
-            padding: EdgeInsets.all(5),
-            badgeContent: Text(
-              "0",
-              style: TextStyle(color: Colors.white),
+              icon: Icon(Icons.card_giftcard_sharp))*/
+          Center(
+            child: Badge(
+              badgeColor: Colors.red,
+              padding: EdgeInsets.all(5),
+              badgeContent: Text(
+                "0",
+                style: TextStyle(color: Colors.white),
+              ),
+              child: IconButton(
+                  onPressed: () /*async*/ {
+                    /*final pref = await SharedPreferences.getInstance();
+                  pref.setBool("showPres", false);*/
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => Message()));
+                  },
+                  icon: Icon(Icons.card_giftcard_sharp)),
             ),
-            child: IconButton(
-                onPressed: () /*async*/ {
-                  /*final pref = await SharedPreferences.getInstance();
-                pref.setBool("showPres", false);*/
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => Message()));
-                },
-                icon: Icon(Icons.card_giftcard_sharp)),
-          ),*/
+          ),
         ],
       ),
       drawer: DrawerAdd(),
@@ -356,7 +376,7 @@ class _HomeState extends State<Home> {
                 GridView.builder(
                   shrinkWrap: true,
                   //scrollDirection: Axis.horizontal,
-                  itemCount: categoryList.length,
+                  itemCount: listProduits.length,
                   physics: NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
@@ -369,8 +389,8 @@ class _HomeState extends State<Home> {
                     mainAxisSpacing: 24,
                   ),
                   itemBuilder: (context, index) {
-                    return CategoryCard(
-                      category: categoryList[index],
+                    return ProduitCard(
+                      prod: listProduits[index],
                     );
                   },
                 ),

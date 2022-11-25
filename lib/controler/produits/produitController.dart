@@ -10,16 +10,18 @@ class ProduitController with ChangeNotifier {
   List<Produit> prod = [];
   // Methode pour recuper les produits
   RecupProduit() async {
-    var url = Uri.parse(ApiUrl().produit);
+    var url = Uri.parse(ApiUrl().produits);
     try {
       var reponse = await http.get(url, headers: utilitaire.header);
       print(reponse.body);
       List bodyList = [];
       if (reponse.statusCode == 200) {
         bodyList = json.decode(reponse.body);
+        print(bodyList);
+
         prod = bodyList.map((e) => Produit.fromJson(e)).toList();
       }
-      return {"body": bodyList, "status": reponse.statusCode == 200};
+      return {"body": prod, "status": reponse.statusCode == 200};
     } catch (e, stack) {
       print(e);
       print("******* Détails probleme : ${stack}");
