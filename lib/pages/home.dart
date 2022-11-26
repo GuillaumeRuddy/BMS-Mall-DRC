@@ -4,6 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/controler/panier/panierController.dart';
 import 'package:mall_drc/controler/produits/produitController.dart';
 import 'package:mall_drc/pages/categories.dart';
 import 'package:mall_drc/pages/notification.dart';
@@ -75,22 +76,43 @@ class _HomeState extends State<Home> {
                     .push(MaterialPageRoute(builder: (_) => Message()));
               },
               icon: Icon(Icons.card_giftcard_sharp))*/
-          Center(
-            child: Badge(
-              badgeColor: Colors.red,
-              padding: EdgeInsets.all(5),
-              badgeContent: Text(
-                "0",
-                style: TextStyle(color: Colors.white),
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Center(
+              child: Badge(
+                badgeColor: Colors.red,
+                padding: EdgeInsets.all(5),
+                badgeContent: Text(
+                  "0",
+                  style: TextStyle(color: Colors.white),
+                ),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => Message()));
+                    },
+                    child: Icon(
+                      Icons.card_giftcard_rounded,
+                      size: 30,
+                    )),
               ),
-              child: IconButton(
-                  onPressed: () /*async*/ {
-                    /*final pref = await SharedPreferences.getInstance();
-                  pref.setBool("showPres", false);*/
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => Message()));
-                  },
-                  icon: Icon(Icons.card_giftcard_sharp)),
+
+              /*Badge(
+                badgeColor: Colors.red,
+                //padding: EdgeInsets.all(5),
+                badgeContent: Text(
+                  "0",
+                  style: TextStyle(color: Colors.white),
+                ),
+                child: IconButton(
+                    onPressed: () /*async*/ {
+                      /*final pref = await SharedPreferences.getInstance();
+                    pref.setBool("showPres", false);*/
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => Message()));
+                    },
+                    icon: Icon(Icons.card_giftcard_sharp)),
+              ),*/
             ),
           ),
         ],
@@ -444,9 +466,13 @@ class _HomeState extends State<Home> {
               activeIcon: Badge(
                 badgeColor: Colors.red,
                 padding: EdgeInsets.all(5),
-                badgeContent: Text(
-                  "3",
-                  style: TextStyle(color: Colors.white),
+                badgeContent: Consumer<PanierController>(
+                  builder: ((context, value, child) {
+                    return Text(
+                      value.nombre.toString(),
+                      style: TextStyle(color: Colors.white),
+                    );
+                  }),
                 ),
                 child: InkWell(
                     onTap: () {
@@ -461,9 +487,13 @@ class _HomeState extends State<Home> {
               icon: Badge(
                 badgeColor: Colors.red,
                 padding: EdgeInsets.all(5),
-                badgeContent: Text(
-                  "3",
-                  style: TextStyle(color: Colors.white),
+                badgeContent: Consumer<PanierController>(
+                  builder: ((context, value, child) {
+                    return Text(
+                      value.nombre.toString(),
+                      style: TextStyle(color: Colors.white),
+                    );
+                  }),
                 ),
                 child: InkWell(
                     onTap: () {

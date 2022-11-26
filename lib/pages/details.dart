@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mall_drc/db/db_mall.dart';
 import 'package:mall_drc/model/produit.dart';
+import 'package:provider/provider.dart';
 
 import '../app/app_constatns.dart';
+import '../controler/panier/panierController.dart';
 
 class Details extends StatefulWidget {
   Produit product;
@@ -20,6 +23,8 @@ class _DetailsState extends State<Details> {
   late Produit px;
   late double prixTotal = qteCommande * (px.prix as double);
   late double prix = px.prix as double;
+
+  DbMAll? dbMAll = DbMAll();
 
   @override
   void initState() {
@@ -281,7 +286,9 @@ class _DetailsState extends State<Details> {
                       color: Colors.white),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    ajouterAuPAnier();
+                  },
                   icon: Icon(CupertinoIcons.cart_badge_plus),
                   label: Text(
                     "Ajouter au panier",
@@ -306,5 +313,27 @@ class _DetailsState extends State<Details> {
         ],
       ),
     );
+  }
+
+  void ajouterAuPAnier() {
+    var ctrlPanier = context.read<PanierController>();
+    dbMAll!
+        .InsertionProduit(Produit(
+            id: px.id,
+            nom: px.nom,
+            prix: px.prix,
+            quantite: px.quantite,
+            description: px.description,
+            image: px.image,
+            marchand_id: px.marchand_id))
+        .then((value) {
+      print("produit ajouter au panier");
+      var ctrlPanier = context.read<PanierController>();
+      ctrlPanier.ajoutPrixTotal(prixTotal);
+      ctrlPanier.ajoutCtrPanier();
+    }).onError((error, stackTrace) {
+      print(error.toString());
+      print(stackTrace);
+    });
   }
 }
