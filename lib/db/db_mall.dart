@@ -64,4 +64,22 @@ class DbMAll {
     print("----------- fin de la reponse de la suppression -----------");
     return reponse.toString();
   }
+
+  Future<int> suppressionTousProduitPanier() async {
+    var dbMall = await BDD;
+    int reponse = await dbMall!.delete('panier');
+    print("----------- la reponse de toute la suppression -----------");
+    print(reponse);
+    print("----------- fin de la reponse de toute la suppression -----------");
+    return reponse;
+  }
+
+  Future<int> updateProduitPanier(Produit prod) async {
+    var dbMall = await BDD;
+    var reponse = await dbMall!
+        .update('panier', prod.toMap(), where: 'id = ?', whereArgs: [prod.id]);
+    print("++++++ la reponse de la mise à jour ++++++");
+    print(reponse);
+    return reponse;
+  }
 }

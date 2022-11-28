@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/pages/coordoner.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/success.dart';
 import 'package:mall_drc/widgets/cardPanier.dart';
@@ -96,6 +97,7 @@ class _PanierState extends State<Panier> {
                             nom: ListProduit[index].nom,
                             prix: ListProduit[index].prix,
                             id: ListProduit[index].id,
+                            qte: ListProduit[index].quantite,
                           );
                         },
                       )
@@ -117,22 +119,25 @@ class _PanierState extends State<Panier> {
             children: [
               Consumer<PanierController>(
                 builder: (context, value, child) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Montant total:",
+                  return Visibility(
+                    visible: value.prixTotal == "0.0" ? false : true,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Montant total:",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold)),
+                        Text(
+                          "${value.prixTotal}\$",
                           style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold)),
-                      Text(
-                        "${value.prixTotal}\$",
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red[900]),
-                      )
-                    ],
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red[900]),
+                        )
+                      ],
+                    ),
                   );
                 },
               ),
@@ -140,7 +145,7 @@ class _PanierState extends State<Panier> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => Success()));
+                      MaterialPageRoute(builder: (_) => Coordonne()));
                 },
                 child: Container(
                   height: 50,

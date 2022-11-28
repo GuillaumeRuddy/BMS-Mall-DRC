@@ -330,6 +330,8 @@ class _DetailsState extends State<Details> {
         .then((value) {
       print("produit ajouter au panier");
       var ctrlPanier = context.read<PanierController>();
+      print("le type du prix est :   ${px.prix.runtimeType}");
+      print("le type de quantite est :   ${px.quantite.runtimeType}");
       //calculMontTotProduit(px.prix, double.parse(px.quantite));
       ctrlPanier.ajoutPrixTotal(prixTotal);
       ctrlPanier.ajoutCtrPanier();
@@ -340,7 +342,7 @@ class _DetailsState extends State<Details> {
   }
 
   double calculMontTotProduit(double prix, double qte) {
-    montantTotProduit = prix! * qte!;
+    montantTotProduit = prix * qte;
     return montantTotProduit;
   }
 }

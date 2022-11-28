@@ -12,7 +12,7 @@ class PanierCard extends StatelessWidget {
   double? prix;
   String? qte;
   String? id;
-  PanierCard({Key? key, this.nom, this.prix, this.image, this.id})
+  PanierCard({Key? key, this.nom, this.prix, this.image, this.id, this.qte})
       : super(key: key);
 
   DbMAll bd = DbMAll();
@@ -40,13 +40,13 @@ class PanierCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   nom ?? "",
                   maxLines: 2,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                     color: AppColors.ecrit,
                   ),
@@ -85,7 +85,7 @@ class PanierCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    /*Container(
+                    Container(
                       padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -100,7 +100,7 @@ class PanierCard extends StatelessWidget {
                         CupertinoIcons.plus,
                         size: 18,
                       ),
-                    ),*/
+                    ),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
@@ -111,7 +111,7 @@ class PanierCard extends StatelessWidget {
                             color: Colors.blue),
                       ),
                     ),
-                    /*Container(
+                    Container(
                       padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -126,7 +126,7 @@ class PanierCard extends StatelessWidget {
                         CupertinoIcons.minus,
                         size: 18,
                       ),
-                    )*/
+                    )
                   ],
                 )
               ],
