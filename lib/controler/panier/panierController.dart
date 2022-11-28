@@ -2,12 +2,41 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../db/db_mall.dart';
+import '../../model/produit.dart';
+
 class PanierController extends ChangeNotifier {
+  DbMAll? dbMAll = DbMAll();
+
   int nombre = 0;
   int get nbrPRoduit => nombre;
 
   double prixTotal = 0.0;
   double get prixTot => prixTotal;
+
+  late Future<List<Produit>> TousLespPoduits;
+  Future<List<Produit>> get ListProduit => TousLespPoduits;
+
+  Future<List<Produit>> getData() async {
+    TousLespPoduits = dbMAll!.getListPanier();
+    print("----- le retour du panier -----");
+    print(TousLespPoduits.runtimeType);
+    print(TousLespPoduits);
+    print("----- fin du retour du panier -----");
+    return TousLespPoduits;
+  }
+
+  Future<int> getNbrItemPanier() async {
+    return nombre = await dbMAll!.getNbrListPanier() as int;
+  }
+
+  /*Future<int> supprimerProduit(int id) async {
+    int retour = await dbMAll!.suppressionProduitPanier(id);
+    print("----- le retour du panier -----");
+    print(retour);
+    print("----- fin du retour du panier -----");
+    return retour;
+  }*/
 
   void setItemPanier() async {
     SharedPreferences pref = await SharedPreferences.getInstance();

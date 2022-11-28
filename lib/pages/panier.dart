@@ -7,6 +7,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/success.dart';
+import 'package:mall_drc/widgets/cardPanier.dart';
+import 'package:provider/provider.dart';
+
+import '../controler/panier/panierController.dart';
+import '../model/produit.dart';
+import '../widgets/rien.dart';
 
 class Panier extends StatefulWidget {
   const Panier({Key? key}) : super(key: key);
@@ -16,11 +22,27 @@ class Panier extends StatefulWidget {
 }
 
 class _PanierState extends State<Panier> {
+  List<Produit> ListProduit = [];
+  var panierCtrl;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      panierCtrl = context.read<PanierController>();
+      ListProduit = await panierCtrl.getData();
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    //var panierCtrl = context.read<PanierController>();
     return Scaffold(
       body: ListView(
         children: [
+          //entete Panier
           Container(
             color: AppColors.blueR,
             padding: EdgeInsets.all(15),
@@ -47,354 +69,40 @@ class _PanierState extends State<Panier> {
                         color: Colors.white),
                   ),
                 ),
-                /*Spacer(),
-                Icon(
-                  Icons.more_vert,
-                  size: 25.0,
-                  color: Colors.white,
-                )*/
               ],
             ),
           ),
           //details
-          Container(
-            height: 700,
-            padding: EdgeInsets.only(top: 15),
-            decoration: BoxDecoration(
-                color: Color.fromARGB(77, 233, 230, 230),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(35),
-                    topRight: Radius.circular(35))),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    height: 110,
-                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        Container(
-                            height: MediaQuery.of(context).size.height / 4,
-                            width: MediaQuery.of(context).size.width / 4,
-                            margin: EdgeInsets.only(right: 15),
-                            child: Image(
-                              image: AssetImage("assets/img/shoes2.png"),
-                            )),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Air NIKE",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.ecrit,
-                                ),
-                              ),
-                              Text(
-                                "100\$",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  )),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.plus,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Text(
-                                      "01",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.minus,
-                                      size: 18,
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  height: 700,
+                  padding: EdgeInsets.only(top: 15),
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(77, 233, 230, 230),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(35),
+                          topRight: Radius.circular(35))),
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.start,
+                    //crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: ListProduit.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return PanierCard(
+                            nom: ListProduit[index].nom,
+                            prix: ListProduit[index].prix,
+                            id: ListProduit[index].id,
+                          );
+                        },
+                      )
+                    ],
                   ),
-                  Container(
-                    height: 110,
-                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        Container(
-                            height: MediaQuery.of(context).size.height / 4,
-                            width: MediaQuery.of(context).size.width / 4,
-                            margin: EdgeInsets.only(right: 15),
-                            child: Image(
-                              image: AssetImage(
-                                  "assets/img/ps4_console_blue_1.png"),
-                            )),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "PLAYSTATION 4",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.ecrit,
-                                ),
-                              ),
-                              Text(
-                                "150\$",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  )),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.plus,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Text(
-                                      "01",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.minus,
-                                      size: 18,
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 110,
-                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      children: [
-                        Container(
-                            height: MediaQuery.of(context).size.height / 4,
-                            width: MediaQuery.of(context).size.width / 4,
-                            margin: EdgeInsets.only(right: 15),
-                            child: Image(
-                              image: AssetImage("assets/img/glap.png"),
-                            )),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "GANG MOTO",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.ecrit,
-                                ),
-                              ),
-                              Text(
-                                "42\$",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red,
-                                  )),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.plus,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    child: Text(
-                                      "02",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                              spreadRadius: 1,
-                                              blurRadius: 10)
-                                        ]),
-                                    child: Icon(
-                                      CupertinoIcons.minus,
-                                      size: 18,
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -407,22 +115,26 @@ class _PanierState extends State<Panier> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Montant total:",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold)),
-                  Text(
-                    "295\$",
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red[900]),
-                  )
-                ],
+              Consumer<PanierController>(
+                builder: (context, value, child) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Montant total:",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold)),
+                      Text(
+                        "${value.prixTotal}\$",
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red[900]),
+                      )
+                    ],
+                  );
+                },
               ),
               InkWell(
                 onTap: () {
@@ -454,3 +166,67 @@ class _PanierState extends State<Panier> {
     );
   }
 }
+
+
+
+
+/*FutureBuilder(
+    future: panierCtrl.getData(),
+    builder:
+        (context, AsyncSnapshot<List<Produit>> snapshot) {
+      if (snapshot.hasData) {
+        print("----- le retour du snapshoot -----");
+        print(snapshot);
+        print(snapshot.data);
+        print(snapshot.data.runtimeType);
+        print("----- fin du retour du snappshoot -----");
+        return Expanded(
+            child: ListView.builder(
+          itemCount: snapshot.data!.length,
+          itemBuilder: (context, index) {
+            return Text(snapshot.data![index].nom.toString());
+
+            /*Card(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment:
+                          MainAxisAlignment.start,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Image(
+                          image: AssetImage(
+                            snapshot.data![index].image.toString(),
+                          ),
+                          height: 100,
+                          width: 100,
+                        ),
+                        /*SizedBox(width: 10,),
+                        Expanded(child: child)*/
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );*/
+
+            /*PanierCard(
+                nom: snapshot.data![index].nom,
+                prix: snapshot.data![index].prix,
+                image: snapshot.data![index].image);*/
+          },
+        ));
+      } else {
+        return Center(
+            child: AucuneDonne(
+                imagePath: 'no_cart.png',
+                text: "Aucun produit dans le panier"));
+      }
+    }) */

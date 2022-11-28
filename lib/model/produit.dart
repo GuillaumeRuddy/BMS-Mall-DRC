@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
 class Produit {
-  int? id;
+  String? id;
   String? nom;
   double? prix;
   String? quantite;
   String? description;
   String image;
-  int? marchand_id;
+  String? marchand_id;
 
   Produit(
       {this.id,
@@ -19,16 +19,17 @@ class Produit {
       this.marchand_id});
 
   factory Produit.fromJson(Map<String, dynamic> i) => Produit(
-      id: i["id"] == null ? 0 : i["id"],
+      id: i["id"] == null ? null : i["id"].toString(),
       nom: i["nom"] == null ? null : i["nom"],
-      prix: i["prix"] == null ? 0.0 : double.parse(i["prix"]),
-      quantite: i["quantite"] == null ? null : i["quantite"],
+      prix: i["prix"] == null ? 0.0 : double.parse(i["prix"].toString()),
+      quantite: i["quantite"] == null ? null : i["quantite"].toString(),
       description: i["description"] == null ? null : i["description"],
       image: i["image"] == null ? null : i["image"],
-      marchand_id: i["marchand_id"] == null ? 0 : i["marchand_id"]);
+      marchand_id:
+          i["marchand_id"] == null ? null : i["marchand_id"].toString());
 
   Map<String, dynamic> toMap() => {
-        "id": id == null ? 0 : id,
+        "id": id == null ? "" : id,
         "nom": id == null ? null : nom,
         "prix": id == null ? 0.0 : prix,
         "quantite": id == null ? null : quantite,

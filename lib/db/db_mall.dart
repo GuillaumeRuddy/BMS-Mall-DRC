@@ -28,7 +28,7 @@ class DbMAll {
 
   creationBase(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE panier(id VARCHAR UNIQUE,nom TEXT, prix DOUBLE, quantite INTEGER, description TEXT, image TEXT, marchand_id TEXT)");
+        "CREATE TABLE panier(idsql INTEGER PRIMARY KEY AUTO_INCREMENT,id INTEGER ,nom TEXT, prix DOUBLE, quantite INTEGER, description TEXT, image TEXT, marchand_id TEXT)");
   }
 
 //idsql INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -41,5 +41,27 @@ class DbMAll {
     print("**** fin du retour de MalL BD ****");
     await dbMall!.insert('panier', prod.toMap());
     return prod;
+  }
+
+  Future<List<Produit>> getListPanier() async {
+    var dbMall = await BDD;
+    final List<Map<String, Object?>> requet = await dbMall!.query('panier');
+    return requet.map((e) => Produit.fromJson(e)).toList();
+  }
+
+  Future<int> getNbrListPanier() async {
+    var dbMall = await BDD;
+    final List<Map<String, Object?>> requet = await dbMall!.query('panier');
+    return requet.length;
+  }
+
+  Future<String> suppressionProduitPanier(String id) async {
+    var dbMall = await BDD;
+    int reponse =
+        await dbMall!.delete('panier', where: 'id = ?', whereArgs: [id]);
+    print("----------- la reponse de la suppression -----------");
+    print(reponse);
+    print("----------- fin de la reponse de la suppression -----------");
+    return reponse.toString();
   }
 }

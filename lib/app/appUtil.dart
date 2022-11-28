@@ -45,4 +45,38 @@ class utilitaire {
       },
     );
   }
+
+  static lancerChargementDialog2(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  static lancerChargementDialog3(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: LinearProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  static lancerChargementDialog4(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
 }

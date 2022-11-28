@@ -468,10 +468,21 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.all(5),
                 badgeContent: Consumer<PanierController>(
                   builder: ((context, value, child) {
-                    return Text(
-                      value.nombre.toString(),
-                      style: TextStyle(color: Colors.white),
-                    );
+                    return FutureBuilder(
+                        future: value.getNbrItemPanier(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<int> snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data.toString(),
+                              style: TextStyle(color: Colors.white),
+                            );
+                          }
+                          return Text(
+                            "0",
+                            style: TextStyle(color: Colors.white),
+                          );
+                        });
                   }),
                 ),
                 child: InkWell(
@@ -489,10 +500,21 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.all(5),
                 badgeContent: Consumer<PanierController>(
                   builder: ((context, value, child) {
-                    return Text(
-                      value.nombre.toString(),
-                      style: TextStyle(color: Colors.white),
-                    );
+                    return FutureBuilder(
+                        future: value.getNbrItemPanier(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<int> snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data.toString(),
+                              style: TextStyle(color: Colors.white),
+                            );
+                          }
+                          return Text(
+                            "0",
+                            style: TextStyle(color: Colors.white),
+                          );
+                        });
                   }),
                 ),
                 child: InkWell(
