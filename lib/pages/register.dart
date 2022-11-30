@@ -496,7 +496,7 @@ class _RegisterState extends State<Register> {
     // lancer une boite de dialogue de chargement
     // pour empecher l'utilisateur
     // de faire une action inattendue
-    utilitaire.lancerChargementDialog(context);
+    utilitaire.lancerChargementDialog4(context);
 
     // appel requete API
 

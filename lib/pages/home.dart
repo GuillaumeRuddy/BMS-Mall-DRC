@@ -24,7 +24,11 @@ import '../widgets/circle_button.dart';
 import '../widgets/search_testfield.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  //String? idt;
+  const Home({
+    Key? key,
+    /*this.idt*/
+  }) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -34,6 +38,7 @@ class _HomeState extends State<Home> {
   var _selectedIndex = 0;
   var utilisateur;
   List<Produit> listProduits = [];
+  String? ident;
 
   @override
   void initState() {
@@ -41,6 +46,7 @@ class _HomeState extends State<Home> {
     super.initState();
     //recupSession();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      //await recupidSession();
       await recupProduit();
     });
   }
@@ -59,6 +65,12 @@ class _HomeState extends State<Home> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     return pref.getString("user");
   }
+
+  /*Future recupidSession() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    ident = pref.getInt("id").toString();
+    setState(() {});
+  }*/
 
   @override
   Widget build(BuildContext context) {

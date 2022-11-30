@@ -52,9 +52,9 @@ dependencies:
   get_storage: ^2.0.3
   intl: ^0.17.0
   sqflite :
-  google_maps_flutter: ^2.2.1
-  mobile_scanner: ^2.0.0
-  socket_io_client: ^2.0.0
+  #google_maps_flutter: ^2.2.1
+  #mobile_scanner: ^2.0.0
+  #socket_io_client: ^2.0.0
 
 dev_dependencies:
   flutter_test:

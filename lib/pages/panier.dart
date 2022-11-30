@@ -16,7 +16,7 @@ import '../model/produit.dart';
 import '../widgets/rien.dart';
 
 class Panier extends StatefulWidget {
-  const Panier({Key? key}) : super(key: key);
+  Panier({Key? key}) : super(key: key);
 
   @override
   State<Panier> createState() => _PanierState();
@@ -24,15 +24,14 @@ class Panier extends StatefulWidget {
 
 class _PanierState extends State<Panier> {
   List<Produit> ListProduit = [];
-  var panierCtrl;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      panierCtrl = context.read<PanierController>();
-      ListProduit = await panierCtrl.getData();
+      var ctrlPanier = context.read<PanierController>();
+      ListProduit = await ctrlPanier.getData();
       setState(() {});
     });
   }
@@ -98,6 +97,7 @@ class _PanierState extends State<Panier> {
                             prix: ListProduit[index].prix,
                             id: ListProduit[index].id,
                             qte: ListProduit[index].quantite,
+                            image: ListProduit[index].image,
                           );
                         },
                       )
@@ -120,50 +120,57 @@ class _PanierState extends State<Panier> {
               Consumer<PanierController>(
                 builder: (context, value, child) {
                   return Visibility(
-                    visible: value.prixTotal == "0.0" ? false : true,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    visible: value.getPrixTotal() == "0.0" ? false : true,
+                    child: Column(
                       children: [
-                        Text("Montant total:",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold)),
-                        Text(
-                          "${value.prixTotal}\$",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red[900]),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Montant total:",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold)),
+                            Text(
+                              "${value.getPrixTotal()}\$",
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red[900]),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => Coordonne()));
+                          },
+                          child: Container(
+                            height: 50,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: AppColors.blueR,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Text(
+                              "VALIDER",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.ecrit,
+                              ),
+                            ),
+                          ),
                         )
                       ],
                     ),
                   );
                 },
               ),
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => Coordonne()));
-                },
-                child: Container(
-                  height: 50,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: AppColors.blueR,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    "PASSE COMMANDE",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.ecrit,
-                    ),
-                  ),
-                ),
-              )
             ],
           ),
         ),

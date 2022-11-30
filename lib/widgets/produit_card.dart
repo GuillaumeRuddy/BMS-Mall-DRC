@@ -33,29 +33,31 @@ class ProduitCard extends StatelessWidget {
               )
             ]),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            //image
             Align(
               /*alignment: Alignment.topRight,*/
               alignment: Alignment.center,
-              child: /*Image.network(
-                "${ApiUrl.baseUrl}/cgi-bin/storage/app/public/" + prod.image,
+              child: Image.network(
+                "${ApiUrl.baseUrl}/" + prod.image!,
                 height: 80.0,
-              ),*/
-                  Image(
+              ),
+              /*Image(
                 image: AssetImage("assets/splash_icon.png"),
                 height: MediaQuery.of(context).size.height / 7,
                 width: MediaQuery.of(context).size.width / 7,
-              ),
+              ),*/
             ),
             SizedBox(
-              height: 0.0,
+              height: 5.0,
             ),
             Text(
               prod.nom ?? "",
               maxLines: 2,
               style: GoogleFonts.poppins(
-                  color: AppColors.blueR,
+                  color: AppColors.ecrit,
                   fontSize: 15,
                   fontWeight: FontWeight.w700),
             ),
@@ -63,42 +65,27 @@ class ProduitCard extends StatelessWidget {
               height: 0.0,
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   prod.prix.toString(),
                   style: GoogleFonts.poppins(
-                      color: Colors.red,
+                      color: AppColors.blueR,
                       fontSize: 20,
                       fontWeight: FontWeight.w700),
                 ),
+                SizedBox(
+                  width: 3,
+                ),
                 Text(
-                  " USD",
+                  prod.monnaie ?? 'USD',
                   style: GoogleFonts.poppins(
-                      color: Colors.red,
+                      color: AppColors.blueR,
                       fontSize: 15,
                       fontWeight: FontWeight.w700),
                 ),
               ],
             ),
-            /*Expanded(
-                child: Container(
-              //width: 140.0,
-              decoration: BoxDecoration(
-                  color: AppColors.ecrit,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10.0),
-                      bottomRight: Radius.circular(10.0))),
-              child: Center(
-                child: Text(
-                  "Détails",
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ))*/
           ],
         ),
       ),

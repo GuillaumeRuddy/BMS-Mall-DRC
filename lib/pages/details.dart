@@ -6,13 +6,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/db/db_mall.dart';
 import 'package:mall_drc/model/produit.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app/app_constatns.dart';
+import '../app/endPoint.dart';
 import '../controler/panier/panierController.dart';
 
 class Details extends StatefulWidget {
   Produit product;
-  Details({Key? key, required this.product}) : super(key: key);
+  Details({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   State<Details> createState() => _DetailsState();
@@ -24,6 +29,7 @@ class _DetailsState extends State<Details> {
   late double prixTotal = qteCommande * (px.prix as double);
   late double prix = px.prix as double;
   double montantTotProduit = 0.0;
+  String? idClient;
 
   DbMAll? dbMAll = DbMAll();
 
@@ -76,12 +82,16 @@ class _DetailsState extends State<Details> {
               ),
               //fin entete
             ),
+            /* Image.network(
+                "${ApiUrl.baseUrl}/" + prod.image!,
+                height: 80.0,
+              ) */
             Padding(
               padding: EdgeInsets.all(15),
-              child: Image(
-                image: AssetImage("assets/splash_icon.png"),
-                height: 305,
-                width: 305,
+              child: Image.network(
+                "${ApiUrl.baseUrl}/" + px.image!,
+                height: 300.0,
+                width: 300,
               ),
             ),
             Container(
@@ -96,7 +106,7 @@ class _DetailsState extends State<Details> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             Padding(
               padding: EdgeInsets.only(left: 10, right: 10),
@@ -223,7 +233,7 @@ class _DetailsState extends State<Details> {
               child: Row(
                 children: [
                   Text(
-                    "Couleur : ",
+                    "Prix : ",
                     textAlign: TextAlign.justify,
                     style: TextStyle(
                         fontSize: 18,
@@ -234,29 +244,24 @@ class _DetailsState extends State<Details> {
                   width: 10,
                 ),*/
                   Text(
-                    "Bleu, ",
+                    px.prix.toString(),
                     textAlign: TextAlign.justify,
                     style: TextStyle(
                         fontSize: 18,
                         color: AppColors.blueR,
                         fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 5,
                   ),
                   Text(
-                    "Noir, ",
+                    px.monnaie ?? "",
                     textAlign: TextAlign.justify,
                     style: TextStyle(
                         fontSize: 18,
                         color: AppColors.blueR,
                         fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "Rouge",
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: AppColors.blueR,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -284,15 +289,18 @@ class _DetailsState extends State<Details> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                prixTotal.toString() + " \$",
+                prixTotal.toString() + " ${px.monnaie}",
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
               ElevatedButton.icon(
-                onPressed: () {
+                onPressed: () async {
+                  await recupIdSession();
                   ajouterAuPAnier();
+                  Navigator.pop(context);
+                  //reinit();
                 },
                 icon: Icon(CupertinoIcons.cart_badge_plus),
                 label: Text(
@@ -323,17 +331,20 @@ class _DetailsState extends State<Details> {
             id: px.id,
             nom: px.nom,
             prix: px.prix,
-            quantite: px.quantite,
+            quantite: "${qteCommande}",
             description: px.description,
             image: px.image,
-            marchand_id: px.marchand_id))
+            marchand_id: px.marchand_id,
+            monnaie: px.monnaie,
+            idClient: idClient))
         .then((value) {
       print("produit ajouter au panier");
       var ctrlPanier = context.read<PanierController>();
       print("le type du prix est :   ${px.prix.runtimeType}");
       print("le type de quantite est :   ${px.quantite.runtimeType}");
-      //calculMontTotProduit(px.prix, double.parse(px.quantite));
-      ctrlPanier.ajoutPrixTotal(prixTotal);
+      double valtot =
+          calculMontTotProduit(px.prix!, double.parse(px.quantite!));
+      ctrlPanier.ajoutPrixTotal(valtot);
       ctrlPanier.ajoutCtrPanier();
     }).onError((error, stackTrace) {
       print(error.toString());
@@ -341,8 +352,18 @@ class _DetailsState extends State<Details> {
     });
   }
 
+  Future recupIdSession() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    idClient = pref.getInt("id").toString();
+  }
+
   double calculMontTotProduit(double prix, double qte) {
     montantTotProduit = prix * qte;
     return montantTotProduit;
+  }
+
+  void reinit() {
+    var ctrlp = context.read<PanierController>();
+    ctrlp.reinitialiserItemPanier();
   }
 }

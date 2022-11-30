@@ -28,7 +28,11 @@ class DbMAll {
 
   creationBase(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE panier(idsql INTEGER PRIMARY KEY AUTO_INCREMENT,id INTEGER ,nom TEXT, prix DOUBLE, quantite INTEGER, description TEXT, image TEXT, marchand_id TEXT)");
+        "CREATE TABLE panier(id INTEGER PRIMARY KEY,nom TEXT, prix DOUBLE, quantite INTEGER, description TEXT, image TEXT, marchand_id TEXT, monnaie TEXT, idClient TEXT)");
+  }
+
+  supprimertable(Database db, int version) async {
+    await db.execute("DROP TABLE panier");
   }
 
 //idsql INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -38,6 +42,7 @@ class DbMAll {
     print(dbMall);
     print("-------------------------");
     print(prod);
+    print(prod.idClient);
     print("**** fin du retour de MalL BD ****");
     await dbMall!.insert('panier', prod.toMap());
     return prod;
@@ -49,11 +54,25 @@ class DbMAll {
     return requet.map((e) => Produit.fromJson(e)).toList();
   }
 
+  Future<List<Produit>> getListPanierById(String id) async {
+    var dbMall = await BDD;
+    final List<Map<String, Object?>> requet =
+        await dbMall!.rawQuery('SELECT * FROM panier WHERE id = ?', ['${id}']);
+    return requet.map((e) => Produit.fromJson(e)).toList();
+  }
+
   Future<int> getNbrListPanier() async {
     var dbMall = await BDD;
     final List<Map<String, Object?>> requet = await dbMall!.query('panier');
     return requet.length;
   }
+
+  /*Future<int> getNbrListPanier(String id) async {
+    var dbMall = await BDD;
+    final List<Map<String, Object?>> requet =
+        await dbMall!.rawQuery('SELECT * FROM panier WHERE id = ?', ['${id}']);
+    return requet.length;
+  }*/
 
   Future<String> suppressionProduitPanier(String id) async {
     var dbMall = await BDD;

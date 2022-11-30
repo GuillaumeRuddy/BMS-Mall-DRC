@@ -6,8 +6,10 @@ class Produit {
   double? prix;
   String? quantite;
   String? description;
-  String image;
+  String? image;
   String? marchand_id;
+  String? monnaie;
+  String? idClient;
 
   Produit(
       {this.id,
@@ -15,8 +17,10 @@ class Produit {
       this.prix,
       this.quantite,
       this.description,
-      this.image = "img/vendor.png",
-      this.marchand_id});
+      this.image,
+      this.marchand_id,
+      this.monnaie,
+      this.idClient});
 
   factory Produit.fromJson(Map<String, dynamic> i) => Produit(
       id: i["id"] == null ? null : i["id"].toString(),
@@ -26,7 +30,9 @@ class Produit {
       description: i["description"] == null ? null : i["description"],
       image: i["image"] == null ? null : i["image"],
       marchand_id:
-          i["marchand_id"] == null ? null : i["marchand_id"].toString());
+          i["marchand_id"] == null ? null : i["marchand_id"].toString(),
+      monnaie: i["monnaie"] == null ? null : i["monnaie"].toString(),
+      idClient: i["monnaie"] == null ? null : i["idClient"].toString());
 
   Map<String, dynamic> toMap() => {
         "id": id == null ? "" : id,
@@ -34,8 +40,9 @@ class Produit {
         "prix": id == null ? 0.0 : prix,
         "quantite": id == null ? null : quantite,
         "description": id == null ? null : description,
-        "image": id == null ? "app_icon.png" : "app_icon.png",
-        /*"image": id == null ? null : image,*/
-        "marchand_id": id == null ? null : marchand_id
+        "image": id == null ? null : image,
+        "marchand_id": id == null ? null : marchand_id,
+        "monnaie": id == null ? null : monnaie,
+        "idClient": id == null ? null : idClient
       };
 }

@@ -96,7 +96,7 @@ class _LoginState extends State<Login> {
                               child: TextFormField(
                                 autofocus: false,
                                 controller: userController,
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.emailAddress,
                                 cursorColor: Colors.white,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 //maxLength: 9,
@@ -129,7 +129,7 @@ class _LoginState extends State<Login> {
                                     //labelStyle: ,
                                     filled: true,
                                     fillColor: Colors.white,
-                                    hintText: 'Entrez le nom d\'utilisateur',
+                                    hintText: 'Entrez votre adresse email',
                                     border: UnderlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide: BorderSide(
@@ -271,8 +271,8 @@ class _LoginState extends State<Login> {
                             ),
                             TextButton(
                                 onPressed: () {
-                                  /*Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (_) => Register()));*/
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => Register()));
                                 },
                                 child: Text("Inscription",
                                     style: TextStyle(

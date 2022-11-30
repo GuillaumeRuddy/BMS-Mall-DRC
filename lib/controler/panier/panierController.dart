@@ -14,8 +14,20 @@ class PanierController extends ChangeNotifier {
   double prixTotal = 0.0;
   double get prixTot => prixTotal;
 
+  /*late Future<List<Produit>> TousLespPoduitsById;
+  Future<List<Produit>> get ListProduitById => TousLespPoduitsById;*/
+
   late Future<List<Produit>> TousLespPoduits;
   Future<List<Produit>> get ListProduit => TousLespPoduits;
+
+  /*Future<List<Produit>> getData(String id) async {
+    TousLespPoduitsById = dbMAll!.getListPanierById(id);
+    print("----- le retour du panier -----");
+    print(TousLespPoduitsById.runtimeType);
+    print(TousLespPoduitsById);
+    print("----- fin du retour du panier -----");
+    return TousLespPoduitsById;
+  }*/
 
   Future<List<Produit>> getData() async {
     TousLespPoduits = dbMAll!.getListPanier();
@@ -30,6 +42,10 @@ class PanierController extends ChangeNotifier {
     return nombre = await dbMAll!.getNbrListPanier() as int;
   }
 
+  /*Future<int> getNbrItemPanier(String id) async {
+    return nombre = await dbMAll!.getNbrListPanier(id) as int;
+  }*/
+
   /*Future<int> supprimerProduit(int id) async {
     int retour = await dbMAll!.suppressionProduitPanier(id);
     print("----- le retour du panier -----");
@@ -42,6 +58,12 @@ class PanierController extends ChangeNotifier {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setInt("nbrProduit", nombre);
     pref.setDouble("totalPrix", prixTotal);
+    notifyListeners();
+  }
+
+  void reinitialiserItemPanier() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setDouble("totalPrix", 0.0);
     notifyListeners();
   }
 

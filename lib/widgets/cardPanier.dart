@@ -5,6 +5,7 @@ import 'package:mall_drc/db/db_mall.dart';
 import 'package:provider/provider.dart';
 
 import '../app/app_constatns.dart';
+import '../app/endPoint.dart';
 
 class PanierCard extends StatelessWidget {
   String? image;
@@ -30,12 +31,14 @@ class PanierCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-              height: MediaQuery.of(context).size.height / 4,
-              width: MediaQuery.of(context).size.width / 4,
-              margin: EdgeInsets.only(right: 15),
-              child: Image(
-                image: AssetImage("assets/splash_icon.png"),
-              )),
+            height: MediaQuery.of(context).size.height / 4,
+            width: MediaQuery.of(context).size.width / 4,
+            margin: EdgeInsets.only(right: 15),
+            child: Image.network(
+              "${ApiUrl.baseUrl}/${image ?? "assets/splash_icon.png"}",
+              height: 80.0,
+            ),
+          ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Column(
@@ -65,6 +68,7 @@ class PanierCard extends StatelessWidget {
                         onPressed: () {
                           bd.suppressionProduitPanier(id!);
                           ctrlPanier.diminuerCtrPanier();
+                          calculMontTotProduit();
                           ctrlPanier.diminuerPrixTotal(montantTotProduit);
                         },
                         icon: Icon(
@@ -83,7 +87,7 @@ class PanierCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
+                /*Row(
                   children: [
                     Container(
                       padding: EdgeInsets.all(4),
@@ -128,7 +132,7 @@ class PanierCard extends StatelessWidget {
                       ),
                     )
                   ],
-                )
+                )*/
               ],
             ),
           )
