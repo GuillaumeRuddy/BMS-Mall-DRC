@@ -16,6 +16,6 @@ class ApiUrl {
   //EndPoint pour recuperer les categories
   String categorie =
       "$baseUrl/api/mall/v1/categorie/d033e22ae348aeb5660fc2140aec35850c4da997";
-  /*static const String commande =
-      "api/mall/v1/client/inscription/d033e22ae348aeb5660fc2140aec35850c4da997";*/
+  String commande =
+      "$baseUrl/api/mall/v1/commande/d033e22ae348aeb5660fc2140aec35850c4da997";
 }

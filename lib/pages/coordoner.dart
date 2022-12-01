@@ -4,12 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/controler/commande/commandeController.dart';
 import 'package:mall_drc/pages/coordoner.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/success.dart';
 import 'package:mall_drc/widgets/cardPanier.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controler/panier/panierController.dart';
 import '../model/produit.dart';
@@ -25,9 +28,11 @@ class Coordonne extends StatefulWidget {
 class _CoordonneState extends State<Coordonne> {
   List<Produit> ListProduit = [];
   var panierCtrl;
+  Map resultat = {};
   TextEditingController nomCtrl = TextEditingController();
   TextEditingController adresseCtrl = TextEditingController();
   TextEditingController detailCtrl = TextEditingController();
+  TextEditingController userController = TextEditingController();
 
   @override
   void initState() {
@@ -88,17 +93,21 @@ class _CoordonneState extends State<Coordonne> {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(35),
                           topRight: Radius.circular(35))),
-                  child: Column(
-                    //mainAxisAlignment: MainAxisAlignment.start,
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20.0),
-                      nomChampSaisie(),
-                      SizedBox(height: 20.0),
-                      adresseChampSaisie(),
-                      SizedBox(height: 20.0),
-                      descriptionChampSaisie(),
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    child: Column(
+                      //mainAxisAlignment: MainAxisAlignment.start,
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20.0),
+                        nomChampSaisie(),
+                        SizedBox(height: 20.0),
+                        adresseChampSaisie(),
+                        SizedBox(height: 20.0),
+                        descriptionChampSaisie(),
+                        SizedBox(height: 20.0),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -140,9 +149,7 @@ class _CoordonneState extends State<Coordonne> {
               ),*/
               InkWell(
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => Success()));
+                  envoyerDonner();
                 },
                 child: Container(
                   height: 50,
@@ -170,104 +177,226 @@ class _CoordonneState extends State<Coordonne> {
 
   Widget nomChampSaisie() {
     return TextFormField(
+      autofocus: false,
       controller: nomCtrl,
-      readOnly: true,
       keyboardType: TextInputType.text,
-      validator: (String? value) {
-        if (value == null || value.isEmpty) return "Champ obligatoire";
-        return null;
+      cursorColor: Colors.black,
+      textAlignVertical: TextAlignVertical.bottom,
+      //maxLength: 9,
+      onChanged: (value) {
+        setState(() {
+          //counterText = value.length.toString();
+        });
+
+        /*if (value.length > 3) {
+          setState(() {
+            valid = true;
+          });
+        } else {
+          valid = false;
+        } */
       },
       decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.timer,
-            color: Colors.grey,
+          prefixIcon: const Icon(
+            Icons.book,
+            color: Colors.blue,
+            size: 26,
           ),
-          labelText: "Nom",
-          labelStyle:
-              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.5),
-            borderRadius: BorderRadius.circular(10.0),
+          contentPadding: EdgeInsets.only(bottom: 10, top: 22, left: 10),
+          //counterText: '$counterText/09',
+          counterStyle: TextStyle(
+            fontSize: 10,
           ),
-          /*enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.6),
-            borderRadius: BorderRadius.circular(10.0),
-          ),*/
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.5),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+          labelText: 'Nom',
+          //labelStyle: ,
           filled: true,
-          fillColor: Colors.white70),
+          fillColor: Colors.white,
+          hintText: 'Entrez le titre de lemplacement',
+          border: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.blue, width: 1)),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 1)),
+          hintStyle: TextStyle(fontSize: 15, color: Colors.grey)),
     );
   }
 
   Widget adresseChampSaisie() {
     return TextFormField(
+      autofocus: false,
       controller: adresseCtrl,
-      readOnly: true,
-      keyboardType: TextInputType.number,
-      validator: (String? value) {
-        if (value == null || value.isEmpty) return "Champ obligatoire";
-        return null;
+      keyboardType: TextInputType.text,
+      cursorColor: Colors.black,
+      textAlignVertical: TextAlignVertical.bottom,
+      //maxLength: 9,
+      onChanged: (value) {
+        setState(() {
+          //counterText = value.length.toString();
+        });
+
+        /*if (value.length > 3) {
+          setState(() {
+            valid = true;
+          });
+        } else {
+          valid = false;
+        } */
       },
       decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.timer,
-            color: Colors.grey,
+          prefixIcon: const Icon(
+            Icons.place_outlined,
+            color: Colors.blue,
+            size: 26,
           ),
-          labelText: "Adresse",
-          labelStyle:
-              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.5),
-            borderRadius: BorderRadius.circular(10.0),
+          contentPadding: EdgeInsets.only(bottom: 10, top: 22, left: 10),
+          //counterText: '$counterText/09',
+          counterStyle: TextStyle(
+            fontSize: 10,
           ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.6),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.5),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+          labelText: 'Adresse',
+          //labelStyle: ,
           filled: true,
-          fillColor: Colors.white70),
+          fillColor: Colors.white,
+          hintText: 'Entrez votre adresse',
+          border: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.blue, width: 1)),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 1)),
+          hintStyle: TextStyle(fontSize: 15, color: Colors.grey)),
+    );
+  }
+
+  Widget residenceChampSaisie() {
+    return TextFormField(
+      autofocus: false,
+      controller: userController,
+      keyboardType: TextInputType.text,
+      cursorColor: Colors.red,
+      textAlignVertical: TextAlignVertical.bottom,
+      //maxLength: 9,
+      onChanged: (value) {
+        setState(() {
+          //counterText = value.length.toString();
+        });
+
+        /*if (value.length > 3) {
+          setState(() {
+            valid = true;
+          });
+        } else {
+          valid = false;
+        } */
+      },
+      decoration: InputDecoration(
+          prefixIcon: const Icon(
+            Icons.account_circle_sharp,
+            color: Colors.blue,
+            size: 26,
+          ),
+          contentPadding: EdgeInsets.only(bottom: 10, top: 22, left: 10),
+          //counterText: '$counterText/09',
+          counterStyle: TextStyle(
+            fontSize: 10,
+          ),
+          labelText: 'Utilisateur',
+          //labelStyle: ,
+          filled: true,
+          fillColor: Colors.white,
+          hintText: 'Entrez votre adresse email',
+          border: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.blue, width: 1)),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 1)),
+          hintStyle: TextStyle(fontSize: 15, color: Colors.grey)),
     );
   }
 
   Widget descriptionChampSaisie() {
     return TextFormField(
+      autofocus: false,
       controller: detailCtrl,
-      readOnly: true,
-      keyboardType: TextInputType.number,
-      validator: (String? value) {
-        if (value == null || value.isEmpty) return "Champ obligatoire";
-        return null;
+      keyboardType: TextInputType.text,
+      cursorColor: Colors.black,
+      textAlignVertical: TextAlignVertical.bottom,
+      //maxLength: 9,
+      onChanged: (value) {
+        setState(() {
+          //counterText = value.length.toString();
+        });
+
+        /*if (value.length > 3) {
+          setState(() {
+            valid = true;
+          });
+        } else {
+          valid = false;
+        } */
       },
       decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.timer,
-            color: Colors.grey,
+          prefixIcon: const Icon(
+            Icons.more,
+            color: Colors.blue,
+            size: 26,
           ),
-          labelText: "Détails",
-          labelStyle:
-              TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          border: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.5),
-            borderRadius: BorderRadius.circular(10.0),
+          contentPadding: EdgeInsets.only(bottom: 10, top: 22, left: 10),
+          //counterText: '$counterText/09',
+          counterStyle: TextStyle(
+            fontSize: 10,
           ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.6),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.5),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
+          labelText: 'Détails',
+          //labelStyle: ,
           filled: true,
-          fillColor: Colors.white70),
+          fillColor: Colors.white,
+          hintText: 'Entrez votre détail',
+          border: UnderlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.blue, width: 1)),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.blue, width: 1)),
+          hintStyle: TextStyle(fontSize: 15, color: Colors.grey)),
     );
+  }
+
+  void envoyerDonner() async {
+    utilitaire.lancerChargementDialog4(context);
+
+    var ctrlCommande = context.read<CommandeController>();
+
+    var ctrlPanier = context.read<PanierController>();
+    ListProduit = await ctrlPanier.getData();
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var idUser = pref.getInt("id").toString();
+
+    for (var prod in ListProduit) {
+      Map data = {
+        "marchand_id": prod.marchand_id,
+        "id_client": idUser,
+        "id_produit": prod.id,
+        "prix": prod.prix,
+        "quantite": prod.quantite,
+        "adresse": adresseCtrl.text,
+        "description": detailCtrl.text
+      };
+
+      print(data);
+
+      resultat = await ctrlCommande.CommandeProduit(data);
+      print('la commande a afficher ++++++++++++');
+      print(resultat);
+    }
+
+    utilitaire.afficherSnack(context, resultat["msg"],
+        resultat["status"] ? Colors.green : Colors.red);
+
+    await Future.delayed(Duration(milliseconds: 800));
+
+    if (resultat['status']) {
+      Navigator.pop(context, true);
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => Success()));
+    }
   }
 }
 

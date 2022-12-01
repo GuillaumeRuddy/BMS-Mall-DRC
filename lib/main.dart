@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mall_drc/controler/commande/commandeController.dart';
 import 'package:mall_drc/controler/panier/panierController.dart';
 import 'package:mall_drc/controler/produits/produitController.dart';
 import 'package:mall_drc/controler/utilisateurs/utilisateurController.dart';
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UtilisateurController()),
         ChangeNotifierProvider(create: (_) => ProduitController()),
-        ChangeNotifierProvider(create: (_) => PanierController())
+        ChangeNotifierProvider(create: (_) => PanierController()),
+        ChangeNotifierProvider(create: (_) => CommandeController()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

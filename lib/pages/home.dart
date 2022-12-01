@@ -433,6 +433,7 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
+      
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.blue,
@@ -440,6 +441,7 @@ class _HomeState extends State<Home> {
           backgroundColor: AppColors.blueR,
           elevation: 0,
           items: [
+            //Accueil
             BottomNavigationBarItem(
               activeIcon: Icon(
                 Icons.home,
@@ -451,6 +453,7 @@ class _HomeState extends State<Home> {
               ),
               label: "Accueil",
             ),
+            //categorie
             BottomNavigationBarItem(
               activeIcon: InkWell(
                 onTap: () {
@@ -474,6 +477,7 @@ class _HomeState extends State<Home> {
               ),
               label: "Categorie",
             ),
+            //panier
             BottomNavigationBarItem(
               activeIcon: Badge(
                 badgeColor: Colors.red,
@@ -541,6 +545,7 @@ class _HomeState extends State<Home> {
               ),
               label: "Panier",
             ),
+            //profil
             BottomNavigationBarItem(
               activeIcon: InkWell(
                 onTap: () {
