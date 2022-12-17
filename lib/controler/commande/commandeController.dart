@@ -8,7 +8,7 @@ import '../../app/endPoint.dart';
 import '../../db/db_mall.dart';
 import 'package:http/http.dart' as http;
 
-class CommandeController extends ChangeNotifier {
+class CommandeController with ChangeNotifier {
   CommandeProduit(Map ligneProd) async {
     var url = Uri.parse(ApiUrl().commande);
     print("----- Mon URL est: $url ----");

@@ -26,80 +26,82 @@ class _DetailUserState extends State<DetailUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: AppColors.blueR,
-              padding: EdgeInsets.all(15),
-              //entete
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                      size: 25.0,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                color: AppColors.blueR,
+                padding: EdgeInsets.all(15),
+                //entete
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                        size: 25.0,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Information utilisateur",
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20.0),
+                      child: Text(
+                        "Information utilisateur",
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
                     ),
-                  ),
-                  /*Spacer(),
-                Icon(
-                  Icons.more_vert,
-                  size: 25.0,
-                  color: Colors.white,
-                )*/
-                ],
+                    /*Spacer(),
+                  Icon(
+                    Icons.more_vert,
+                    size: 25.0,
+                    color: Colors.white,
+                  )*/
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            profileImageVue(),
-            SizedBox(
-              height: 20,
-            ),
-            infoNomVue(),
-            SizedBox(
-              height: 20,
-            ),
-            editerButtonVue(),
-            SizedBox(
-              height: 20,
-            ),
-            chiffresVue(),
-            SizedBox(
-              height: 50,
-            ),
-            rapportVue(title: "Salaire Net"),
-            SizedBox(
-              height: 20,
-            ),
-            rapportVue(title: "IPR à payer"),
-            SizedBox(
-              height: 20,
-            ),
-            rapportVue(title: "INSS à payer"),
-            SizedBox(
-              height: 20,
-            ),
-            rapportVue(title: "Dons"),
-            SizedBox(
-              height: 20,
-            ),
-          ],
+              SizedBox(
+                height: 40,
+              ),
+              profileImageVue(),
+              SizedBox(
+                height: 20,
+              ),
+              infoNomVue(),
+              SizedBox(
+                height: 20,
+              ),
+              editerButtonVue(),
+              SizedBox(
+                height: 20,
+              ),
+              chiffresVue(),
+              SizedBox(
+                height: 50,
+              ),
+              rapportVue(title: "Salaire Net"),
+              SizedBox(
+                height: 20,
+              ),
+              rapportVue(title: "IPR à payer"),
+              SizedBox(
+                height: 20,
+              ),
+              rapportVue(title: "INSS à payer"),
+              SizedBox(
+                height: 20,
+              ),
+              rapportVue(title: "Dons"),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

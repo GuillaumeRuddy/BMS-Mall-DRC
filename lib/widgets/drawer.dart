@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
+import 'package:mall_drc/pages/profil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pages/categories.dart';
@@ -89,8 +90,8 @@ class DrawerAdd extends StatelessWidget {
                   ListTile(
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => Categorie()));
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => Categories()));
                     },
                     leading: Icon(
                       Icons.category,
@@ -98,6 +99,21 @@ class DrawerAdd extends StatelessWidget {
                     ),
                     title: Text(
                       "Categorie",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => DetailUser()));
+                    },
+                    leading: Icon(
+                      Icons.person,
+                      color: Colors.blue,
+                    ),
+                    title: Text(
+                      "Profile",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),

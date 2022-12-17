@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mall_drc/controler/commande/commandeController.dart';
+import 'package:mall_drc/controler/marchants/marchandController.dart';
 import 'package:mall_drc/controler/panier/panierController.dart';
 import 'package:mall_drc/controler/produits/produitController.dart';
 import 'package:mall_drc/controler/utilisateurs/utilisateurController.dart';
 import 'package:mall_drc/pages/demarage.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'controler/categorieController/categorieController.dart';
+
+void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -22,6 +27,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProduitController()),
         ChangeNotifierProvider(create: (_) => PanierController()),
         ChangeNotifierProvider(create: (_) => CommandeController()),
+        ChangeNotifierProvider(create: (_) => MarchandController()),
+        ChangeNotifierProvider(create: (_) => CategorieController())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

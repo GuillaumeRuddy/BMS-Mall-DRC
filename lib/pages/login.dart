@@ -291,19 +291,9 @@ class _LoginState extends State<Login> {
   }
 
   void envoyerDonnees() async {
-    // verifier si tous les champs sont valides
-    /*if (!key.currentState!.validate()) {
-      utilitaire.snackBar("Tous les champs sont obligatoires", context);
-      return;
-    }*/
-
-    // lancer une boite de dialogue de chargement
-    // pour empecher l'utilisateur
-    // de faire une action inattendue
     utilitaire.lancerChargementDialog4(context);
 
     // appel requete API
-
     Map data = {
       "email": userController.text,
       "motdepasse": passwordController.text

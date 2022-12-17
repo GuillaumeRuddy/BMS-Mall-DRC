@@ -72,7 +72,7 @@ class _NouveauteState extends State<Nouveaute> {
               child: GridView.builder(
                 shrinkWrap: true,
                 //scrollDirection: Axis.horizontal,
-                itemCount: categoryList.length,
+                itemCount: listeDesCategories.length,
                 physics: NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
@@ -85,8 +85,8 @@ class _NouveauteState extends State<Nouveaute> {
                   mainAxisSpacing: 24,
                 ),
                 itemBuilder: (context, index) {
-                  return CategoryCard(
-                    category: categoryList[index],
+                  return ProduitCardTest(
+                    category: listeDesCategories[index],
                   );
                 },
               ),

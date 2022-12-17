@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../db/db_mall.dart';
 import '../../model/produit.dart';
 
-class PanierController extends ChangeNotifier {
+class PanierController with ChangeNotifier {
   DbMAll? dbMAll = DbMAll();
 
   int nombre = 0;
@@ -42,6 +42,13 @@ class PanierController extends ChangeNotifier {
     return nombre = await dbMAll!.getNbrListPanier() as int;
   }
 
+  void supressionItemPanier(String id) async {
+    String reponse = "";
+    reponse = await dbMAll!.suppressionProduitPanier(id);
+    print("Produit supprimer avec succes");
+    notifyListeners();
+  }
+
   /*Future<int> getNbrItemPanier(String id) async {
     return nombre = await dbMAll!.getNbrListPanier(id) as int;
   }*/
@@ -61,16 +68,23 @@ class PanierController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void getItemPanier() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    nombre = pref.getInt("nbrProduit") ?? 0;
+    prixTotal = pref.getDouble("totalPrix") ?? 0.0;
+    notifyListeners();
+  }
+
   void reinitialiserItemPanier() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setDouble("totalPrix", 0.0);
     notifyListeners();
   }
 
-  void getItemPanier() async {
+  void reinitAllPanier() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    nombre = pref.getInt("nbrProduit") ?? 0;
-    prixTotal = pref.getDouble("totalPrix") ?? 0.0;
+    pref.setInt("nbrProduit", 0);
+    pref.setDouble("totalPrix", 0.0);
     notifyListeners();
   }
 

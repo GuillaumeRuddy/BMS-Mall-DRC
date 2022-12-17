@@ -10,7 +10,7 @@ class Category {
   });
 }
 
-List<Category> categoryList = [
+List<Category> listeDesCategories = [
   Category(
     name: 'Gang de box',
     noOfCourses: 55,

@@ -17,6 +17,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mall_drc/model/category.dart';
 
+import '../controler/categorieController/categorieController.dart';
+import '../model/categorie.dart';
 import '../model/category.dart';
 import '../model/produit.dart';
 import '../widgets/category_card.dart';
@@ -38,6 +40,7 @@ class _HomeState extends State<Home> {
   var _selectedIndex = 0;
   var utilisateur;
   List<Produit> listProduits = [];
+  List<Categorie> listCategories = [];
   String? ident;
 
   @override
@@ -59,6 +62,14 @@ class _HomeState extends State<Home> {
     print(listProduits);
     print("------ fin list des produits ------");
     setState(() {});
+  }
+
+  Future recupCategories() async {
+    var catCtrl = context.read<CategorieController>();
+    await catCtrl.RecupCategorie();
+    listCategories = catCtrl.listDesCategorie;
+    setState(() {});
+    //await recupCategorie();
   }
 
   Future recupSession() async {
@@ -242,7 +253,7 @@ class _HomeState extends State<Home> {
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => Categorie()));
+                              MaterialPageRoute(builder: (_) => Categories()));
                         },
                         child: Text(
                           "voir plus",
@@ -433,7 +444,6 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.blue,
@@ -458,7 +468,7 @@ class _HomeState extends State<Home> {
               activeIcon: InkWell(
                 onTap: () {
                   Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => Categorie()));
+                      .push(MaterialPageRoute(builder: (_) => Categories()));
                 },
                 child: Icon(
                   Icons.category,
@@ -468,7 +478,7 @@ class _HomeState extends State<Home> {
               icon: InkWell(
                 onTap: () {
                   Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => Categorie()));
+                      .push(MaterialPageRoute(builder: (_) => Categories()));
                 },
                 child: Icon(
                   Icons.category_outlined,

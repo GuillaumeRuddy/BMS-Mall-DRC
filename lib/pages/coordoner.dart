@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/controler/commande/commandeController.dart';
+import 'package:mall_drc/db/db_mall.dart';
 import 'package:mall_drc/pages/coordoner.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/success.dart';
@@ -33,6 +34,8 @@ class _CoordonneState extends State<Coordonne> {
   TextEditingController adresseCtrl = TextEditingController();
   TextEditingController detailCtrl = TextEditingController();
   TextEditingController userController = TextEditingController();
+
+  DbMAll baseDD = DbMAll();
 
   @override
   void initState() {
@@ -395,6 +398,8 @@ class _CoordonneState extends State<Coordonne> {
 
     if (resultat['status']) {
       Navigator.pop(context, true);
+      baseDD.suppressionTousProduitPanier();
+      ctrlPanier.reinitAllPanier();
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => Success()));
     }
   }

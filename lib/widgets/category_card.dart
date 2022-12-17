@@ -5,9 +5,9 @@ import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/model/category.dart';
 import 'package:mall_drc/pages/details.dart';
 
-class CategoryCard extends StatelessWidget {
+class ProduitCardTest extends StatelessWidget {
   final Category category;
-  const CategoryCard({Key? key, required this.category}) : super(key: key);
+  const ProduitCardTest({Key? key, required this.category}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

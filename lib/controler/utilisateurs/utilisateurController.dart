@@ -1,11 +1,29 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mall_drc/app/endPoint.dart';
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:http/http.dart' as http;
+import 'package:mall_drc/model/utilisateur.dart';
 
 class UtilisateurController with ChangeNotifier {
+  GetStorage stockage = GetStorage();
+  List<Utilisateur> infoUser = [];
+
+  ecritureStockage(List data) {
+    stockage.write('user', json.encode(data));
+  }
+
+  List lectureStockage() {
+    var data_local = stockage.read('user');
+    if (data_local != null) {
+      List stockage_data = json.decode(data_local);
+      return stockage_data;
+    }
+    return [];
+  }
+
   //Methode pour enregistrer un nouveau client
   EnregistrementClient(Map client) async {
     var url = Uri.parse(ApiUrl().enregistrement);
@@ -50,6 +68,8 @@ class UtilisateurController with ChangeNotifier {
       print('Le Status est: **** ${reponse.statusCode}');
       Map body = json.decode(reponse.body);
       print(body);
+      //infoUser.add(body.map((e) => Utilisateur(e)))
+      /*ecritureStockage(body.map((key, value) => "$value").toList());*/
       var msg = "";
       if (reponse.statusCode == 200) {
         msg = "Connecter";

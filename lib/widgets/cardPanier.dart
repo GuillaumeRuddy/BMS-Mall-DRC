@@ -66,7 +66,7 @@ class PanierCard extends StatelessWidget {
                     ),
                     IconButton(
                         onPressed: () {
-                          bd.suppressionProduitPanier(id!);
+                          ctrlPanier.supressionItemPanier(id!);
                           ctrlPanier.diminuerCtrPanier();
                           calculMontTotProduit();
                           ctrlPanier.diminuerPrixTotal(montantTotProduit);
