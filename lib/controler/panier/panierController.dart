@@ -112,7 +112,10 @@ class PanierController with ChangeNotifier {
   }
 
   void diminuerPrixTotal(double prixAjouter) {
+    print("le prix diminuer venant du panier est de: ${prixAjouter}");
     prixTotal -= prixAjouter;
+    print(
+        "le prix diminuer après calcule et venant du panier est de: ${prixTotal}");
     setItemPanier();
     notifyListeners();
   }

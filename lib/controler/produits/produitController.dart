@@ -30,13 +30,14 @@ class ProduitController with ChangeNotifier {
   }
 
   RecupProduitById(String idMarch) async {
-    var url = Uri.parse(ApiUrl().produitsById);
+    var url = Uri.parse(
+        "https://malldrc.mithap.org/api/mall/v1/produits/marchand/${idMarch}/d033e22ae348aeb5660fc2140aec35850c4da997");
+    print(url);
     try {
       print("debut try");
       String data = json.encode(idMarch);
       print(data);
-      var reponse =
-          await http.post(url, headers: utilitaire.header, body: data);
+      var reponse = await http.get(url, headers: utilitaire.header);
       print('Le Status est: **** ${reponse.statusCode}');
       print(reponse.body);
       var body = json.decode(reponse.body);

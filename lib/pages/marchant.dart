@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:mall_drc/controler/marchants/marchandController.dart';
 import 'package:mall_drc/model/categorie.dart';
 import 'package:mall_drc/model/marchant.dart';
+import 'package:mall_drc/widgets/cardMarchant.dart';
 import 'package:provider/provider.dart';
 
 import '../app/app_constatns.dart';
@@ -19,6 +20,7 @@ class Marchant extends StatefulWidget {
 
 class _MarchantState extends State<Marchant> {
   List<Marchand> listMarchand = [];
+  // ici créé une map
   late String idmarchant;
   @override
   void initState() {
@@ -66,7 +68,7 @@ class _MarchantState extends State<Marchant> {
                 Padding(
                   padding: EdgeInsets.only(left: 20.0),
                   child: Text(
-                    "Marchant",
+                    "${widget.nomCategorie!}",
                     style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -90,12 +92,19 @@ class _MarchantState extends State<Marchant> {
                 children: [
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: cat.length,
+                    itemCount: listMarchand.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return CategorieCard(
-                          nom: cat[index]["nom"],
-                          text: cat[index]["desc"],
-                          icone: cat[index]["icon"]);
+                      print("le marchant dans le body");
+                      print(listMarchand[index]);
+                      print(listMarchand[index].runtimeType);
+                      print("fin de marchant dans le body");
+                      return MarchantCard(vendeur: listMarchand[index]);
+                      /*CategorieCard(
+                          nom: listMarchand[index].nomEntreprise,
+                          text: listMarchand[index].numeroEntreprise,
+                          icone: listMarchand[index].image);*/
+                      // ici je vais créée un larchant via les donnée de la liste
+                      //MarchantCard()
                     },
                   )
                 ],

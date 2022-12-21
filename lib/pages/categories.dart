@@ -39,52 +39,52 @@ class _CategorieState extends State<Categories> {
   @override
   Widget build(BuildContext context) {
     //List<Map> cat = AppColors.listCategorie;
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              //entete
-              Container(
-                color: AppColors.blueR,
-                padding: EdgeInsets.all(15),
-                //detail ligne entete
-                child: Row(
-                  children: [
-                    //icone retour
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 25.0,
+    return Material(
+      child: Container(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                //entete
+                Container(
+                  color: AppColors.blueR,
+                  padding: EdgeInsets.all(15),
+                  //detail ligne entete
+                  child: Row(
+                    children: [
+                      //icone retour
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 25.0,
+                        ),
                       ),
-                    ),
-                    // text entete
-                    Padding(
-                      padding: EdgeInsets.only(left: 20.0),
-                      child: Text(
-                        "Categories",
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                      // text entete
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          "Categories",
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       ),
-                    ),
-                    /*Spacer(),
-                    Icon(
-                      Icons.more_vert,
-                      size: 25.0,
-                      color: Colors.white,
-                    )*/
-                  ],
+                      /*Spacer(),
+                          Icon(
+                            Icons.more_vert,
+                            size: 25.0,
+                            color: Colors.white,
+                          )*/
+                    ],
+                  ),
                 ),
-              ),
-              //details
-              SingleChildScrollView(
-                child: Column(
+                //details
+                Column(
                   children: [
                     ListView.builder(
                       shrinkWrap: true,
@@ -98,8 +98,8 @@ class _CategorieState extends State<Categories> {
                     )
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

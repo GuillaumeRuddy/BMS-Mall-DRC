@@ -26,36 +26,32 @@ import '../widgets/search_testfield.dart';
 
 class Vendeur extends StatefulWidget {
   Marchand? march;
-  Vendeur(Marchand? vendeur, {Key? key, this.march}) : super(key: key);
+  Vendeur({Key? key, this.march}) : super(key: key);
 
   @override
   State<Vendeur> createState() => _VendeurState();
 }
 
 class _VendeurState extends State<Vendeur> {
-  /*var _selectedIndex = 0;
-  var utilisateur;*/
   List<Produit> listProduits = [];
-  Marchand? dealer;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    dealer = widget.march;
+    print("objet passer en parametre ---------");
+    print(widget.march);
+    print(widget.march!.id);
+    print(widget.march!.nomEntreprise);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await recupProduitByVendeur();
+      var prodCtrl = context.read<ProduitController>();
+      await prodCtrl.RecupProduitById(widget.march!.id.toString());
+      listProduits = prodCtrl.prodById;
+      print("----------- les produits par marchant ----------");
+      print(listProduits);
+      print("------ fin list des produits marchant ------");
+      setState(() {});
     });
-  }
-
-  Future recupProduitByVendeur() async {
-    var prodCtrl = context.read<ProduitController>();
-    await prodCtrl.RecupProduitById(dealer!.id.toString());
-    listProduits = prodCtrl.prodById;
-    print("----------- les produits par marchant ----------");
-    print(listProduits);
-    print("------ fin list des produits marchant ------");
-    setState(() {});
   }
 
   /*Future recupidSession() async {
@@ -67,8 +63,9 @@ class _VendeurState extends State<Vendeur> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        title: Text("Mall DRC", style: TextStyle(color: AppColors.ecrit)),
+      appBar: AppBar(
+        title: Text("${widget.march?.nomEntreprise}",
+            style: TextStyle(color: AppColors.ecrit)),
         elevation: 0.0,
         backgroundColor: AppColors.blueR,
         actions: [
@@ -80,6 +77,43 @@ class _VendeurState extends State<Vendeur> {
                     .push(MaterialPageRoute(builder: (_) => Message()));
               },
               icon: Icon(Icons.card_giftcard_sharp))*/
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Center(
+              child: Badge(
+                badgeColor: Colors.red,
+                padding: EdgeInsets.all(5),
+                badgeContent: Consumer<PanierController>(
+                  builder: ((context, value, child) {
+                    return FutureBuilder(
+                        future: value.getNbrItemPanier(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<int> snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data.toString(),
+                              style: TextStyle(color: Colors.white),
+                            );
+                          }
+                          return Text(
+                            "0",
+                            style: TextStyle(color: Colors.white),
+                          );
+                        });
+                  }),
+                ),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => Panier()));
+                    },
+                    child: Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 30,
+                    )),
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 15),
             child: Center(
@@ -100,66 +134,14 @@ class _VendeurState extends State<Vendeur> {
                       size: 30,
                     )),
               ),
-
-              /*Badge(
-                badgeColor: Colors.red,
-                //padding: EdgeInsets.all(5),
-                badgeContent: Text(
-                  "0",
-                  style: TextStyle(color: Colors.white),
-                ),
-                child: IconButton(
-                    onPressed: () /*async*/ {
-                      /*final pref = await SharedPreferences.getInstance();
-                    pref.setBool("showPres", false);*/
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => Message()));
-                    },
-                    icon: Icon(Icons.card_giftcard_sharp)),
-              ),*/
             ),
           ),
         ],
-      ),*/
-      /*drawer: DrawerAdd(),*/
+      ),
+      drawer: DrawerAdd(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            /*Container(
-              color: AppColors.blueR,
-              padding: EdgeInsets.all(20),
-              //entete
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                      size: 25.0,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      "Panier",
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                  ),
-                  Spacer(),
-                  Icon(
-                    Icons.more_vert,
-                    size: 25.0,
-                    color: Colors.white,
-                  )
-                ],
-              ),
-            ),*/
             Container(
               child: Center(
                   child: Column(children: [
@@ -181,6 +163,74 @@ class _VendeurState extends State<Vendeur> {
                         AppColors.blueR,
                       ],
                     ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "heure de service: ",
+                            style: GoogleFonts.poppins(
+                                color: AppColors.ecrit,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          Text(
+                            "${widget.march!.ouverture} /",
+                            style: GoogleFonts.poppins(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          Text(
+                            "${widget.march!.fermeture}",
+                            style: GoogleFonts.poppins(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Email: ",
+                            style: GoogleFonts.poppins(
+                                color: AppColors.ecrit,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          Text(
+                            "${widget.march!.emailEntreprise}",
+                            style: GoogleFonts.poppins(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Adresse: ",
+                            style: GoogleFonts.poppins(
+                                color: AppColors.ecrit,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          Text(
+                            "${widget.march!.adresseEntreprise}",
+                            style: GoogleFonts.poppins(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
@@ -214,6 +264,27 @@ class _VendeurState extends State<Vendeur> {
                       )
                     ],
                   ),
+                ),
+                GridView.builder(
+                  shrinkWrap: true,
+                  //scrollDirection: Axis.horizontal,
+                  itemCount: listProduits.length,
+                  physics: NeverScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 8,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.8,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 24,
+                  ),
+                  itemBuilder: (context, index) {
+                    return ProduitCard(
+                      prod: listProduits[index],
+                    );
+                  },
                 ),
                 SizedBox(
                   height: 5,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/model/categorie.dart';
 import 'package:mall_drc/model/marchant.dart';
 import 'package:mall_drc/pages/marchant.dart';
 import 'package:mall_drc/pages/vendeur.dart';
@@ -12,8 +13,12 @@ class MarchantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
+          print("le vendeur que j'envoi dans la card");
+          print(vendeur);
+          print(vendeur!.id);
+          print(vendeur!.nomEntreprise);
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => Vendeur(vendeur)));
+              .push(MaterialPageRoute(builder: (_) => Vendeur(march: vendeur)));
         },
         child: Container(
           height: MediaQuery.of(context).size.height / 7,

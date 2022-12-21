@@ -40,7 +40,7 @@ class Marchand {
   String? fermeture;
 
   factory Marchand.fromJson(Map<String, dynamic> json) => Marchand(
-      id: json["id"] == null ? null : json["id"],
+      id: json["id"] == null ? null : json["id"].toString(),
       nomEntreprise:
           json["nom_entreprise"] == null ? null : json["nom_entreprise"],
       emailEntreprise:

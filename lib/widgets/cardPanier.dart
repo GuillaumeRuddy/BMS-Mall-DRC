@@ -55,7 +55,7 @@ class PanierCard extends StatelessWidget {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       "${prix.toString()}\$",
@@ -64,12 +64,24 @@ class PanierCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
+
+                    /*Text(
+                      "${qte.toString()}",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),*/
                     IconButton(
                         onPressed: () {
-                          ctrlPanier.supressionItemPanier(id!);
                           ctrlPanier.diminuerCtrPanier();
-                          calculMontTotProduit();
-                          ctrlPanier.diminuerPrixTotal(montantTotProduit);
+                          print("je supprime ici");
+                          print(double.parse(qte!.toString()));
+                          print(prix);
+                          double mont = prix! * double.parse(qte!.toString());
+                          print(mont);
+                          ctrlPanier.diminuerPrixTotal(mont);
+                          ctrlPanier.supressionItemPanier(id!);
                         },
                         icon: Icon(
                           Icons.delete,

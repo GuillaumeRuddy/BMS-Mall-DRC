@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/db/db_mall.dart';
 import 'package:mall_drc/model/produit.dart';
 import 'package:provider/provider.dart';
@@ -180,8 +181,10 @@ class _DetailsState extends State<Details> {
                           child: IconButton(
                               onPressed: () {
                                 setState(() {
-                                  qteCommande--;
-                                  prixTotal = qteCommande * prix;
+                                  if (qteCommande > 1) {
+                                    qteCommande--;
+                                    prixTotal = qteCommande * prix;
+                                  }
                                 });
                               },
                               icon: Icon(
@@ -213,7 +216,9 @@ class _DetailsState extends State<Details> {
                               onPressed: () {
                                 setState(() {
                                   qteCommande++;
+                                  print(qteCommande);
                                   prixTotal = qteCommande * prix;
+                                  print(prixTotal);
                                 });
                               },
                               icon: Icon(
@@ -299,6 +304,8 @@ class _DetailsState extends State<Details> {
                 onPressed: () async {
                   await recupIdSession();
                   ajouterAuPAnier();
+                  utilitaire.afficherSnack(
+                      context, "un article ajouter au panier", Colors.green);
                   Navigator.pop(context);
                   //reinit();
                 },
@@ -342,8 +349,8 @@ class _DetailsState extends State<Details> {
       var ctrlPanier = context.read<PanierController>();
       print("le type du prix est :   ${px.prix.runtimeType}");
       print("le type de quantite est :   ${px.quantite.runtimeType}");
-      double valtot =
-          calculMontTotProduit(px.prix!, double.parse(px.quantite!));
+      double valtot = calculMontTotProduit(px.prix!, qteCommande);
+      print(valtot);
       ctrlPanier.ajoutPrixTotal(valtot);
       ctrlPanier.ajoutCtrPanier();
     }).onError((error, stackTrace) {
@@ -357,8 +364,11 @@ class _DetailsState extends State<Details> {
     idClient = pref.getInt("id").toString();
   }
 
-  double calculMontTotProduit(double prix, double qte) {
+  double calculMontTotProduit(double prix, int qte) {
+    print("le prix est de ---  ${prix}");
+    print("la qte est de ---  ${qte}");
     montantTotProduit = prix * qte;
+    print(montantTotProduit);
     return montantTotProduit;
   }
 

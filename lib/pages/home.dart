@@ -244,24 +244,28 @@ class _HomeState extends State<Home> {
                     children: [
                       Text(
                         "CATEGORIE",
-                        style: GoogleFonts.poppins(
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.ecrit),
+                        /*style: 
+                         GoogleFonts.poppins(
                           color: AppColors.ecrit,
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
-                        ),
+                        ),*/
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).push(
                               MaterialPageRoute(builder: (_) => Categories()));
                         },
-                        child: Text(
-                          "voir plus",
-                          style: TextStyle(
-                              color: Colors.red[800],
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700),
-                        ),
+                        child: Text("voir plus",
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red[800])),
                       )
                     ],
                   ),
@@ -393,11 +397,9 @@ class _HomeState extends State<Home> {
                     children: [
                       Text(
                         "NOUVEAUTE",
-                        style: GoogleFonts.poppins(
-                          color: AppColors.ecrit,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.ecrit),
                       ),
                       InkWell(
                         onTap: () {},
@@ -406,13 +408,13 @@ class _HomeState extends State<Home> {
                             Navigator.of(context).push(
                                 MaterialPageRoute(builder: (_) => Nouveaute()));
                           },
-                          child: Text(
-                            "voir plus",
-                            style: TextStyle(
-                                color: Colors.red[800],
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700),
-                          ),
+                          child: Text("voir plus",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red[800])),
                         ),
                       )
                     ],
