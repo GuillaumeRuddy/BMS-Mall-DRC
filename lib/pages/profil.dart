@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/model/adresse.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../app/endPoint.dart';
 import '../model/utilisateur.dart';
 
 class DetailUser extends StatefulWidget {
@@ -15,12 +18,41 @@ class DetailUser extends StatefulWidget {
 
 class _DetailUserState extends State<DetailUser> {
   late Utilisateur user;
+  int? ident;
+  String? nom;
+  String? prenom;
+  String? email;
+  String? telephone;
+  String? motdepasse;
+  String? image;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     //user = widget.data;
+    //recupUser();
+  }
+
+  Future recupUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    ident = pref.getInt("id");
+    nom = pref.getString("nom");
+    prenom = pref.getString("prenom");
+    email = pref.getString("email");
+    telephone = pref.getString("telephone");
+    motdepasse = pref.getString("motdepasse");
+    image = pref.getString("image");
+    setState(() {});
+    Utilisateur unUser = Utilisateur(
+        id: ident.toString(),
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        telephone: telephone,
+        motDePasse: motdepasse,
+        image: image);
+    return unUser;
   }
 
   @override
@@ -68,38 +100,89 @@ class _DetailUserState extends State<DetailUser> {
               SizedBox(
                 height: 40,
               ),
-              profileImageVue(),
-              SizedBox(
-                height: 20,
-              ),
-              infoNomVue(),
-              SizedBox(
-                height: 20,
-              ),
-              editerButtonVue(),
-              SizedBox(
-                height: 20,
-              ),
-              chiffresVue(),
-              SizedBox(
-                height: 50,
-              ),
-              rapportVue(title: "Salaire Net"),
-              SizedBox(
-                height: 20,
-              ),
-              rapportVue(title: "IPR à payer"),
-              SizedBox(
-                height: 20,
-              ),
-              rapportVue(title: "INSS à payer"),
-              SizedBox(
-                height: 20,
-              ),
-              rapportVue(title: "Dons"),
-              SizedBox(
-                height: 20,
-              ),
+              /*FutureBuilder<Utilisateur>(
+                future: recupUser(),
+                builder: (BuildContext context, AsyncSnapshot<Utilisateur> snapshot),
+                child: Column(
+                  children: [
+                    Center(
+                      child: ClipOval(
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Image.network();
+                        ),
+                      ),
+                    )
+                  ],
+                )),*/
+
+              FutureBuilder(
+                  future: recupUser(),
+                  builder: (context, snapshot) {
+                    Utilisateur user = snapshot.data as Utilisateur;
+                    print("Le type de valeur dans marchant");
+                    print(user.runtimeType);
+                    if (snapshot.hasData) {
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Center(
+                              child: ClipOval(
+                                child: Material(
+                                    color: Colors.transparent,
+                                    child: Image.network(
+                                      "${ApiUrl.baseUrl}/${user.image}",
+                                      height: 120.0,
+                                    )),
+                              ),
+                            ),
+                            //profileImageVue(),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  user.nom!,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  user.prenom!,
+                                  style: TextStyle(color: Colors.grey),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            editerButtonVue(),
+                            SizedBox(
+                              height: 70,
+                            ),
+                            rapportVue(title: "Email", value: user.email),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            rapportVue(
+                                title: "Telephone", value: user.telephone),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            rapportVue(title: "Adresse", value: "N/A"),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  }),
             ],
           ),
         ),
@@ -126,31 +209,32 @@ class _DetailUserState extends State<DetailUser> {
     );
   }
 
-  Widget profileImageVue() {
+  /*Widget profileImageVue() {
     return Center(
       child: ClipOval(
         child: Material(
-          color: Colors.transparent,
-          child: Icon(
-            Icons.face,
-            size: 128,
-          ),
-        ),
+            color: Colors.transparent,
+            child: Image.network(
+            "${ApiUrl.baseUrl}/$image"??,
+            height: 120.0,
+          )
+                ),
       ),
     );
-  }
+  }*/
 
   Widget infoNomVue() {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Jeremie",
+          nom ?? "",
           /*${agent.nom}*/
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         const SizedBox(height: 4),
         Text(
-          "Utilisateur",
+          prenom ?? "",
           style: TextStyle(color: Colors.grey),
         )
       ],
@@ -175,21 +259,21 @@ class _DetailUserState extends State<DetailUser> {
     );
   }
 
-  chiffresVue() {
+  /*chiffresVue() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      chiffreButton(context, '4,800', 'Salaire Brute'),
+      chiffreButton(context, email ?? "", 'Adresse Email'),
       Container(
         height: 24,
         child: VerticalDivider(),
       ),
-      chiffreButton(context, '35%', 'IPR'),
+      chiffreButton(context, telephone ?? "", 'Telephone'),
       Container(
         height: 24,
         child: VerticalDivider(),
       ),
       chiffreButton(context, '16%', 'INSS')
     ]);
-  }
+  }*/
 
   Widget chiffreButton(BuildContext context, String value, String text) {
     return MaterialButton(
@@ -230,7 +314,7 @@ class _DetailUserState extends State<DetailUser> {
               SizedBox(
                 width: 30,
               ),
-              Text('2300', style: TextStyle(fontWeight: FontWeight.bold))
+              Text(value ?? '', style: TextStyle(fontWeight: FontWeight.bold))
             ],
           ),
           Divider(

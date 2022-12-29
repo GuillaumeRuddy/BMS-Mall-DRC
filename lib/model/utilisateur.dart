@@ -7,6 +7,7 @@ class Utilisateur {
   String? email;
   String? telephone;
   String? motDePasse;
+  String? image;
 
   Utilisateur(
       {this.id,
@@ -14,15 +15,17 @@ class Utilisateur {
       this.prenom,
       this.email,
       this.telephone,
-      this.motDePasse});
+      this.motDePasse,
+      this.image});
 
   factory Utilisateur.fromJson(Map<String, dynamic> i) => Utilisateur(
-      id: i["id"],
+      id: i["id"].toString(),
       nom: i["nom"],
       prenom: i["prenom"],
       email: i["email"],
       telephone: i["telephone"],
-      motDePasse: i["motDePasse"]);
+      motDePasse: i["motDePasse"],
+      image: i["image"]);
 
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -30,6 +33,7 @@ class Utilisateur {
         "prenom": prenom,
         "email": email,
         "telephone": telephone,
-        "motDePasse": motDePasse
+        "motDePasse": motDePasse,
+        "image": image
       };
 }

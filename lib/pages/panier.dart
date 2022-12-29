@@ -120,7 +120,7 @@ class _PanierState extends State<Panier> {
               Consumer<PanierController>(
                 builder: (context, value, child) {
                   return Visibility(
-                    visible: value.getPrixTotal() == "0.0" ? false : true,
+                    visible: value.getPrixTotal() == "0.0\$" ? false : true,
                     child: Column(
                       children: [
                         Row(

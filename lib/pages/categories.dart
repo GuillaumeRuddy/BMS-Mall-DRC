@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/controler/categorieController/categorieController.dart';
@@ -27,19 +28,84 @@ class _CategorieState extends State<Categories> {
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    /*WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var catCtrl = context.read<CategorieController>();
       await catCtrl.RecupCategorie();
       listCategories = catCtrl.listDesCategorie;
       setState(() {});
       //await recupCategorie();
-    });
+    });*/
+  }
+
+  recupCateg() async {
+    var catCtrl = context.read<CategorieController>();
+    await catCtrl.RecupCategorie();
+    var listCat = catCtrl.listDesCategorie;
+    return listCat;
   }
 
   @override
   Widget build(BuildContext context) {
     //List<Map> cat = AppColors.listCategorie;
-    return Material(
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Categories",
+          style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: AppColors.ecrit),
+        ),
+        elevation: 0.0,
+        backgroundColor: AppColors.blueR,
+      ),
+      body: FutureBuilder(
+          future: recupCateg(),
+          builder: (context, snapshot) {
+            List<Categorie>? user = snapshot.data as List<Categorie>?;
+            print("Le type de valeur dans categorie");
+            print(user.runtimeType);
+            if (snapshot.hasData) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: user!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CategorieCard(
+                            nom: user[index].nom,
+                            text: user[index].description,
+                            icone: user[index].icone);
+                      },
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
+      /*SingleChildScrollView(
+          child: Column(
+        children: [
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: listCategories.length,
+            itemBuilder: (BuildContext context, int index) {
+              return CategorieCard(
+                  nom: listCategories[index].nom,
+                  text: listCategories[index].description,
+                  icone: listCategories[index].icone);
+            },
+          )
+        ],
+      )),*/
+    );
+
+    /*Material(
       child: Container(
         child: SafeArea(
           child: SingleChildScrollView(
@@ -103,6 +169,6 @@ class _CategorieState extends State<Categories> {
           ),
         ),
       ),
-    );
+    );*/
   }
 }

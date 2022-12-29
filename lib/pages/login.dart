@@ -337,6 +337,9 @@ class _LoginState extends State<Login> {
     await prefs.setString('email', personne["email"]);
     await prefs.setInt('id', personne["id"]);
     await prefs.setString('telephone', personne["telephone"]);
+    await prefs.setString('nom', personne["nom"]);
+    await prefs.setString('motdepasse', personne["motdepasse"]);
+    await prefs.setString('image', personne["image"]);
   } //fin savepref
 
   fermerClavier() {

@@ -11,8 +11,8 @@ class UtilisateurController with ChangeNotifier {
   GetStorage stockage = GetStorage();
   List<Utilisateur> infoUser = [];
 
-  ecritureStockage(List data) {
-    stockage.write('user', json.encode(data));
+  ecritureStockage(Utilisateur utilisateur) {
+    stockage.write('user', utilisateur);
   }
 
   List lectureStockage() {
@@ -65,11 +65,18 @@ class UtilisateurController with ChangeNotifier {
       print(data);
       var reponse =
           await http.post(url, headers: utilitaire.header, body: data);
-      print('Le Status est: **** ${reponse.statusCode}');
-      Map body = json.decode(reponse.body);
+      print('Le Statusss est: **** ${reponse.statusCode}');
+      Map<String, dynamic> body = json.decode(reponse.body);
       print(body);
+      print('ici la conversion de saauvegarde ++++++++++');
+      Utilisateur user = Utilisateur.fromJson(body);
+      print('ici le body de saauvegarde ++++++++++');
+      print(user);
+      print(user.nom);
+      print(user.telephone);
+      print('fin ici le body de saauvegarde ++++++++++');
       //infoUser.add(body.map((e) => Utilisateur(e)))
-      /*ecritureStockage(body.map((key, value) => "$value").toList());*/
+      //ecritureStockage(user);
       var msg = "";
       if (reponse.statusCode == 200) {
         msg = "Connecter";

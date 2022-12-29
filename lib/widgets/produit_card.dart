@@ -78,7 +78,7 @@ class ProduitCard extends StatelessWidget {
                   width: 3,
                 ),
                 Text(
-                  prod.monnaie ?? 'USD',
+                  prod.monnaie ?? 'CDF',
                   style: GoogleFonts.poppins(
                       color: AppColors.blueR,
                       fontSize: 15,

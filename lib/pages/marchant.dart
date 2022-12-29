@@ -43,6 +43,13 @@ class _MarchantState extends State<Marchant> {
     setState(() {});
   }
 
+  recupMarchand2() async {
+    var MarchCtrl = context.read<MarchandController>();
+    await MarchCtrl.RecupMarchand(idmarchant);
+    listMarchand = MarchCtrl.listDesMarchands;
+    return listMarchand;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Map> cat = AppColors.listMarchand;
@@ -87,11 +94,38 @@ class _MarchantState extends State<Marchant> {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(35),
                     topRight: Radius.circular(35))),
-            child: SingleChildScrollView(
+            child: FutureBuilder(
+                future: recupMarchand2(),
+                builder: (context, snapshot) {
+                  List<Marchand>? user = snapshot.data as List<Marchand>?;
+                  print("Le type de valeur dans marchant");
+                  print(user.runtimeType);
+                  if (snapshot.hasData) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: user!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return MarchantCard(vendeur: listMarchand[index]);
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                }),
+
+            /*SingleChildScrollView(
               child: Column(
                 children: [
                   ListView.builder(
                     shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: listMarchand.length,
                     itemBuilder: (BuildContext context, int index) {
                       print("le marchant dans le body");
@@ -109,7 +143,7 @@ class _MarchantState extends State<Marchant> {
                   )
                 ],
               ),
-            ),
+            ),*/
           ),
         ],
       ),

@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mall_drc/model/category.dart';
 
+import '../app/endPoint.dart';
 import '../model/category.dart';
 import '../model/produit.dart';
 import '../widgets/category_card.dart';
@@ -34,6 +35,8 @@ class Vendeur extends StatefulWidget {
 
 class _VendeurState extends State<Vendeur> {
   List<Produit> listProduits = [];
+  late Marchand unMarchand;
+  late Stream<List<Produit>> listP;
 
   @override
   void initState() {
@@ -54,6 +57,27 @@ class _VendeurState extends State<Vendeur> {
     });
   }
 
+  Future<List<Produit>> recuperationListProd() async {
+    var prodCtrl = context.read<ProduitController>();
+    await prodCtrl.RecupProduitById(widget.march!.id.toString());
+    List<Produit> listTousProduits = prodCtrl.prodById;
+    return listTousProduits;
+  }
+
+  /*recupListProd() async {
+    print("objet passer en parametre avec stream ---------");
+    print(widget.march);
+    print(widget.march!.id);
+    print(widget.march!.nomEntreprise);
+    var prodCtrl = context.read<ProduitController>();
+    await prodCtrl.RecupProduitById(widget.march!.id.toString());
+    List<Produit> listTousProduits = prodCtrl.prodById;
+    print("----------- les produits par marchant avec stream ----------");
+    print(listTousProduits);
+    print("------ fin list des produits marchant avec stream ------");
+    return listTousProduits;
+  }*/
+
   /*Future recupidSession() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     ident = pref.getInt("id").toString();
@@ -62,6 +86,7 @@ class _VendeurState extends State<Vendeur> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.march?.nomEntreprise}",
@@ -142,12 +167,44 @@ class _VendeurState extends State<Vendeur> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Stack(
+              alignment: Alignment.bottomLeft,
+              children: [
+                Image.network(
+                  "${ApiUrl.baseUrl}/${widget.march?.image}",
+                  width: double.infinity,
+                  height: size.height * 0.3,
+                  fit: BoxFit.cover,
+                ),
+                Opacity(
+                  opacity: 0.3,
+                  child: Container(
+                    width: double.infinity,
+                    height: size.height * 0.3,
+                    color: Colors.black,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                    vertical: 16.0,
+                  ),
+                  child: Text(
+                    widget.march!.nomEntreprise ?? "",
+                    style: Theme.of(context).textTheme.headline4!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+              ],
+            ),
             Container(
               child: Center(
                   child: Column(children: [
                 Container(
                   padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                  height: 150,
+                  height: size.height / 10,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -170,59 +227,60 @@ class _VendeurState extends State<Vendeur> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "heure de service: ",
+                            "statut: ",
+                            style: GoogleFonts.poppins(
+                                color: AppColors.ecrit,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          widget.march!.statut == "0"
+                              ? Text(
+                                  "Fermer",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.blue,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400),
+                                )
+                              : Text(
+                                  "Ouvert",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.blue,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "heure ouverture: ",
                             style: GoogleFonts.poppins(
                                 color: AppColors.ecrit,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
-                            "${widget.march!.ouverture} /",
+                            "${widget.march!.ouverture}",
                             style: GoogleFonts.poppins(
                                 color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "heure fermeture: ",
+                            style: GoogleFonts.poppins(
+                                color: AppColors.ecrit,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400),
                           ),
                           Text(
                             "${widget.march!.fermeture}",
-                            style: GoogleFonts.poppins(
-                                color: Colors.blue,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Email: ",
-                            style: GoogleFonts.poppins(
-                                color: AppColors.ecrit,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          Text(
-                            "${widget.march!.emailEntreprise}",
-                            style: GoogleFonts.poppins(
-                                color: Colors.blue,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Adresse: ",
-                            style: GoogleFonts.poppins(
-                                color: AppColors.ecrit,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          Text(
-                            "${widget.march!.adresseEntreprise}",
                             style: GoogleFonts.poppins(
                                 color: Colors.blue,
                                 fontSize: 13,
@@ -240,11 +298,10 @@ class _VendeurState extends State<Vendeur> {
                     children: [
                       Text(
                         "Nouveaute",
-                        style: GoogleFonts.poppins(
-                          color: AppColors.ecrit,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: Colors.red[800],
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                       InkWell(
                         onTap: () {},
@@ -256,7 +313,7 @@ class _VendeurState extends State<Vendeur> {
                           child: Text(
                             "voir plus",
                             style: TextStyle(
-                                color: Colors.red[800],
+                                color: Colors.grey,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700),
                           ),
@@ -265,6 +322,16 @@ class _VendeurState extends State<Vendeur> {
                     ],
                   ),
                 ),
+                /*FutureBuilder(
+                  future: recuperationListProd(),
+                  builder: (context, snapshot){
+                    if (snapshot.hasData) {
+                      List<Produit> litProduct = snapshot.data;
+                    } else {
+                      return Text('No Data Available!')
+                    }
+                  }
+                  ),*/
                 GridView.builder(
                   shrinkWrap: true,
                   //scrollDirection: Axis.horizontal,
@@ -275,7 +342,7 @@ class _VendeurState extends State<Vendeur> {
                     vertical: 8,
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                    crossAxisCount: 1,
                     childAspectRatio: 0.8,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 24,
@@ -321,7 +388,18 @@ class _VendeurState extends State<Vendeur> {
                     ],
                   ),
                 ),
-                GridView.builder(
+                ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: listProduits.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ProduitCard(
+                      prod: listProduits[index],
+                    );
+                  },
+                ),
+
+                /*GridView.builder(
                   shrinkWrap: true,
                   //scrollDirection: Axis.horizontal,
                   itemCount: listProduits.length,
@@ -341,7 +419,7 @@ class _VendeurState extends State<Vendeur> {
                       prod: listProduits[index],
                     );
                   },
-                ),
+                ),*/
               ])),
             ),
           ],

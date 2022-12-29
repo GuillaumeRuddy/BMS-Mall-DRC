@@ -50,11 +50,17 @@ class _HomeState extends State<Home> {
     //recupSession();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       //await recupidSession();
-      await recupProduit();
+      var prodCtrl = context.read<ProduitController>();
+      await prodCtrl.RecupProduit();
+      listProduits = prodCtrl.prod;
+      print("----------- les produits ----------");
+      print(listProduits);
+      print("------ fin list des produits ------");
+      setState(() {});
     });
   }
 
-  Future recupProduit() async {
+  /*Future recupProduit() async {
     var prodCtrl = context.read<ProduitController>();
     await prodCtrl.RecupProduit();
     listProduits = prodCtrl.prod;
@@ -62,7 +68,7 @@ class _HomeState extends State<Home> {
     print(listProduits);
     print("------ fin list des produits ------");
     setState(() {});
-  }
+  }*/
 
   Future recupCategories() async {
     var catCtrl = context.read<CategorieController>();
@@ -420,6 +426,16 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 ),
+                /*ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: listProduits.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ProduitCard(
+                      prod: listProduits[index],
+                    );
+                  },
+                ),*/
                 GridView.builder(
                   shrinkWrap: true,
                   //scrollDirection: Axis.horizontal,

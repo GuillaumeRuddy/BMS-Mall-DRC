@@ -5,6 +5,8 @@ import 'package:mall_drc/model/marchant.dart';
 import 'package:mall_drc/pages/marchant.dart';
 import 'package:mall_drc/pages/vendeur.dart';
 
+import '../app/endPoint.dart';
+
 class MarchantCard extends StatelessWidget {
   Marchand? vendeur;
   MarchantCard({Key? key, this.vendeur}) : super(key: key);
@@ -30,19 +32,19 @@ class MarchantCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                  height: MediaQuery.of(context).size.height / 5,
-                  width: MediaQuery.of(context).size.width / 5,
-                  margin: EdgeInsets.only(right: 15),
-                  alignment: Alignment.centerRight,
-                  child: Icon(
-                    Icons.image,
-                    color: Colors.black,
-                    size: 80,
-                    /*Image(
-                              image: AssetImage("assets/img/fedex-express.png")*/
-                  )),
+                height: MediaQuery.of(context).size.height / 5,
+                width: MediaQuery.of(context).size.width / 4,
+                margin: EdgeInsets.only(right: 10),
+                alignment: Alignment.centerRight,
+                child: Image.network(
+                  "${ApiUrl.baseUrl}/${vendeur!.image}",
+                  width: double.infinity,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+              ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(vertical: 17),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,13 +57,30 @@ class MarchantCard extends StatelessWidget {
                         color: AppColors.ecrit,
                       ),
                     ),
-                    Text(
-                      vendeur?.ouverture ?? "",
-                      maxLines: 3,
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                    Row(
+                      children: [
+                        Text(
+                          "statut: ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13,
+                                  color: Colors.black),
+                        ),
+                        Text(
+                          vendeur!.disponibilite == "0" ? "Fermer" : "Ouvert",
+                          maxLines: 1,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13,
+                                  color: AppColors.ecrit),
+                        ),
+                      ],
                     ),
                   ],
                 ),
