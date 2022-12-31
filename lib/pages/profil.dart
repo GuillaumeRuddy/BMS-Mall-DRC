@@ -10,14 +10,14 @@ import '../model/utilisateur.dart';
 class DetailUser extends StatefulWidget {
   //Utilisateur data;
   //DetailUser({required this.data});
-  DetailUser();
+  //DetailUser();
 
   @override
   State<DetailUser> createState() => _DetailUserState();
 }
 
 class _DetailUserState extends State<DetailUser> {
-  late Utilisateur user;
+  //late Utilisateur user;
   int? ident;
   String? nom;
   String? prenom;
@@ -44,7 +44,7 @@ class _DetailUserState extends State<DetailUser> {
     motdepasse = pref.getString("motdepasse");
     image = pref.getString("image") ?? "mall/mall.jpg";
     setState(() {});
-    user = Utilisateur(
+    /*user = Utilisateur(
         id: ident.toString(),
         nom: nom,
         prenom: prenom,
@@ -52,7 +52,7 @@ class _DetailUserState extends State<DetailUser> {
         telephone: telephone,
         motDePasse: motdepasse,
         image: image);
-    return user;
+    return user;*/
   }
 
   @override
@@ -135,17 +135,17 @@ class _DetailUserState extends State<DetailUser> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 24),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(width: 5),
                         Text(
                           prenom ?? "",
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: Colors.grey, fontSize: 24),
                         )
                       ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    editerButtonVue(user),
+                    editerButtonVue(),
                     SizedBox(
                       height: 70,
                     ),
@@ -217,16 +217,16 @@ class _DetailUserState extends State<DetailUser> {
           /*${agent.nom}*/
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
-        const SizedBox(height: 4),
+        SizedBox(width: 5),
         Text(
           prenom ?? "",
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.grey, fontSize: 24),
         )
       ],
     );
   }
 
-  editerButtonVue(Utilisateur util) {
+  editerButtonVue() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: StadiumBorder(),
