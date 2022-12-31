@@ -44,8 +44,9 @@ class _MarchantState extends State<Marchant> {
   }
 
   recupMarchand2() async {
+    String ide = widget.nomCategorie!;
     var MarchCtrl = context.read<MarchandController>();
-    await MarchCtrl.RecupMarchand(idmarchant);
+    await MarchCtrl.RecupMarchand(ide);
     listMarchand = MarchCtrl.listDesMarchands;
     return listMarchand;
   }

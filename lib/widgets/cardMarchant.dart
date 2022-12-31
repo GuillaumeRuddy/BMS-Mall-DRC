@@ -24,66 +24,78 @@ class MarchantCard extends StatelessWidget {
         },
         child: Container(
           height: MediaQuery.of(context).size.height / 7,
-          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(10)),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height / 5,
-                width: MediaQuery.of(context).size.width / 4,
-                margin: EdgeInsets.only(right: 10),
-                alignment: Alignment.centerRight,
-                child: Image.network(
-                  "${ApiUrl.baseUrl}/${vendeur!.image}",
-                  width: double.infinity,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 17),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      vendeur?.nomEntreprise ?? "",
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.ecrit,
-                      ),
+              Row(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height / 5,
+                    width: MediaQuery.of(context).size.width / 4,
+                    margin: EdgeInsets.only(right: 10),
+                    alignment: Alignment.centerRight,
+                    child: Image.network(
+                      "${ApiUrl.baseUrl}/${vendeur!.image}",
+                      width: double.infinity,
+                      height: 80,
+                      fit: BoxFit.cover,
                     ),
-                    Row(
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 17),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "statut: ",
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 13,
-                                  color: Colors.black),
+                          vendeur?.nomEntreprise ?? "",
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.ecrit,
+                          ),
                         ),
-                        Text(
-                          vendeur!.disponibilite == "0" ? "Fermer" : "Ouvert",
-                          maxLines: 1,
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 13,
-                                  color: AppColors.ecrit),
+                        Row(
+                          children: [
+                            Text(
+                              "Statut: ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 13,
+                                      color: Colors.black),
+                            ),
+                            vendeur!.disponibilite == "1"
+                                ? Text("Fermer",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 13,
+                                          color: Colors.red[800],
+                                        ))
+                                : Text("Ouvert",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 13,
+                                          color: Colors.blue,
+                                        )),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               Container(
                   alignment: Alignment.centerRight,

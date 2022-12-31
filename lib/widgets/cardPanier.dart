@@ -13,7 +13,15 @@ class PanierCard extends StatelessWidget {
   double? prix;
   String? qte;
   String? id;
-  PanierCard({Key? key, this.nom, this.prix, this.image, this.id, this.qte})
+  String? monniae;
+  PanierCard(
+      {Key? key,
+      this.nom,
+      this.prix,
+      this.image,
+      this.id,
+      this.qte,
+      this.monniae})
       : super(key: key);
 
   DbMAll bd = DbMAll();
@@ -49,7 +57,7 @@ class PanierCard extends StatelessWidget {
                   nom ?? "",
                   maxLines: 2,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: AppColors.ecrit,
                   ),
@@ -58,7 +66,7 @@ class PanierCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${prix.toString()}\$",
+                      "${prix.toString()}" + " ${monniae}",
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

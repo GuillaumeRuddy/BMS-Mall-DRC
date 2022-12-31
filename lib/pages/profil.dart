@@ -24,27 +24,27 @@ class _DetailUserState extends State<DetailUser> {
   String? email;
   String? telephone;
   String? motdepasse;
-  String? image;
+  String image = "mall/mall.jpg";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     //user = widget.data;
-    //recupUser();
+    recupUser();
   }
 
-  Future recupUser() async {
+  recupUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     ident = pref.getInt("id");
     nom = pref.getString("nom");
-    prenom = pref.getString("prenom");
+    prenom = pref.getString("user");
     email = pref.getString("email");
     telephone = pref.getString("telephone");
     motdepasse = pref.getString("motdepasse");
-    image = pref.getString("image");
+    image = pref.getString("image") ?? "mall/mall.jpg";
     setState(() {});
-    Utilisateur unUser = Utilisateur(
+    user = Utilisateur(
         id: ident.toString(),
         nom: nom,
         prenom: prenom,
@@ -52,7 +52,7 @@ class _DetailUserState extends State<DetailUser> {
         telephone: telephone,
         motDePasse: motdepasse,
         image: image);
-    return unUser;
+    return user;
   }
 
   @override
@@ -100,89 +100,74 @@ class _DetailUserState extends State<DetailUser> {
               SizedBox(
                 height: 40,
               ),
-              /*FutureBuilder<Utilisateur>(
-                future: recupUser(),
-                builder: (BuildContext context, AsyncSnapshot<Utilisateur> snapshot),
+              /*FutureBuilder(
+                  future: recupUser(),
+                  builder: (context, snapshot) {
+                    Utilisateur user = snapshot.data! as Utilisateur;
+                    print("Le type de valeur dans marchant");
+                    print(user.runtimeType);
+                    if (snapshot.hasData) */
+
+              /*if(nom == null || nom.isEmpty){*/
+              SingleChildScrollView(
                 child: Column(
                   children: [
                     Center(
                       child: ClipOval(
                         child: Material(
-                          color: Colors.transparent,
-                          child: Image.network();
-                        ),
+                            color: Colors.transparent,
+                            child: Image.network(
+                              "${ApiUrl.baseUrl}/${image}",
+                              height: 120.0,
+                            )),
                       ),
-                    )
-                  ],
-                )),*/
-
-              FutureBuilder(
-                  future: recupUser(),
-                  builder: (context, snapshot) {
-                    Utilisateur user = snapshot.data as Utilisateur;
-                    print("Le type de valeur dans marchant");
-                    print(user.runtimeType);
-                    if (snapshot.hasData) {
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Center(
-                              child: ClipOval(
-                                child: Material(
-                                    color: Colors.transparent,
-                                    child: Image.network(
-                                      "${ApiUrl.baseUrl}/${user.image}",
-                                      height: 120.0,
-                                    )),
-                              ),
-                            ),
-                            //profileImageVue(),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  user.nom!,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  user.prenom!,
-                                  style: TextStyle(color: Colors.grey),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            editerButtonVue(),
-                            SizedBox(
-                              height: 70,
-                            ),
-                            rapportVue(title: "Email", value: user.email),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            rapportVue(
-                                title: "Telephone", value: user.telephone),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            rapportVue(title: "Adresse", value: "N/A"),
-                            SizedBox(
-                              height: 20,
-                            ),
-                          ],
+                    ),
+                    //profileImageVue(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          nom ?? "",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
                         ),
-                      );
+                        const SizedBox(height: 4),
+                        Text(
+                          prenom ?? "",
+                          style: TextStyle(color: Colors.grey),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    editerButtonVue(user),
+                    SizedBox(
+                      height: 70,
+                    ),
+                    rapportVue(title: "Email", value: email ?? ""),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    rapportVue(title: "Telephone", value: telephone ?? ""),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    rapportVue(title: "Adresse", value: "N/A"),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              ) /*;
                     } else {
                       return Center(child: CircularProgressIndicator());
-                    }
-                  }),
+                    }*/
+              /* }),*/
             ],
           ),
         ),
@@ -241,7 +226,7 @@ class _DetailUserState extends State<DetailUser> {
     );
   }
 
-  editerButtonVue() {
+  editerButtonVue(Utilisateur util) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: StadiumBorder(),

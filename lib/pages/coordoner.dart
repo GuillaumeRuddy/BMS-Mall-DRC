@@ -210,7 +210,7 @@ class _CoordonneState extends State<Coordonne> {
           counterStyle: TextStyle(
             fontSize: 10,
           ),
-          labelText: 'Nom',
+          labelText: 'Lieu',
           //labelStyle: ,
           filled: true,
           fillColor: Colors.white,
@@ -381,7 +381,9 @@ class _CoordonneState extends State<Coordonne> {
         "prix": prod.prix,
         "quantite": prod.quantite,
         "adresse": adresseCtrl.text,
-        "description": detailCtrl.text
+        "description": detailCtrl.text,
+        "modelivraison": "non",
+        "prixdriver": 10000
       };
 
       print(data);
@@ -399,9 +401,14 @@ class _CoordonneState extends State<Coordonne> {
     if (resultat['status']) {
       Navigator.pop(context, true);
       baseDD.suppressionTousProduitPanier();
-      ctrlPanier.reinitAllPanier();
+      reinit();
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => Success()));
     }
+  }
+
+  Future reinit() async {
+    var ctrlPanier = await context.read<PanierController>();
+    ctrlPanier.reinitAllPanier();
   }
 }
 

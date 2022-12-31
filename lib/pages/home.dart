@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/controler/panier/panierController.dart';
 import 'package:mall_drc/controler/produits/produitController.dart';
@@ -50,25 +51,28 @@ class _HomeState extends State<Home> {
     //recupSession();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       //await recupidSession();
+      utilitaire.lancerChargementDialog4(context);
       var prodCtrl = context.read<ProduitController>();
       await prodCtrl.RecupProduit();
       listProduits = prodCtrl.prod;
       print("----------- les produits ----------");
       print(listProduits);
       print("------ fin list des produits ------");
+
+      await Future.delayed(Duration(milliseconds: 800));
+      // quitter la boite de dialogue de chargement
+      Navigator.pop(context);
+
       setState(() {});
     });
   }
 
-  /*Future recupProduit() async {
+  recupProduit() async {
     var prodCtrl = context.read<ProduitController>();
     await prodCtrl.RecupProduit();
     listProduits = prodCtrl.prod;
-    print("----------- les produits ----------");
-    print(listProduits);
-    print("------ fin list des produits ------");
-    setState(() {});
-  }*/
+    return listProduits;
+  }
 
   Future recupCategories() async {
     var catCtrl = context.read<CategorieController>();
@@ -388,13 +392,16 @@ class _HomeState extends State<Home> {
                                     Icons.dashboard,
                                     color: Colors.white,
                                   ))),
-                              Text("Autres")
+                              Text("Epicerie")
                             ],
                           ),
                         ),
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
@@ -403,6 +410,61 @@ class _HomeState extends State<Home> {
                     children: [
                       Text(
                         "NOUVEAUTE",
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.ecrit),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                FutureBuilder(
+                    future: recupProduit(),
+                    builder: (context, snapshot) {
+                      List<Produit>? prod = snapshot.data as List<Produit>?;
+                      print("Le type de valeur dans home");
+                      print(prod.runtimeType);
+                      if (snapshot.hasData) {
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: prod!.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 8,
+                                ),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 0.8,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 24,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return ProduitCard(
+                                    prod: listProduits[index],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    }),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "LE TOP DES PRODUITS",
                         style: Theme.of(context).textTheme.headline6!.copyWith(
                             fontWeight: FontWeight.w700,
                             color: AppColors.ecrit),
@@ -426,16 +488,6 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 ),
-                /*ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: listProduits.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ProduitCard(
-                      prod: listProduits[index],
-                    );
-                  },
-                ),*/
                 GridView.builder(
                   shrinkWrap: true,
                   //scrollDirection: Axis.horizontal,

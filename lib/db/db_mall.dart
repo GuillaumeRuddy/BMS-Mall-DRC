@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:mall_drc/model/produit.dart';
 import 'package:mall_drc/pages/panier.dart';

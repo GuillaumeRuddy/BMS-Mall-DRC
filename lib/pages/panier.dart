@@ -95,6 +95,7 @@ class _PanierState extends State<Panier> {
                           return PanierCard(
                             nom: ListProduit[index].nom,
                             prix: ListProduit[index].prix,
+                            monniae: ListProduit[index].monnaie,
                             id: ListProduit[index].id,
                             qte: ListProduit[index].quantite,
                             image: ListProduit[index].image,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/controler/panier/panierController.dart';
 import 'package:mall_drc/controler/produits/produitController.dart';
@@ -23,6 +24,7 @@ import '../model/category.dart';
 import '../model/produit.dart';
 import '../widgets/category_card.dart';
 import '../widgets/circle_button.dart';
+import '../widgets/drawerMarchand.dart';
 import '../widgets/search_testfield.dart';
 
 class Vendeur extends StatefulWidget {
@@ -47,12 +49,16 @@ class _VendeurState extends State<Vendeur> {
     print(widget.march!.id);
     print(widget.march!.nomEntreprise);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      utilitaire.lancerChargementDialog4(context);
       var prodCtrl = context.read<ProduitController>();
       await prodCtrl.RecupProduitById(widget.march!.id.toString());
       listProduits = prodCtrl.prodById;
       print("----------- les produits par marchant ----------");
       print(listProduits);
       print("------ fin list des produits marchant ------");
+      await Future.delayed(Duration(milliseconds: 800));
+      // quitter la boite de dialogue de chargement
+      Navigator.pop(context);
       setState(() {});
     });
   }
@@ -63,26 +69,6 @@ class _VendeurState extends State<Vendeur> {
     List<Produit> listTousProduits = prodCtrl.prodById;
     return listTousProduits;
   }
-
-  /*recupListProd() async {
-    print("objet passer en parametre avec stream ---------");
-    print(widget.march);
-    print(widget.march!.id);
-    print(widget.march!.nomEntreprise);
-    var prodCtrl = context.read<ProduitController>();
-    await prodCtrl.RecupProduitById(widget.march!.id.toString());
-    List<Produit> listTousProduits = prodCtrl.prodById;
-    print("----------- les produits par marchant avec stream ----------");
-    print(listTousProduits);
-    print("------ fin list des produits marchant avec stream ------");
-    return listTousProduits;
-  }*/
-
-  /*Future recupidSession() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    ident = pref.getInt("id").toString();
-    setState(() {});
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -233,11 +219,11 @@ class _VendeurState extends State<Vendeur> {
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400),
                           ),
-                          widget.march!.statut == "0"
+                          widget.march!.disponibilite == "1"
                               ? Text(
                                   "Fermer",
                                   style: GoogleFonts.poppins(
-                                      color: Colors.blue,
+                                      color: Colors.red,
                                       fontSize: 13,
                                       fontWeight: FontWeight.w400),
                                 )
@@ -254,7 +240,7 @@ class _VendeurState extends State<Vendeur> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "heure ouverture: ",
+                            "Ouverture: ",
                             style: GoogleFonts.poppins(
                                 color: AppColors.ecrit,
                                 fontSize: 13,
@@ -273,7 +259,7 @@ class _VendeurState extends State<Vendeur> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "heure fermeture: ",
+                            "Fermeture: ",
                             style: GoogleFonts.poppins(
                                 color: AppColors.ecrit,
                                 fontSize: 13,
@@ -292,67 +278,82 @@ class _VendeurState extends State<Vendeur> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
+                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Nouveaute",
+                        "NOUVEAUTE",
                         style: Theme.of(context).textTheme.headline4!.copyWith(
-                              color: Colors.red[800],
+                              color: AppColors.ecrit,
+                              fontSize: 22,
                               fontWeight: FontWeight.bold,
                             ),
                       ),
-                      InkWell(
-                        onTap: () {},
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => Nouveaute()));
-                          },
-                          child: Text(
-                            "voir plus",
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),
+                FutureBuilder(
+                    future: recuperationListProd(),
+                    builder: (context, snapshot) {
+                      List<Produit>? prod = snapshot.data as List<Produit>?;
+                      print(prod.runtimeType);
+                      if (snapshot.hasData) {
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              GridView.builder(
+                                shrinkWrap: true,
+                                //scrollDirection: Axis.horizontal,
+                                itemCount: prod!.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 8,
+                                ),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 0.8,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 24,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return ProduitCard(
+                                    prod: prod[index],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Center(child: Text("Aucun produit"));
+                      }
+                    }),
                 /*FutureBuilder(
-                  future: recuperationListProd(),
-                  builder: (context, snapshot){
-                    if (snapshot.hasData) {
-                      List<Produit> litProduct = snapshot.data;
-                    } else {
-                      return Text('No Data Available!')
-                    }
-                  }
-                  ),*/
-                GridView.builder(
-                  shrinkWrap: true,
-                  //scrollDirection: Axis.horizontal,
-                  itemCount: listProduits.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 8,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    childAspectRatio: 0.8,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 24,
-                  ),
-                  itemBuilder: (context, index) {
-                    return ProduitCard(
-                      prod: listProduits[index],
-                    );
-                  },
-                ),
+                    future: recuperationListProd(),
+                    builder: (context, snapshot) {
+                      List<Produit>? prod = snapshot.data as List<Produit>?;
+                      print("Le type de valeur dans vendeur");
+                      print(prod.runtimeType);
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          //scrollDirection: Axis.horizontal,
+                          //shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: listProduits.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return ProduitCard(
+                              prod: listProduits[index],
+                            );
+                          },
+                        );
+                      } else {
+                        return Center(child: Text("Aucun produit"));
+                      }
+                    }),*/
                 SizedBox(
                   height: 5,
                 ),
@@ -362,12 +363,12 @@ class _VendeurState extends State<Vendeur> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Les plus demander",
-                        style: GoogleFonts.poppins(
-                          color: AppColors.ecrit,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
+                        "NOS PRODUITS",
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: AppColors.ecrit,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                       InkWell(
                         onTap: () {},
@@ -388,38 +389,44 @@ class _VendeurState extends State<Vendeur> {
                     ],
                   ),
                 ),
-                ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: listProduits.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ProduitCard(
-                      prod: listProduits[index],
-                    );
-                  },
-                ),
-
-                /*GridView.builder(
-                  shrinkWrap: true,
-                  //scrollDirection: Axis.horizontal,
-                  itemCount: listProduits.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 8,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.8,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 24,
-                  ),
-                  itemBuilder: (context, index) {
-                    return ProduitCard(
-                      prod: listProduits[index],
-                    );
-                  },
-                ),*/
+                FutureBuilder(
+                    future: recuperationListProd(),
+                    builder: (context, snapshot) {
+                      List<Produit>? prod = snapshot.data as List<Produit>?;
+                      print(prod.runtimeType);
+                      if (snapshot.hasData) {
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              GridView.builder(
+                                shrinkWrap: true,
+                                //scrollDirection: Axis.horizontal,
+                                itemCount: prod!.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 8,
+                                ),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 0.8,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 24,
+                                ),
+                                itemBuilder: (context, index) {
+                                  return ProduitCard(
+                                    prod: prod[index],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Center(child: Text("Aucun produit"));
+                      }
+                    }),
               ])),
             ),
           ],

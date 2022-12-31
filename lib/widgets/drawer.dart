@@ -6,20 +6,46 @@ import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/profil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../app/endPoint.dart';
 import '../pages/categories.dart';
 import '../pages/login.dart';
 
-class DrawerAdd extends StatelessWidget {
-  /*final String userName;
-  final String idUser;*/
+class DrawerAdd extends StatefulWidget {
   const DrawerAdd({
     Key? key,
     /*required this.userName, required this.idUser*/
   }) : super(key: key);
 
-  Future recupSession() async {
+  @override
+  State<DrawerAdd> createState() => _DrawerAddState();
+}
+
+class _DrawerAddState extends State<DrawerAdd> {
+  String? ident;
+  String? nom;
+  String? prenom;
+  String? email;
+  String? telephone;
+  String? motdepasse;
+  String image = "mall/mall.jpg";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    recupUser();
+  }
+
+  recupUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    return pref.getString("user");
+    ident = pref.getInt("id").toString();
+    nom = pref.getString("nom");
+    prenom = pref.getString("user");
+    email = pref.getString("email");
+    telephone = pref.getString("telephone");
+    motdepasse = pref.getString("motdepasse");
+    image = pref.getString("image") ?? "mall/mall.jpg";
+    setState(() {});
   }
 
   @override
@@ -37,34 +63,41 @@ class DrawerAdd extends StatelessWidget {
                 children: [
                   CircleAvatar(
                       radius: 52,
-                      backgroundImage: AssetImage("assets/drawer.png")),
+                      backgroundImage: NetworkImage(
+                        "${ApiUrl.baseUrl}/${image}",
+                      )),
                   SizedBox(
                     height: 12,
                   ),
-                  FutureBuilder(
-                      future: recupSession(),
-                      builder: (context, snapshot) {
-                        var user = snapshot.data;
-                        return Text(
-                          "$user",
-                          style: GoogleFonts.poppins(
-                              color: Colors.blue,
-                              fontSize: 23,
-                              fontWeight: FontWeight.w400),
-                        );
-                      }),
-                  FutureBuilder(
-                      future: recupSession(),
-                      builder: (context, snapshot) {
-                        var user = snapshot.data;
-                        return Text(
-                          "$user@gmail.com",
-                          style: GoogleFonts.poppins(
-                              color: Colors.blue,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w400),
-                        );
-                      }),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        nom ?? "",
+                        style: GoogleFonts.poppins(
+                            color: Colors.blue,
+                            fontSize: 23,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        prenom ?? "",
+                        style: GoogleFonts.poppins(
+                            color: Colors.blue,
+                            fontSize: 23,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    email ?? "",
+                    style: GoogleFonts.poppins(
+                        color: Colors.blue,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400),
+                  )
                 ],
               ),
             ),
@@ -114,18 +147,6 @@ class DrawerAdd extends StatelessWidget {
                     ),
                     title: Text(
                       "Profile",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  //Divider(height: 1.0, color: Colors.black),
-                  ListTile(
-                    onTap: null,
-                    leading: Icon(
-                      Icons.settings,
-                      color: Colors.blue,
-                    ),
-                    title: Text(
-                      "parametre",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
