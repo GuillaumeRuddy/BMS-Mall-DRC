@@ -54,14 +54,14 @@ class MarchantCard extends StatelessWidget {
                         Text(
                           vendeur?.nomEntreprise ?? "",
                           style: TextStyle(
-                            fontSize: 28,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: AppColors.ecrit,
                           ),
                         ),
                         Row(
                           children: [
-                            Text(
+                            /*Text(
                               "Statut: ",
                               style: Theme.of(context)
                                   .textTheme
@@ -70,7 +70,7 @@ class MarchantCard extends StatelessWidget {
                                       fontWeight: FontWeight.w700,
                                       fontSize: 13,
                                       color: Colors.black),
-                            ),
+                            ),*/
                             vendeur!.disponibilite == "1"
                                 ? Text("Fermer",
                                     style: Theme.of(context)

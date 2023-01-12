@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mall_drc/controler/adresse/adresseController.dart';
 import 'package:mall_drc/controler/commande/commandeController.dart';
 import 'package:mall_drc/controler/marchants/marchandController.dart';
 import 'package:mall_drc/controler/panier/panierController.dart';
@@ -8,7 +9,7 @@ import 'package:mall_drc/controler/utilisateurs/utilisateurController.dart';
 import 'package:mall_drc/pages/demarage.dart';
 import 'package:provider/provider.dart';
 
-import 'controler/categorieController/categorieController.dart';
+import 'controler/categorie/categorieController.dart';
 
 void main() async {
   await GetStorage.init();
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PanierController()),
         ChangeNotifierProvider(create: (_) => CommandeController()),
         ChangeNotifierProvider(create: (_) => MarchandController()),
-        ChangeNotifierProvider(create: (_) => CategorieController())
+        ChangeNotifierProvider(create: (_) => CategorieController()),
+        ChangeNotifierProvider(create: (_) => adresseController())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/pages/adresse.dart';
+import 'package:mall_drc/pages/checkout.dart';
 import 'package:mall_drc/pages/coordoner.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/success.dart';
@@ -40,140 +42,218 @@ class _PanierState extends State<Panier> {
   Widget build(BuildContext context) {
     //var panierCtrl = context.read<PanierController>();
     return Scaffold(
-      body: ListView(
-        children: [
-          //entete Panier
-          Container(
-            color: AppColors.blueR,
-            padding: EdgeInsets.all(15),
-            //entete
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 25.0,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    "Panier",
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          //details
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  height: 700,
-                  padding: EdgeInsets.only(top: 15),
-                  decoration: BoxDecoration(
-                      color: Color.fromARGB(77, 233, 230, 230),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(35),
-                          topRight: Radius.circular(35))),
-                  child: Column(
-                    //mainAxisAlignment: MainAxisAlignment.start,
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: ListProduit.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return PanierCard(
-                            nom: ListProduit[index].nom,
-                            prix: ListProduit[index].prix,
-                            monniae: ListProduit[index].monnaie,
-                            id: ListProduit[index].id,
-                            qte: ListProduit[index].quantite,
-                            image: ListProduit[index].image,
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+      appBar: AppBar(
+        title: Text(
+          "Panier",
+          style: Theme.of(context)
+              .textTheme
+              .subtitle1!
+              .copyWith(fontWeight: FontWeight.w700, color: AppColors.ecrit),
+        ),
+        elevation: 0.0,
+        backgroundColor: AppColors.blueR,
       ),
-      bottomNavigationBar: //Validation et montant total
-          BottomAppBar(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          height: 130,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Consumer<PanierController>(
-                builder: (context, value, child) {
-                  return Visibility(
-                    visible: value.getPrixTotal() == "0.0\$" ? false : true,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: //details
+          SingleChildScrollView(
+        //je vais utiliser ici un space evely our différencier les panier ainsi que les autres points
+        child: Column(
+          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              height: 700,
+              padding: EdgeInsets.only(top: 15),
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(77, 233, 230, 230),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35))),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: ListProduit.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return PanierCard(
+                        nom: ListProduit[index].nom,
+                        prix: ListProduit[index].prix,
+                        monniae: ListProduit[index].monnaie,
+                        id: ListProduit[index].id,
+                        qte: ListProduit[index].quantite,
+                        image: ListProduit[index].image,
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              height: 130,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Consumer<PanierController>(
+                    builder: (context, value, child) {
+                      return Visibility(
+                        visible: value.getPrixTotal() == 0 ? false : true,
+                        child: Column(
                           children: [
-                            Text("Montant total:",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold)),
-                            Text(
-                              "${value.getPrixTotal()}\$",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red[900]),
+                            Row(
+                              //mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Montant total:",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                  "${value.getPrixTotal()}\CDF",
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red[900]),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => Dialog(
+                                          //backgroundColor: AppColors.blueR,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8)),
+                                          child: Container(
+                                            height: 200,
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    color: AppColors.blueR,
+                                                    child: Image(
+                                                      image: AssetImage(
+                                                          "assets/splash_icon.png"),
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height /
+                                                              3,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                    child: Container(
+                                                  color: AppColors.blueR,
+                                                  child: SizedBox.expand(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(15.0),
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                            "Voulez-vous, vous faire livré?",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .push(MaterialPageRoute(
+                                                                            builder: (_) =>
+                                                                                MesAdresses()));
+                                                                  },
+                                                                  child: Text(
+                                                                      "Oui",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Colors
+                                                                              .blue,
+                                                                          fontWeight:
+                                                                              FontWeight.bold))),
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .push(MaterialPageRoute(
+                                                                            builder: (_) => CheckoutPage(
+                                                                                  livraison: false,
+                                                                                )));
+                                                                  },
+                                                                  child: Text(
+                                                                      "Non",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          color: Colors
+                                                                              .blue,
+                                                                          fontWeight:
+                                                                              FontWeight.bold))),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ))
+                                              ],
+                                            ),
+                                          ),
+                                        ));
+                              },
+                              child: Container(
+                                height: 50,
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: AppColors.blueR,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                  "PASSER COMMANDE",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.ecrit,
+                                  ),
+                                ),
+                              ),
                             )
                           ],
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => Coordonne()));
-                          },
-                          child: Container(
-                            height: 50,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: AppColors.blueR,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Text(
-                              "VALIDER",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.ecrit,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                },
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -243,3 +323,47 @@ class _PanierState extends State<Panier> {
                 text: "Aucun produit dans le panier"));
       }
     }) */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    
+    Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Montant total:",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
+                                      color: Colors.grey,
+                                    ),
+                              ),
+                              Text(
+                                "${value.getPrixTotal()}",
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                            ],
+                          ),
+    
+    
+     */

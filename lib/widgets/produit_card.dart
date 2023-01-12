@@ -20,73 +20,90 @@ class ProduitCard extends StatelessWidget {
                   product: prod,
                 )));
       },
-      child: Container(
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(.1),
-                blurRadius: 4.0,
-                spreadRadius: .05,
-              )
-            ]),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //image
-            Align(
-              /*alignment: Alignment.topRight,*/
-              alignment: Alignment.center,
-              child: Image.network(
-                "${ApiUrl.baseUrl}/" + prod.image!,
-                height: 80.0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0),
+        child: Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(.1),
+                  blurRadius: 4.0,
+                  spreadRadius: .05,
+                )
+              ]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //image
+              Align(
+                //alignment: Alignment.topRight,
+                alignment: Alignment.center,
+                child: Image.network(
+                  "${ApiUrl.baseUrl}/" + prod.image!,
+                  height: 80.0,
+                ),
               ),
-              /*Image(
-                image: AssetImage("assets/splash_icon.png"),
-                height: MediaQuery.of(context).size.height / 7,
-                width: MediaQuery.of(context).size.width / 7,
-              ),*/
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              prod.nom ?? "",
-              maxLines: 2,
-              style: GoogleFonts.poppins(
-                  color: AppColors.ecrit,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              height: 0.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  prod.prix.toString(),
-                  style: GoogleFonts.poppins(
-                      color: AppColors.blueR,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
+              SizedBox(
+                height: 5.0,
+              ),
+              Text(
+                prod.nom ?? "",
+                maxLines: 2,
+                style: GoogleFonts.poppins(
+                    color: AppColors.ecrit,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700),
+              ),
+              SizedBox(
+                height: 0.0,
+              ),
+              Row(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    prod.prix.toString(),
+                    style: GoogleFonts.poppins(
+                        color: Colors.red[700],
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(
+                    width: 3,
+                  ),
+                  Text(
+                    prod.monnaie ?? 'CDF',
+                    style: GoogleFonts.poppins(
+                        color: AppColors.blueR,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Container(
+                  //width: 140.0,
+                  decoration: BoxDecoration(
+                      color: AppColors.ecrit,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10.0),
+                          bottomRight: Radius.circular(10.0))),
+                  child: Center(
+                    child: Text(
+                      "Détails",
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          color: Colors.white),
+                    ),
+                  ),
                 ),
-                SizedBox(
-                  width: 3,
-                ),
-                Text(
-                  prod.monnaie ?? 'CDF',
-                  style: GoogleFonts.poppins(
-                      color: AppColors.blueR,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

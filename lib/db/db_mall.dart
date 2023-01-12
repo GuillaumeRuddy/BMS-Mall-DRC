@@ -29,9 +29,9 @@ class DbMAll {
 
   creationBase(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE panier(id INTEGER PRIMARY KEY,nom TEXT, prix DOUBLE, quantite INTEGER, description TEXT, image TEXT, marchand_id TEXT, monnaie TEXT, idClient TEXT)");
+        "CREATE TABLE panier(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, prix DOUBLE, quantite INTEGER, description TEXT, image TEXT, marchand_id TEXT, monnaie TEXT, idClient TEXT)");
     await db.execute(
-        "CREATE TABLE adresse(id INTEGER PRIMARY KEY,nom TEXT, adresse TEXT, description TEXT, statut TEXT)");
+        "CREATE TABLE adresse(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, adresse TEXT, description TEXT, statut TEXT)");
   }
 
   supprimertable(Database db, int version) async {
@@ -53,7 +53,11 @@ class DbMAll {
 
   Future<Adresse> InsertionAdresse(Adresse adr) async {
     var dbMall = await BDD;
-    await dbMall!.insert('adresse', adr.toMap());
+    String sql =
+        "INSERT INTO adresse ( nom, adresse, description) VALUES(?,?,?)";
+    await dbMall!
+        .rawQuery(sql, ['${adr.nom}', '${adr.adresse}', '${adr.description}']);
+    /*await dbMall!.insert('adresse', adr.toMap());*/
     return adr;
   }
 
@@ -65,8 +69,12 @@ class DbMAll {
 
   Future<List<Adresse>> getListAdresse() async {
     var dbMall = await BDD;
-    final List<Map<String, Object?>> requet = await dbMall!.query('adresse');
-    return requet.map((e) => Adresse.fromJson(e)).toList();
+    var requet = await dbMall!
+        .query('adresse')
+        .then((value) => value.map((e) => Adresse.fromJson(e)).toList());
+    print("La requette de la base de donnée");
+    print(requet.runtimeType);
+    return requet;
   }
 
   Future<List<Produit>> getListPanierById(String id) async {

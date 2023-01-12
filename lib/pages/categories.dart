@@ -7,7 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
-import 'package:mall_drc/controler/categorieController/categorieController.dart';
+import 'package:mall_drc/controler/categorie/categorieController.dart';
 import 'package:mall_drc/model/categorie.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/success.dart';
@@ -52,10 +52,10 @@ class _CategorieState extends State<Categories> {
       appBar: AppBar(
         title: Text(
           "Categories",
-          style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: AppColors.ecrit),
+          style: Theme.of(context)
+              .textTheme
+              .subtitle1!
+              .copyWith(fontWeight: FontWeight.w700, color: AppColors.ecrit),
         ),
         elevation: 0.0,
         backgroundColor: AppColors.blueR,
@@ -72,7 +72,6 @@ class _CategorieState extends State<Categories> {
                   children: [
                     ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
                       itemCount: user!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return CategorieCard(

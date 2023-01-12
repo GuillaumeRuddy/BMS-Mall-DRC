@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/controler/commande/commandeController.dart';
 import 'package:mall_drc/controler/panier/panierController.dart';
 import 'package:mall_drc/controler/produits/produitController.dart';
 import 'package:mall_drc/pages/categories.dart';
@@ -18,13 +19,15 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mall_drc/model/category.dart';
 
-import '../controler/categorieController/categorieController.dart';
+import '../controler/categorie/categorieController.dart';
 import '../model/categorie.dart';
 import '../model/category.dart';
 import '../model/produit.dart';
 import '../widgets/category_card.dart';
 import '../widgets/circle_button.dart';
 import '../widgets/search_testfield.dart';
+import 'map.dart';
+import 'marchant.dart';
 
 class Home extends StatefulWidget {
   //String? idt;
@@ -41,6 +44,8 @@ class _HomeState extends State<Home> {
   var _selectedIndex = 0;
   var utilisateur;
   List<Produit> listProduits = [];
+  List<Produit> listProduitsLimit = [];
+  List<Produit> listProduitRecherche = [];
   List<Categorie> listCategories = [];
   String? ident;
 
@@ -54,7 +59,9 @@ class _HomeState extends State<Home> {
       utilitaire.lancerChargementDialog4(context);
       var prodCtrl = context.read<ProduitController>();
       await prodCtrl.RecupProduit();
+      await prodCtrl.RecupProduitLimit("4");
       listProduits = prodCtrl.prod;
+      listProduitsLimit = prodCtrl.prodLimit;
       print("----------- les produits ----------");
       print(listProduits);
       print("------ fin list des produits ------");
@@ -72,6 +79,28 @@ class _HomeState extends State<Home> {
     await prodCtrl.RecupProduit();
     listProduits = prodCtrl.prod;
     return listProduits;
+  }
+
+  recupProduitLimit() async {
+    var prodCtrl = context.read<ProduitController>();
+    await prodCtrl.RecupProduitLimit('4');
+    listProduitsLimit = prodCtrl.prodLimit;
+    print("--------------------------------------------------------------");
+    print(listProduitsLimit);
+    for (var element in listProduitsLimit) {
+      print(element.id);
+      print(element.nom);
+      print(element.prix);
+    }
+    print("--------------------------------------------------------------");
+    return listProduitsLimit;
+  }
+
+  recupProduitRecherche(String valeur) async {
+    var prodCtrl = context.read<ProduitController>();
+    await prodCtrl.RechercheProduit(valeur);
+    listProduitRecherche = prodCtrl.prodRecherche;
+    return listProduitRecherche;
   }
 
   Future recupCategories() async {
@@ -112,7 +141,40 @@ class _HomeState extends State<Home> {
           Padding(
             padding: const EdgeInsets.only(right: 15),
             child: Center(
-              child: Badge(
+                child: Badge(
+              badgeColor: Colors.red,
+              padding: EdgeInsets.all(5),
+              badgeContent: Consumer<CommandeController>(
+                builder: ((context, value, child) {
+                  return FutureBuilder(
+                      future: value.recupNombreCmd(),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            snapshot.data.toString(),
+                            style: TextStyle(color: Colors.white),
+                          );
+                        }
+                        return Text(
+                          "0",
+                          style: TextStyle(color: Colors.white),
+                        );
+                      });
+                }),
+              ),
+              child: InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => Message()));
+                  },
+                  child: Icon(
+                    Icons.card_giftcard_rounded,
+                    size: 30,
+                  )),
+            )
+
+                /*Badge(
                 badgeColor: Colors.red,
                 padding: EdgeInsets.all(5),
                 badgeContent: Text(
@@ -123,14 +185,16 @@ class _HomeState extends State<Home> {
                     onTap: () {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (_) => Message()));
+                      /*Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => MapAdr()));*/
                     },
                     child: Icon(
                       Icons.card_giftcard_rounded,
                       size: 30,
                     )),
-              ),
+              ),*/
 
-              /*Badge(
+                /*Badge(
                 badgeColor: Colors.red,
                 //padding: EdgeInsets.all(5),
                 badgeContent: Text(
@@ -146,7 +210,7 @@ class _HomeState extends State<Home> {
                     },
                     icon: Icon(Icons.card_giftcard_sharp)),
               ),*/
-            ),
+                ),
           ),
         ],
       ),
@@ -243,7 +307,31 @@ class _HomeState extends State<Home> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const SearchTextField()
+                      TextFormField(
+                        //onChanged: ,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                            size: 26,
+                          ),
+                          /*suffixIcon: const Icon(
+                            Icons.mic,
+                            color: Colors.blue,
+                            size: 26,
+                          ),*/
+                          // helperText: "Search your topic",
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          labelText: "Rechercher un produit",
+                          labelStyle: const TextStyle(color: Colors.grey),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          isDense: true,
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -290,7 +378,11 @@ class _HomeState extends State<Home> {
                     children: [
                       //Boutique
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) =>
+                                  Marchant(nomCategorie: "boutique")));
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -312,7 +404,11 @@ class _HomeState extends State<Home> {
                       ),
                       //Restaurant
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) =>
+                                  Marchant(nomCategorie: "restaurant")));
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -334,7 +430,11 @@ class _HomeState extends State<Home> {
                       ),
                       //Marcher
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) =>
+                                  Marchant(nomCategorie: "super marché")));
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -356,7 +456,11 @@ class _HomeState extends State<Home> {
                       ),
                       //Pharmacie
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) =>
+                                  Marchant(nomCategorie: "pharmacie")));
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -377,7 +481,11 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) =>
+                                  Marchant(nomCategorie: "epicerie")));
+                        },
                         child: Container(
                           child: Column(
                             children: [
@@ -421,7 +529,7 @@ class _HomeState extends State<Home> {
                   height: 10,
                 ),
                 FutureBuilder(
-                    future: recupProduit(),
+                    future: recupProduitLimit(),
                     builder: (context, snapshot) {
                       List<Produit>? prod = snapshot.data as List<Produit>?;
                       print("Le type de valeur dans home");
@@ -430,6 +538,16 @@ class _HomeState extends State<Home> {
                         return SingleChildScrollView(
                           child: Column(
                             children: [
+                              /*ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: prod!.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return ProduitCard(
+                                    prod: listProduitsLimit[index],
+                                  );
+                                },
+                              ),*/
                               GridView.builder(
                                 shrinkWrap: true,
                                 itemCount: prod!.length,
@@ -447,7 +565,7 @@ class _HomeState extends State<Home> {
                                 ),
                                 itemBuilder: (context, index) {
                                   return ProduitCard(
-                                    prod: listProduits[index],
+                                    prod: listProduitsLimit[index],
                                   );
                                 },
                               ),
@@ -455,7 +573,7 @@ class _HomeState extends State<Home> {
                           ),
                         );
                       } else {
-                        return Center(child: CircularProgressIndicator());
+                        return Center(child: Text("chargement des données..."));
                       }
                     }),
                 Padding(

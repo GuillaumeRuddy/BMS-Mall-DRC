@@ -9,6 +9,8 @@ import 'package:mall_drc/model/produit.dart';
 class ProduitController with ChangeNotifier {
   List<Produit> prod = [];
   List<Produit> prodById = [];
+  List<Produit> prodLimit = [];
+  List<Produit> prodRecherche = [];
   // Methode pour recuper les produits
   RecupProduit() async {
     var url = Uri.parse(ApiUrl().produits);
@@ -49,6 +51,69 @@ class ProduitController with ChangeNotifier {
         bodyList = json.decode(reponse.body);
         print(bodyList);
         prodById = bodyList.map((e) => Produit.fromJson(e)).toList();
+      } else {
+        msg = body["msg"];
+      }
+      return {"msg": msg, "status": reponse.statusCode == 200};
+    } catch (e, stack) {
+      print(e);
+      print("******* Détails probleme : ${stack}");
+    }
+  }
+
+  RecupProduitLimit(String nombre) async {
+    var url = Uri.parse(
+        "https://malldrc.mithap.org/api/mall/v1/produit/take/${nombre}");
+    print(url);
+    try {
+      print("debut try");
+      String data = json.encode(nombre);
+      print(data);
+      var reponse = await http.get(url, headers: utilitaire.header);
+      print('Le Status est: **** ${reponse.statusCode}');
+      print(reponse.body);
+      var body = json.decode(reponse.body);
+      print('******* le body de produit ilimite *********');
+      print(body);
+      print(
+          '******* ------- fin du body de produit ilimite -------- *********');
+      var msg = "";
+      List bodyList = [];
+      if (reponse.statusCode == 200) {
+        bodyList = json.decode(reponse.body);
+        print(bodyList);
+        prodLimit = bodyList.map((e) => Produit.fromJson(e)).toList();
+        print(prodLimit.runtimeType);
+      } else {
+        msg = body["msg"];
+      }
+      return {"msg": msg, "status": reponse.statusCode == 200};
+    } catch (e, stack) {
+      print(e);
+      print("******* Détails probleme : ${stack}");
+    }
+  }
+
+  RechercheProduit(String nomProd) async {
+    var url = Uri.parse(
+        "https://malldrc.mithap.org/api/mall/v1/produit/recherche/${nomProd}");
+    print(url);
+    try {
+      print("debut try");
+      String data = json.encode(nomProd);
+      print(data);
+      var reponse = await http.get(url, headers: utilitaire.header);
+      print('Le Status est: **** ${reponse.statusCode}');
+      print(reponse.body);
+      var body = json.decode(reponse.body);
+      print('******* le body *********');
+      print(body);
+      var msg = "";
+      List bodyList = [];
+      if (reponse.statusCode == 200) {
+        bodyList = json.decode(reponse.body);
+        print(bodyList);
+        prodRecherche = bodyList.map((e) => Produit.fromJson(e)).toList();
       } else {
         msg = body["msg"];
       }

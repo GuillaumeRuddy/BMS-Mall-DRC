@@ -311,7 +311,7 @@ class _LoginState extends State<Login> {
     //Sur une ligne
     //context.read<AgentController>().envoyerDonnerVersAPI(data);
 
-    await Future.delayed(Duration(milliseconds: 800));
+    await Future.delayed(Duration(milliseconds: 1800));
 
     // quitter la boite de dialogue de chargement
     Navigator.pop(context);

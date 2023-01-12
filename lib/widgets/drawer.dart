@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
+import 'package:mall_drc/pages/map_adresse.dart';
 import 'package:mall_drc/pages/profil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -159,6 +160,23 @@ class _DrawerAddState extends State<DrawerAdd> {
                     ),
                     title: Text(
                       "A propos de nous",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MapAdresse()));
+                    },
+                    leading: Icon(
+                      FontAwesomeIcons.map,
+                      color: Colors.blue,
+                    ),
+                    title: Text(
+                      "MAP",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),

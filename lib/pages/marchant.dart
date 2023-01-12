@@ -30,6 +30,7 @@ class _MarchantState extends State<Marchant> {
       //await recupidSession();
       idmarchant = widget.nomCategorie!;
       await recupMarchand();
+      setState(() {});
     });
   }
 
@@ -40,7 +41,6 @@ class _MarchantState extends State<Marchant> {
     print("----------- les marchands ----------");
     print(listMarchand);
     print("------ fin list des marchands ------");
-    setState(() {});
   }
 
   recupMarchand2() async {
@@ -55,73 +55,53 @@ class _MarchantState extends State<Marchant> {
   Widget build(BuildContext context) {
     List<Map> cat = AppColors.listMarchand;
     return Scaffold(
-      body: ListView(
-        children: [
-          Container(
-            color: AppColors.blueR,
-            padding: EdgeInsets.all(15),
-            //entete
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 25.0,
+      appBar: AppBar(
+        title: Text(
+          "${widget.nomCategorie!}",
+          style: Theme.of(context)
+              .textTheme
+              .subtitle1!
+              .copyWith(fontWeight: FontWeight.w700, color: AppColors.ecrit),
+        ),
+        elevation: 0.0,
+        backgroundColor: AppColors.blueR,
+      ),
+      body: Container(
+        //height: MediaQuery.of(context).size.height / 1,
+        //padding: EdgeInsets.only(top: 15),
+        decoration: BoxDecoration(
+            color: Color.fromARGB(77, 233, 230, 230),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(35), topRight: Radius.circular(35))),
+        child: FutureBuilder(
+            future: recupMarchand2(),
+            builder: (context, snapshot) {
+              List<Marchand>? user = snapshot.data as List<Marchand>?;
+              print("Le type de valeur dans marchant");
+              print(user.runtimeType);
+              if (snapshot.hasData) {
+                print('le snapshoot');
+                print(snapshot.data);
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: user!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return MarchantCard(vendeur: listMarchand[index]);
+                        },
+                      )
+                    ],
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    "${widget.nomCategorie!}",
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          //details
-          Container(
-            //height: MediaQuery.of(context).size.height / 1,
-            //padding: EdgeInsets.only(top: 15),
-            decoration: BoxDecoration(
-                color: Color.fromARGB(77, 233, 230, 230),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(35),
-                    topRight: Radius.circular(35))),
-            child: FutureBuilder(
-                future: recupMarchand2(),
-                builder: (context, snapshot) {
-                  List<Marchand>? user = snapshot.data as List<Marchand>?;
-                  print("Le type de valeur dans marchant");
-                  print(user.runtimeType);
-                  if (snapshot.hasData) {
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: user!.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return MarchantCard(vendeur: listMarchand[index]);
-                            },
-                          )
-                        ],
-                      ),
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                }),
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            }),
 
-            /*SingleChildScrollView(
+        /*SingleChildScrollView(
               child: Column(
                 children: [
                   ListView.builder(
@@ -145,8 +125,6 @@ class _MarchantState extends State<Marchant> {
                 ],
               ),
             ),*/
-          ),
-        ],
       ),
     );
   }

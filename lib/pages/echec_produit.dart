@@ -3,14 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 
-class Success extends StatefulWidget {
-  const Success({Key? key}) : super(key: key);
+class echecProduit extends StatefulWidget {
+  const echecProduit({Key? key}) : super(key: key);
 
   @override
-  State<Success> createState() => _SuccessState();
+  State<echecProduit> createState() => _SuccessState();
 }
 
-class _SuccessState extends State<Success> {
+class _SuccessState extends State<echecProduit> {
   @override
   void initState() {
     // TODO: implement initState
@@ -26,12 +26,12 @@ class _SuccessState extends State<Success> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(
-              image: AssetImage("assets/img/success.gif"),
+              image: AssetImage("assets/img/no_product.png"),
             ),
             Padding(
               padding: EdgeInsets.all(10.0),
               child: Text(
-                "Commande envoyer avec succès",
+                "Aucun Produit dans cette categorie",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   color: Colors.black,
@@ -47,7 +47,7 @@ class _SuccessState extends State<Success> {
                 ),*/
               ),
             ),
-            SizedBox(
+            /*SizedBox(
               height: 30,
             ),
             ElevatedButton(
@@ -70,7 +70,7 @@ class _SuccessState extends State<Success> {
             ),
             SizedBox(
               height: 15,
-            ),
+            ),*/
           ],
         ),
       ),

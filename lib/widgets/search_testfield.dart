@@ -8,6 +8,7 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      //onChanged: ,
       decoration: InputDecoration(
         prefixIcon: const Icon(
           Icons.search,

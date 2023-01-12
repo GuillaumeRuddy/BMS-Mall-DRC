@@ -45,21 +45,9 @@ class PanierController with ChangeNotifier {
   void supressionItemPanier(String id) async {
     String reponse = "";
     reponse = await dbMAll!.suppressionProduitPanier(id);
-    print("Produit supprimer avec succes");
     notifyListeners();
+    print("Produit supprimer avec succes");
   }
-
-  /*Future<int> getNbrItemPanier(String id) async {
-    return nombre = await dbMAll!.getNbrListPanier(id) as int;
-  }*/
-
-  /*Future<int> supprimerProduit(int id) async {
-    int retour = await dbMAll!.suppressionProduitPanier(id);
-    print("----- le retour du panier -----");
-    print(retour);
-    print("----- fin du retour du panier -----");
-    return retour;
-  }*/
 
   void setItemPanier() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -113,7 +101,9 @@ class PanierController with ChangeNotifier {
 
   void diminuerPrixTotal(double prixAjouter) {
     print("le prix diminuer venant du panier est de: ${prixAjouter}");
-    prixTotal -= prixAjouter;
+    if (prixTotal > 0) {
+      prixTotal -= prixAjouter;
+    }
     print(
         "le prix diminuer après calcule et venant du panier est de: ${prixTotal}");
     setItemPanier();
