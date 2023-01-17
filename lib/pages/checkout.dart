@@ -4,6 +4,7 @@ import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/controler/commande/commandeController.dart';
 import 'package:mall_drc/model/adresse.dart';
 import 'package:mall_drc/model/produit.dart';
+import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/success.dart';
 import 'package:mall_drc/widgets/cardAdresse.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   String livr = "100";
   String? monTot;
   String monTotArt = "8.500";
+  int? nombrePanier;
   var operateur;
   List<Produit> ListProduit = [];
   Map resultat = {};
@@ -61,10 +63,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
     "AIRTEL-MONEY",
     "ORANGE-MONEY",
     "AFRI-MONEY"
-    /*{"MPESA", "17"},
-    {"AIRTEL-MONEY", "24"},
-    {"ORANGE-MONEY", "5"},
-    {"AFRI-MONEY", "32"}*/
+    /*{"Reseau": "MPESA", "id": "17"},
+    {"Reseau": "AIRTEL-MONEY", "id": "17"},
+    {"Reseau": "ORANGE-MONEY", "id": "5"},
+    {"Reseau": "AFRI-MONEY", "id": "19"},
+    {"Reseau": "ECOBANK", "id": "23"},
+    {"Reseau": "EQUITY", "id": "20"}*/
   ];
 
   List<DropdownMenuItem<String>> listOpe = [];
@@ -77,14 +81,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
       print("super commmm");
       listOpe.add(
         DropdownMenuItem(
-          value: com,
+          value: com, //com["id"],
           child: Text(
-            com,
+            com, //com["Reseau"],
             style: TextStyle(color: Colors.black, fontSize: 15),
           ),
         ),
       );
     }
+    setState(() {});
   }
 
   @override
@@ -93,6 +98,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
     super.initState();
     recup = widget.livraison;
     recupValSelect();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      var ctrlPanier = context.read<PanierController>();
+      nombrePanier = await ctrlPanier.getNbrItemPanier();
+      setState(() {});
+    });
   }
 
   @override
@@ -126,11 +136,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => MesAdresses()));
+                      recup != false
+                          ? Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => MesAdresses()))
+                          : null;
                     },
                     child: Text(
-                      'Changer',
+                      recup != false ? "Changer" : "",
                       style: Theme.of(context).textTheme.button!.copyWith(
                             color: Colors.redAccent,
                           ),
@@ -146,35 +158,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     : pasAdresse(),
               )),
               const SizedBox(height: 24.0),
-              /*Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Mode de Payement',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Text(
-                      'Change',
-                      style: Theme.of(context).textTheme.button!.copyWith(
-                            color: Colors.redAccent,
-                          ),
-                    ),
-                  ),
-                ],
-              ),*/
-              /*const SizedBox(height: 8.0),
-              Text(
-                'OrangeMoney',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              const SizedBox(height: 24.0),
-              Text(
-                num!,
-                style: Theme.of(context).textTheme.headline6,
-              ),*/
-              const SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -184,7 +167,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
-                  InkWell(
+                  /*InkWell(
                     onTap: () {
                       showDialog(
                           context: context,
@@ -284,14 +267,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             color: Colors.redAccent,
                           ),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
               const SizedBox(height: 13.0),
               Container(
                 child: recup != true
                     ? Text(
-                        'Lieu de vente',
+                        'Passer à la boutique',
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontSize: 17,
                             color: AppColors.ecrit,
@@ -305,46 +288,95 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             fontWeight: FontWeight.bold),
                       ),
               ),
-              const SizedBox(height: 32.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Montant:",
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Text(
-                    monTotArt,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Livraison:",
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Text(
-                    livr,
-                    style: Theme.of(context).textTheme.headline6,
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Montant:",
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Text(
-                    "${livr + monTotArt}",
-                    style: Theme.of(context).textTheme.headline6,
-                  )
-                ],
-              ),
+              const SizedBox(height: 72.0),
+              Consumer<PanierController>(builder: (context, value, child) {
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Nombre d'article:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${nombrePanier}",
+                          style:
+                              Theme.of(context).textTheme.subtitle2!.copyWith(),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Montant:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${value.getPrixTotal()} \CDF",
+                          style:
+                              Theme.of(context).textTheme.subtitle2!.copyWith(),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Livraison:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          livr + " CDF",
+                          style:
+                              Theme.of(context).textTheme.subtitle2!.copyWith(),
+                        )
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Montant TTC:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "${int.parse(livr) + value.getPrixTotal()} CDF",
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2!
+                              .copyWith(color: Colors.red),
+                        )
+                      ],
+                    ),
+                  ],
+                );
+              }),
               const SizedBox(height: 64.0),
               SizedBox(
                 width: double.infinity,
@@ -407,9 +439,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                               color: Colors.black,
                                               fontSize: 16),
                                         ),
+                                        dropdownColor: AppColors.ecrit,
                                         onChanged: (value) {
-                                          operateur = value;
-                                          setState(() {});
+                                          setState(() {
+                                            operateur = value;
+                                          });
                                         }),
                                     SizedBox(
                                       height: 10.0,
@@ -436,7 +470,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             //Prend la couleur bleu si numero valid sinon grise
                                             primary: AppColors.ecrit),
                                         onPressed: () async {
-                                          paiement();
+                                          //paiement();
+                                          envoyerCommande();
                                         },
                                         child: Padding(
                                           padding: EdgeInsets.all(12.0),
@@ -457,7 +492,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             );
                           });
                     } else {
-                      utilitaire.toast("Je passe la commande");
+                      envoyerCommande();
                       print("Je passe la commande directement");
                     }
                   },
@@ -488,13 +523,16 @@ class _CheckoutPageState extends State<CheckoutPage> {
   Widget pasAdresse() {
     return Column(
       children: [
+        SizedBox(
+          height: 10,
+        ),
         Center(
           child: Text(
-            'Aucune adresse!',
+            'Aucune adresse de livraison',
             style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
-        const SizedBox(height: 6.0),
+        /*const SizedBox(height: 6.0),
         InkWell(
           onTap: () {
             Navigator.of(context)
@@ -506,33 +544,62 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   color: Colors.redAccent,
                 ),
           ),
-        ),
+        ),*/
       ],
     );
   }
 
   void paiement() async {
-    // CircularBar
     utilitaire.lancerChargementDialog4(context);
 
-    // donnée a envoie à l'API
     Map paie = {
       "customer": telController.text,
       "amount": "${livr + monTotArt}",
-      "currency": "CDF"
+      "currency": "CDF",
+      "code": "9"
     };
 
     // appel requete API
     var ctrlPaie = context.read<CommandeController>();
-    var resultat = await ctrlPaie.Payement(paie);
-    print(resultat);
+    var retour = await ctrlPaie.Payement(paie);
+    print("retour du paiement vers jeremie");
+    print(retour);
 
-    if (resultat == "Succed") {
-      envoyerDonner();
+    if (retour["msg"] == "Succed") {
+      Map dataCallBack = retour["body"];
+      print("La map du call back provenant de jeremie");
+      print(dataCallBack);
+      var retourPaieAvada = await ctrlPaie.PayementUniPesa(dataCallBack);
+      var repStatut = retourPaieAvada["status"];
+      print("le statut du paiement-----------");
+      print(repStatut);
+      switch (repStatut) {
+        case 1:
+          utilitaire.afficherSnack(
+              context, "payement en cours...", Colors.green);
+          await Future.delayed(Duration(milliseconds: 800));
+          Navigator.pop(context, true);
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => Home()));
+          break;
+        case 2:
+          envoyerCommande();
+          break;
+        case 3:
+          utilitaire.afficherSnack(context, "payement echouet", Colors.green);
+          await Future.delayed(Duration(milliseconds: 800));
+          Navigator.pop(context, true);
+          break;
+        default:
+          utilitaire.afficherSnack(
+              context, "payement en cours de traitement...", Colors.green);
+          await Future.delayed(Duration(milliseconds: 800));
+          Navigator.pop(context, true);
+          break;
+      }
     }
   }
 
-  void envoyerDonner() async {
+  void envoyerCommande() async {
     utilitaire.lancerChargementDialog4(context);
 
     var ctrlCommande = context.read<CommandeController>();
@@ -552,8 +619,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
         "quantite": prod.quantite,
         "adresse": recup != false ? coord : "Aucune",
         "description": recup != false ? det : "Aucune",
-        "modelivraison": recup != false ? "oui" : "non",
-        "prixdriver": 10000
+        "modelivraison": recup != true ? "oui" : "non",
+        "prixdriver": 10000,
+        "aretirer": recup != true ? "oui" : "non"
       };
       print(data);
 

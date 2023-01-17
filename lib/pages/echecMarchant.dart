@@ -3,14 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 
-class echecProduit extends StatefulWidget {
-  const echecProduit({Key? key}) : super(key: key);
+class echecMarchant extends StatefulWidget {
+  const echecMarchant({Key? key}) : super(key: key);
 
   @override
-  State<echecProduit> createState() => _SuccessState();
+  State<echecMarchant> createState() => _SuccessState();
 }
 
-class _SuccessState extends State<echecProduit> {
+class _SuccessState extends State<echecMarchant> {
   @override
   void initState() {
     // TODO: implement initState
@@ -24,17 +24,18 @@ class _SuccessState extends State<echecProduit> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image(
-            image: AssetImage("assets/img/no_product.png"),
+            image: AssetImage("assets/img/delivery_vendor.png"),
           ),
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Text(
               "Aucun Produit dans cette categorie",
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle1!
-                  .copyWith(color: AppColors.blueR),
+              style: GoogleFonts.poppins(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
               /* GoogleFonts.lobster(
                   textStyle: TextStyle(
                     color: Colors.black,

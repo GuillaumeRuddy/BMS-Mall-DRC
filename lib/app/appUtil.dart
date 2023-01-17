@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class utilitaire {
   static Map<String, String> header = {"Content-type": "application/json"};
+  static const String cleAPIGoogle = "AIzaSyCOezElHw_-X9BTbMwFVkg-XLKllqrXA_E";
 
   static toast(String msag) {
     Fluttertoast.showToast(

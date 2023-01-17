@@ -55,12 +55,13 @@ dependencies:
   flutter_svg: ^1.1.6
   #google_maps_flutter: 
   #mobile_scanner: ^2.0.0
-  #socket_io_client: ^2.0.0
+  socket_io_client: ^2.0.0
   flutter_map: ^2.2.0 
   latlong2: ^0.8.1 
   google_maps_flutter: ^2.2.3
-
-  #geocoding: any
+  flutter_polyline_points: ^1.0.0
+  dio: ^4.0.6
+  geocoding: 
   #geocoder: any
   geolocator: 
   tuple: any

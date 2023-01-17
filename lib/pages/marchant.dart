@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:mall_drc/controler/marchants/marchandController.dart';
 import 'package:mall_drc/model/categorie.dart';
 import 'package:mall_drc/model/marchant.dart';
+import 'package:mall_drc/pages/echecMarchant.dart';
 import 'package:mall_drc/widgets/cardMarchant.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +54,6 @@ class _MarchantState extends State<Marchant> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map> cat = AppColors.listMarchand;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -82,20 +82,24 @@ class _MarchantState extends State<Marchant> {
               if (snapshot.hasData) {
                 print('le snapshoot');
                 print(snapshot.data);
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: user!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return MarchantCard(vendeur: listMarchand[index]);
-                        },
-                      )
-                    ],
-                  ),
-                );
+                if (user!.isEmpty) {
+                  return echecMarchant();
+                } else {
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: user.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return MarchantCard(vendeur: listMarchand[index]);
+                          },
+                        )
+                      ],
+                    ),
+                  );
+                }
               } else {
                 return Center(child: CircularProgressIndicator());
               }

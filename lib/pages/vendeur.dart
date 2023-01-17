@@ -9,11 +9,13 @@ import 'package:mall_drc/controler/panier/panierController.dart';
 import 'package:mall_drc/controler/produits/produitController.dart';
 import 'package:mall_drc/model/marchant.dart';
 import 'package:mall_drc/pages/categories.dart';
+import 'package:mall_drc/pages/infos_vendeur.dart';
 import 'package:mall_drc/pages/notification.dart';
 import 'package:mall_drc/pages/nouveaute.dart';
 import 'package:mall_drc/pages/panier.dart';
 import 'package:mall_drc/pages/profil.dart';
 import 'package:mall_drc/widgets/drawer.dart';
+import 'package:mall_drc/widgets/drawer_vendeur.dart';
 import 'package:mall_drc/widgets/produit_card.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,6 +76,14 @@ class _VendeurState extends State<Vendeur> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      /*appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        primary: false,
+      ),*/
+      drawer: DrawerVendeur(),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -91,6 +101,7 @@ class _VendeurState extends State<Vendeur> {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 widget.march!.nomEntreprise ?? "",
+                maxLines: 2,
                 style: Theme.of(context).textTheme.headline6!.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -130,6 +141,19 @@ class _VendeurState extends State<Vendeur> {
               ),
             ),
             actions: [
+              Container(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => InfoVendeur(march: widget.march)));
+                    },
+                    icon: Icon(
+                      Icons.info_outline,
+                      color: Colors.white,
+                      size: 30,
+                    )),
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 15),
                 child: Center(
@@ -179,7 +203,7 @@ class _VendeurState extends State<Vendeur> {
                       Container(
                         padding:
                             const EdgeInsets.only(top: 10, left: 20, right: 20),
-                        height: size.height / 8,
+                        height: size.height / 15,
                         width: double.infinity,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -200,6 +224,7 @@ class _VendeurState extends State<Vendeur> {
                           children: [
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 /*Text(
                                   "statut: ",
@@ -223,9 +248,44 @@ class _VendeurState extends State<Vendeur> {
                                             fontSize: 15,
                                             fontWeight: FontWeight.w400),
                                       ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Livraison",
+                                      style: GoogleFonts.poppins(
+                                          color: AppColors.ecrit,
+                                          fontSize: 13,
+                                          //backgroundColor: Colors.white,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      "/",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          //backgroundColor: Colors.blueAccent,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      "Ramasser",
+                                      style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          //backgroundColor: Colors.blueAccent,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
-                            Row(
+                            /*Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -243,8 +303,8 @@ class _VendeurState extends State<Vendeur> {
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
-                            ),
-                            Row(
+                            ),*/
+                            /*Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -262,7 +322,7 @@ class _VendeurState extends State<Vendeur> {
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
-                            ),
+                            ),*/
                           ],
                         ),
                       ),

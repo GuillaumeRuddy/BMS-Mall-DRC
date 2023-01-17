@@ -3,14 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 
-class echecPanier extends StatefulWidget {
-  const echecPanier({Key? key}) : super(key: key);
+class echecCmd extends StatefulWidget {
+  const echecCmd({Key? key}) : super(key: key);
 
   @override
-  State<echecPanier> createState() => _SuccessState();
+  State<echecCmd> createState() => _SuccessState();
 }
 
-class _SuccessState extends State<echecPanier> {
+class _SuccessState extends State<echecCmd> {
   @override
   void initState() {
     // TODO: implement initState
@@ -24,18 +24,17 @@ class _SuccessState extends State<echecPanier> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image(
-            image: AssetImage("assets/img/no_cart.png"),
+            image: AssetImage("assets/img/no_product.png"),
           ),
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Text(
-              "Aucun Produit dans le panier",
+              "Aucune Commande disponible pour le moment",
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1!
+                  .copyWith(color: AppColors.blueR),
             ),
           ),
         ],

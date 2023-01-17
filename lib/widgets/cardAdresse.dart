@@ -43,6 +43,7 @@ class CardAdresse extends StatelessWidget {
                 children: [
                   Text(
                     nom ?? "",
+                    maxLines: 1,
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                         fontWeight: FontWeight.w600, color: AppColors.ecrit),
                   ),
@@ -63,10 +64,12 @@ class CardAdresse extends StatelessWidget {
               const SizedBox(height: 8.0),
               Text(
                 adresse ?? "",
+                maxLines: 2,
                 style: Theme.of(context).textTheme.subtitle1,
               ),
               Text(
                 description ?? "",
+                maxLines: 1,
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ],

@@ -72,6 +72,7 @@ class _CategorieState extends State<Categories> {
                   children: [
                     ListView.builder(
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: user!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return CategorieCard(

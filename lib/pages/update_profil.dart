@@ -1,21 +1,17 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/model/adresse.dart';
-import 'package:mall_drc/pages/editProfil.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../app/endPoint.dart';
-import '../controler/utilisateurs/utilisateurController.dart';
 import '../model/utilisateur.dart';
 
 class DetailUser extends StatefulWidget {
+  //Utilisateur data;
+  //DetailUser({required this.data});
+  //DetailUser();
+
   @override
   State<DetailUser> createState() => _DetailUserState();
 }
@@ -29,12 +25,6 @@ class _DetailUserState extends State<DetailUser> {
   String? telephone;
   String? motdepasse;
   String image = "mall/mall.jpg";
-  Utilisateur? user;
-  var image_file;
-  String photoIdent = "";
-  File? photo;
-  var resultat;
-  var imageProf;
 
   @override
   void initState() {
@@ -53,7 +43,8 @@ class _DetailUserState extends State<DetailUser> {
     telephone = pref.getString("telephone");
     motdepasse = pref.getString("motdepasse");
     image = pref.getString("image") ?? "mall/mall.jpg";
-    user = Utilisateur(
+    setState(() {});
+    /*user = Utilisateur(
         id: ident.toString(),
         nom: nom,
         prenom: prenom,
@@ -61,8 +52,7 @@ class _DetailUserState extends State<DetailUser> {
         telephone: telephone,
         motDePasse: motdepasse,
         image: image);
-    setState(() {});
-    /*return user;*/
+    return user;*/
   }
 
   @override
@@ -110,6 +100,15 @@ class _DetailUserState extends State<DetailUser> {
               SizedBox(
                 height: 40,
               ),
+              /*FutureBuilder(
+                  future: recupUser(),
+                  builder: (context, snapshot) {
+                    Utilisateur user = snapshot.data! as Utilisateur;
+                    print("Le type de valeur dans marchant");
+                    print(user.runtimeType);
+                    if (snapshot.hasData) */
+
+              /*if(nom == null || nom.isEmpty){*/
               SingleChildScrollView(
                 child: Column(
                   children: [
@@ -117,15 +116,10 @@ class _DetailUserState extends State<DetailUser> {
                       child: ClipOval(
                         child: Material(
                             color: Colors.transparent,
-                            child: imageProf == null
-                                ? Image.network(
-                                    "${ApiUrl.baseUrl}/${image}",
-                                    height: 120.0,
-                                  )
-                                : Image.file(
-                                    image_file,
-                                    //fit: BoxFit.contain,
-                                  )),
+                            child: Image.network(
+                              "${ApiUrl.baseUrl}/${image}",
+                              height: 120.0,
+                            )),
                       ),
                     ),
                     //profileImageVue(),
@@ -151,7 +145,7 @@ class _DetailUserState extends State<DetailUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    editerPhoto(),
+                    editerButtonVue(),
                     SizedBox(
                       height: 70,
                     ),
@@ -165,9 +159,8 @@ class _DetailUserState extends State<DetailUser> {
                     ),
                     rapportVue(title: "Adresse", value: "N/A"),
                     SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
-                    editerProfilButton()
                   ],
                 ),
               ) /*;
@@ -219,7 +212,7 @@ class _DetailUserState extends State<DetailUser> {
     );
   }
 
-  editerPhoto() {
+  editerButtonVue() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         shape: StadiumBorder(),
@@ -227,33 +220,12 @@ class _DetailUserState extends State<DetailUser> {
         padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
       ),
       child: Text(
-        "changer photo",
+        "Editer",
         style: TextStyle(color: AppColors.blueR),
       ),
       onPressed: () {
-        menuContextuel(context);
-      },
-    );
-  }
-
-  editerProfilButton() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: StadiumBorder(),
-        primary: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      ),
-      child: Text(
-        "Editer profil",
-        style: TextStyle(color: AppColors.blueR),
-      ),
-      onPressed: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (ctx) => EditProfil(
-                      user: user!,
-                    )));
+        /*Navigator.push(
+            context, MaterialPageRoute(builder: (ctx) => null));*/
       },
     );
   }
@@ -306,107 +278,5 @@ class _DetailUserState extends State<DetailUser> {
         ],
       ),
     );
-  }
-
-  menuContextuel(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext ctxt) {
-          return Wrap(
-            children: [
-              Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Prendre une photo",
-                      style: GoogleFonts.poppins(
-                          fontSize: 14, fontWeight: FontWeight.w600),
-                    ),
-                    Divider(
-                      height: 2,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.camera_alt_outlined),
-                      title: Text(
-                        "Caméra",
-                        style: GoogleFonts.poppins(
-                            fontSize: 14, fontWeight: FontWeight.w600),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        capturePhoto(ImageSource.camera);
-                      },
-                    ),
-                    ListTile(
-                        leading: Icon(Icons.photo),
-                        title: Text(
-                          "Gallery",
-                          style: GoogleFonts.poppins(
-                              fontSize: 14, fontWeight: FontWeight.w600),
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          capturePhoto(ImageSource.gallery);
-                        }),
-                  ],
-                ),
-              )
-            ],
-          );
-        });
-  }
-
-  capturePhoto(ImageSource source) async {
-    final imagePath = await ImagePicker()
-        .getImage(source: source, maxWidth: 500, maxHeight: 500);
-    if (imagePath != null) {
-      setState(() {
-        photo = File(imagePath.path);
-        photoIdent = base64Encode(photo!.readAsBytesSync());
-        print(
-            ' ###### la photo convertie lors de la capture :  ########  *****   ' +
-                photoIdent);
-        print(photo);
-        MAJPhoto(photo!);
-      });
-    }
-  }
-
-  void MAJPhoto(File myPhoto) async {
-    utilitaire.lancerChargementDialog4(context);
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    int? ident = await pref.getInt("id");
-
-    print("Voila my photo : ${myPhoto}");
-
-    // appel requete API
-    Map data = {"id": ident, "image": myPhoto};
-
-    print(data);
-
-    var userCtrl = context.read<UtilisateurController>();
-    resultat = await userCtrl.MajPhotoProfile(data);
-    print('resulta de la mise a jour a afficher ++++++++++++');
-    print(resultat);
-    utilitaire.afficherSnack(context, resultat["msg"],
-        resultat["status"] ? Colors.green : Colors.red);
-
-    //Sur une ligne
-    //context.read<AgentController>().envoyerDonnerVersAPI(data);
-
-    await Future.delayed(Duration(milliseconds: 1800));
-
-    // quitter la boite de dialogue de chargement
-    Navigator.pop(context);
-
-    if (resultat['status']) {
-      setState(() {
-        imageProf = myPhoto;
-      });
-      /*Navigator.pop(context);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => DetailUser()));*/
-    }
   }
 }

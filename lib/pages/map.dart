@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapAdr extends StatefulWidget {
@@ -15,6 +16,55 @@ class MapAdr extends StatefulWidget {
 class _MapAdrState extends State<MapAdr> {
   LatLng pointD = LatLng(51.509364, -0.08);
   var location = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    /*WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await getCurrentLocation().then((value) {
+        double lat = value.latitude;
+        double long = value.longitude;
+        print(lat);
+        print(long);
+        pointD = LatLng(lat, long);
+        setState(() {});
+      });
+    });*/
+  }
+
+  Future<Position> getCurrentLocation() async {
+    //check si le service de location est activé
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Service de localisation desactivé');
+    }
+
+    //permet de demander lacces
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('La permission de localisation a été refusé');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'la permission de la localisation permanente a été réfuse, nous ne pouvons pas repondre à votre requette.');
+    }
+    // ici on retourne la position
+    var loc = await Geolocator.getCurrentPosition();
+    double lat = loc.latitude;
+    double long = loc.longitude;
+    print(lat);
+    print(long);
+    pointD = LatLng(lat, long);
+    //mapControle.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: currentLocation, zoom: 20)));
+    setState(() {});
+    return loc;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

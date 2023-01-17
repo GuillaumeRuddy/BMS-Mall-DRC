@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/model/commande.dart';
+import 'package:mall_drc/pages/echecCommande.dart';
 import 'package:mall_drc/widgets/cardCommande.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,7 @@ class Message extends StatefulWidget {
 class _MessageState extends State<Message> {
   List<Commande> listCommande = [];
   String? idUse;
+  Commande? cmd;
 
   recupCommande() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -51,22 +53,24 @@ class _MessageState extends State<Message> {
             print("Le type de valeur dans Commande");
             print(user.runtimeType);
             if (snapshot.hasData) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: user!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CardCommande(
-                            ref: user[index].reference,
-                            adresse: user[index].adresse,
-                            statut: user[index].statut);
-                      },
-                    )
-                  ],
-                ),
-              );
+              if (user!.isEmpty) {
+                return echecCmd();
+              } else {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: user.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CardCommande(cmd: user[index]);
+                        },
+                      )
+                    ],
+                  ),
+                );
+              }
             } else {
               return Center(child: CircularProgressIndicator());
             }

@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:mall_drc/controler/adresse/adresseController.dart';
 import 'package:mall_drc/model/adresse.dart';
 import 'package:mall_drc/pages/coordoner.dart';
+import 'package:mall_drc/pages/echecAdresse.dart';
 import 'package:mall_drc/widgets/cardAdresse.dart';
 import 'package:provider/provider.dart';
 
@@ -57,24 +58,28 @@ class _MesAdressesState extends State<MesAdresses> {
             print("Le type de valeur dans adresse");
             print(adr.runtimeType);
             if (snapshot.hasData) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: adr!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CardAdresse(
-                          nom: adr[index].nom,
-                          adresse: adr[index].adresse,
-                          description: adr[index].description,
-                        );
-                        ;
-                      },
-                    )
-                  ],
-                ),
-              );
+              if (adr!.isEmpty) {
+                return echecAdr();
+              } else {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: adr.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CardAdresse(
+                            nom: adr[index].nom,
+                            adresse: adr[index].adresse,
+                            description: adr[index].description,
+                          );
+                          ;
+                        },
+                      )
+                    ],
+                  ),
+                );
+              }
             } else {
               return Center(
                 child: Column(

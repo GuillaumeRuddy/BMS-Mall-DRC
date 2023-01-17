@@ -2,26 +2,27 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:mall_drc/app/app_constatns.dart';
+import 'package:mall_drc/model/commande.dart';
 import 'package:mall_drc/pages/adresse.dart';
 import 'package:mall_drc/pages/checkout.dart';
 import 'package:mall_drc/pages/coordoner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../pages/detailsCmd.dart';
+
 class CardCommande extends StatelessWidget {
-  String? ref;
-  String? statut;
-  String? adresse;
-  CardCommande({super.key, this.ref, this.statut, this.adresse});
+  Commande? cmd;
+  CardCommande({super.key, this.cmd});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        /*enregsitrerAdrSelect();
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => CheckoutPage(
-                  livraison: false,
-                )));*/
+            builder: (_) => DetailsCmd(
+                  livraison: (cmd!.aretirer == "oui") ? true : false,
+                  cmde: cmd,
+                )));
       },
       child: Card(
         shape:
@@ -42,7 +43,7 @@ class CardCommande extends StatelessWidget {
                             fontWeight: FontWeight.w600, color: Colors.black),
                       ),
                       Text(
-                        ref ?? "",
+                        cmd!.reference ?? "",
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontWeight: FontWeight.w600,
                             color: AppColors.ecrit),
@@ -72,7 +73,7 @@ class CardCommande extends StatelessWidget {
                         fontWeight: FontWeight.w600, color: Colors.black),
                   ),
                   Text(
-                    adresse ?? "",
+                    cmd!.adresse ?? "",
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ],
@@ -85,7 +86,7 @@ class CardCommande extends StatelessWidget {
                         fontWeight: FontWeight.w600, color: Colors.black),
                   ),
                   Text(
-                    statut ?? "",
+                    cmd!.statut ?? "",
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                         fontWeight: FontWeight.w600, color: Colors.red),
                   ),

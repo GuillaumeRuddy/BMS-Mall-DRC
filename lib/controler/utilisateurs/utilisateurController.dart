@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mall_drc/app/endPoint.dart';
@@ -10,6 +11,7 @@ import 'package:mall_drc/model/utilisateur.dart';
 class UtilisateurController with ChangeNotifier {
   GetStorage stockage = GetStorage();
   List<Utilisateur> infoUser = [];
+  List<Utilisateur> infoUserMAJ = [];
 
   ecritureStockage(Utilisateur utilisateur) {
     stockage.write('user', utilisateur);
@@ -82,6 +84,85 @@ class UtilisateurController with ChangeNotifier {
         msg = "Connecter";
       } else {
         msg = "email ou mot de passe incorrect";
+      }
+      Map retour = {
+        "msg": msg,
+        "status": reponse.statusCode == 200,
+        "utilisateur": body
+      };
+      return retour;
+    } catch (e, stack) {
+      print(e);
+      print("Détail problème connexion ${stack}");
+      return {"msg": "${stack}", "status": false};
+      /*return {"msg": "Erreur inattendue", "status": false};*/
+    }
+  }
+
+  MajProfile(Map client) async {
+    Dio dio = Dio();
+    var url = Uri.parse(ApiUrl().majProfile);
+    print(url);
+    try {
+      String data = json.encode(client);
+      print(data);
+      var retPhoto = await dio.post(
+        ApiUrl().majProfile,
+      );
+      var reponse =
+          await http.post(url, headers: utilitaire.header, body: data);
+      print('Le Statusss maj *** est: **** ${reponse.statusCode}');
+      Map<String, dynamic> body = json.decode(reponse.body);
+      print(body);
+      Utilisateur user = Utilisateur.fromJson(body);
+      var msg = "";
+      if (reponse.statusCode == 200) {
+        msg = body["msg"];
+        ;
+      } else {
+        msg = "echec de la mise à jour du profile";
+        ;
+      }
+      Map retour = {"msg": msg, "status": reponse.statusCode == 200};
+      return retour;
+    } catch (e, stack) {
+      print(e);
+      print("Détail problème connexion ${stack}");
+      return {"msg": "${stack}", "status": false};
+      /*return {"msg": "Erreur inattendue", "status": false};*/
+    }
+  }
+
+  MajPhotoProfile(Map photoClient) async {
+    var url = Uri.parse(ApiUrl().majPhotoProfile);
+    print(url);
+    try {
+      //seconde Méthode
+      /*var request = http.MultipartRequest("Post", url);
+      request.fields["id"] = photoClient["id"];
+      var pic =
+          await http.MultipartFile.fromPath("image", photoClient["image"]);
+      request.files.add(pic);
+      var rep = await request.send();
+      if (rep.statusCode == 200) {
+        print("image uploader avec succès");
+      } else {
+        print("image n'a pas pus être uploader");
+      }*/
+
+      String data = json.encode(photoClient);
+      print(data);
+      var reponse =
+          await http.post(url, headers: utilitaire.header, body: data);
+      print('Le Statusss majPhoto *** est: **** ${reponse.statusCode}');
+      Map<String, dynamic> body = json.decode(reponse.body);
+      print(body);
+      //Utilisateur user = Utilisateur.fromJson(body);
+      var msg = "";
+      if (reponse.statusCode == 200) {
+        msg = "MAj photo reussit";
+      } else {
+        msg = "Echec de la MAJ photo";
       }
       Map retour = {
         "msg": msg,
