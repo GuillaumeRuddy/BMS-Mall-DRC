@@ -25,6 +25,7 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  String? ident;
   String? nom;
   String? coord;
   String? det;
@@ -99,8 +100,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
     recup = widget.livraison;
     recupValSelect();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      ident = pref.getInt("id").toString();
       var ctrlPanier = context.read<PanierController>();
-      nombrePanier = await ctrlPanier.getNbrItemPanier();
+      nombrePanier = await ctrlPanier.getNbrItemPanier(ident!);
       setState(() {});
     });
   }
@@ -528,7 +531,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
         Center(
           child: Text(
-            'Aucune adresse de livraison',
+            'Aucune adresse pour ce mode de recepetion',
             style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
@@ -630,13 +633,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
       print(resultat);
     }
 
-    utilitaire.afficherSnack(context, resultat["msg"],
+    /*utilitaire.afficherSnack(context, resultat["msg"],
         resultat["status"] ? Colors.green : Colors.red);
 
-    await Future.delayed(Duration(milliseconds: 800));
+    await Future.delayed(Duration(milliseconds: 800));*/
 
     if (resultat['status']) {
-      Navigator.pop(context, true);
+      /*Navigator.pop(context, true);*/
       baseDD.suppressionTousProduitPanier();
       reinit();
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => Success()));

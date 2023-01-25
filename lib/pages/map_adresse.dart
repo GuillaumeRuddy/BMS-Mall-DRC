@@ -36,8 +36,8 @@ class _MapAdresseState extends State<MapAdresse> {
         print(lat);
         print(long);
         currentLocation = LatLng(lat, long);
-        mapControle.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: currentLocation, zoom: 20)));
+        /*mapControle.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: currentLocation, zoom: 20)));*/
         setState(() {});
       });
     });
@@ -81,11 +81,14 @@ class _MapAdresseState extends State<MapAdresse> {
     return WillPopScope(
         onWillPop: () async {
           /*Navigator.pop(context, adresse);*/
-          Navigator.pop(context);
+          /*Navigator.pop(context);
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => Home()));
-          return true;
+          return true;*/
           //return Future.value(true);
+          Navigator.pop(context, true);
+          Navigator.pop(context, true);
+          return true;
         },
         child: Scaffold(
             appBar: entete(),
@@ -119,7 +122,7 @@ class _MapAdresseState extends State<MapAdresse> {
                     }
                     return Center(
                       child: Text(
-                        "chargment de la Map en cours...",
+                        "chargement de la Map en cours...",
                         style: TextStyle(color: Colors.black),
                       ),
                     );

@@ -38,7 +38,7 @@ class _PanierCardState extends State<PanierCard> {
     var ctrlPanier = context.read<PanierController>();
     return Container(
       height: 110,
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 7, vertical: 2),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: Colors.white,
@@ -50,7 +50,7 @@ class _PanierCardState extends State<PanierCard> {
                 blurRadius: 10)
           ]),
       child: Row(
-        //mainAxisAlignment: MainAxisAlignment.start,
+        //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             height: MediaQuery.of(context).size.height / 4,
@@ -62,56 +62,54 @@ class _PanierCardState extends State<PanierCard> {
             ),
           ),
           Container(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.all(3.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.nom ?? "",
                   maxLines: 2,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.ecrit,
-                  ),
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 17,
+                      color: AppColors.ecrit),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //mainAxisAlignment: MainAxisAlignment.start,
+                  //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Qte: ",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.blueR,
-                          ),
-                        ),
-                        Text(
-                          widget.qte ?? "",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.ecrit,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "Qte: ",
+                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          color: AppColors.blueR),
+                    ),
+                    Text(
+                      widget.qte ?? "",
+                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          color: AppColors.ecrit),
                     ),
                   ],
                 ),
                 Text(
                   "${widget.prix.toString()}" + " ${widget.monniae}",
                   textAlign: TextAlign.left,
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      color: AppColors.blueR),
                 ),
               ],
             ),
           ),
           Container(
+            alignment: Alignment.center,
             child: IconButton(
                 onPressed: () {
                   ctrlPanier.diminuerCtrPanier();
@@ -128,6 +126,7 @@ class _PanierCardState extends State<PanierCard> {
                 icon: Icon(
                   Icons.delete,
                   color: Colors.red,
+                  size: 30,
                 )),
           )
         ],

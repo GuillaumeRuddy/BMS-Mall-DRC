@@ -3,14 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 
-class echecAdr extends StatefulWidget {
-  const echecAdr({Key? key}) : super(key: key);
+class echecLivr extends StatefulWidget {
+  const echecLivr({Key? key}) : super(key: key);
 
   @override
-  State<echecAdr> createState() => _SuccessState();
+  State<echecLivr> createState() => _SuccessState();
 }
 
-class _SuccessState extends State<echecAdr> {
+class _SuccessState extends State<echecLivr> {
   @override
   void initState() {
     // TODO: implement initState
@@ -24,12 +24,12 @@ class _SuccessState extends State<echecAdr> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image(
-            image: AssetImage("assets/img/vendor.png"),
+            image: AssetImage("assets/img/L.png"),
           ),
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Text(
-              "Aucune adresse ajouter pour le moment",
+              "Vous avez aucune livraison pour le moment",
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme

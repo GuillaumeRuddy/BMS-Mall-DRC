@@ -10,7 +10,7 @@ import 'package:mall_drc/controler/produits/produitController.dart';
 import 'package:mall_drc/model/marchant.dart';
 import 'package:mall_drc/pages/categories.dart';
 import 'package:mall_drc/pages/infos_vendeur.dart';
-import 'package:mall_drc/pages/notification.dart';
+import 'package:mall_drc/pages/list_commande.dart';
 import 'package:mall_drc/pages/nouveaute.dart';
 import 'package:mall_drc/pages/panier.dart';
 import 'package:mall_drc/pages/profil.dart';
@@ -41,6 +41,7 @@ class _VendeurState extends State<Vendeur> {
   List<Produit> listProduits = [];
   late Marchand unMarchand;
   late Stream<List<Produit>> listP;
+  String? ident;
 
   @override
   void initState() {
@@ -51,6 +52,8 @@ class _VendeurState extends State<Vendeur> {
     print(widget.march!.id);
     print(widget.march!.nomEntreprise);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      ident = pref.getInt("id").toString();
       utilitaire.lancerChargementDialog4(context);
       var prodCtrl = context.read<ProduitController>();
       await prodCtrl.RecupProduitById(widget.march!.id.toString());
@@ -163,7 +166,7 @@ class _VendeurState extends State<Vendeur> {
                     badgeContent: Consumer<PanierController>(
                       builder: ((context, value, child) {
                         return FutureBuilder(
-                            future: value.getNbrItemPanier(),
+                            future: value.getNbrItemPanier(ident ?? ""),
                             builder: (BuildContext context,
                                 AsyncSnapshot<int> snapshot) {
                               if (snapshot.hasData) {

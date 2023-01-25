@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -9,6 +10,8 @@ import 'package:mall_drc/controler/commande/commandeController.dart';
 import 'package:mall_drc/controler/panier/panierController.dart';
 import 'package:mall_drc/controler/produits/produitController.dart';
 import 'package:mall_drc/pages/categories.dart';
+import 'package:mall_drc/pages/livraison.dart';
+import 'package:mall_drc/pages/list_commande.dart';
 import 'package:mall_drc/pages/notification.dart';
 import 'package:mall_drc/pages/nouveaute.dart';
 import 'package:mall_drc/pages/panier.dart';
@@ -26,15 +29,13 @@ import '../model/produit.dart';
 import '../widgets/category_card.dart';
 import '../widgets/circle_button.dart';
 import '../widgets/search_testfield.dart';
+import 'details.dart';
 import 'map.dart';
 import 'marchant.dart';
 
 class Home extends StatefulWidget {
-  //String? idt;
-  const Home({
-    Key? key,
-    /*this.idt*/
-  }) : super(key: key);
+  String? idt;
+  Home({Key? key, this.idt}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -54,6 +55,7 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     //recupSession();
+    ident = widget.idt;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       //await recupidSession();
       utilitaire.lancerChargementDialog4(context);
@@ -166,7 +168,7 @@ class _HomeState extends State<Home> {
               child: InkWell(
                   onTap: () {
                     Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => Message()));
+                        .push(MaterialPageRoute(builder: (_) => Activite()));
                   },
                   child: Icon(
                     Icons.card_giftcard_rounded,
@@ -212,13 +214,29 @@ class _HomeState extends State<Home> {
               ),*/
                 ),
           ),
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: InkWell(
+                onTap: () {
+                  showSearch(
+                      context: context,
+                      delegate:
+                          _MyDelegate(listDesProdRecherche: listProduits));
+                },
+                child: Icon(
+                  Icons.search,
+                  size: 30,
+                )),
+          )
         ],
       ),
       drawer: DrawerAdd(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            /*Container(
+      body: (listProduitsLimit == null || listProduits == null)
+          ? Center(child: Text('Chargement des données en cours...'))
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  /*Container(
               color: AppColors.blueR,
               padding: EdgeInsets.all(20),
               //entete
@@ -253,302 +271,296 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),*/
-            Container(
-              child: Center(
-                  child: Column(children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                  height: 150,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      stops: [0.1, 0.5],
-                      colors: [
-                        AppColors.blue,
-                        AppColors.blueR,
-                      ],
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          FutureBuilder(
-                              future: recupSession(),
-                              builder: (context, snapshot) {
-                                var user = snapshot.data;
-                                return Row(
-                                  children: [
-                                    Text(
-                                      "Salut! $user",
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.blue,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
-                                );
-                              }),
+                  Container(
+                    child: Center(
+                        child: Column(children: [
+                      Container(
+                        padding:
+                            const EdgeInsets.only(top: 10, left: 20, right: 20),
+                        height: 150,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            stops: [0.1, 0.5],
+                            colors: [
+                              AppColors.blue,
+                              AppColors.blueR,
+                            ],
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                FutureBuilder(
+                                    future: recupSession(),
+                                    builder: (context, snapshot) {
+                                      var user = snapshot.data;
+                                      return Row(
+                                        children: [
+                                          Text(
+                                            "Salut! $user",
+                                            style: GoogleFonts.poppins(
+                                                color: Colors.blue,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      );
+                                    }),
 
-                          /*CircleButton(
+                                /*CircleButton(
                             icon: Icons.account_circle,
                             onPressed: () {},
                           ),*/
-                        ],
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showSearch(
+                                    context: context, delegate: _MyDelegate());
+                              },
+                              child: TextFormField(
+                                //onChanged: ,
+                                decoration: InputDecoration(
+                                  prefixIcon: const Icon(
+                                    Icons.search,
+                                    color: Colors.grey,
+                                    size: 26,
+                                  ),
+                                  /*suffixIcon: const Icon(
+                              Icons.mic,
+                              color: Colors.blue,
+                              size: 26,
+                            ),*/
+                                  // helperText: "Search your topic",
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  labelText: "Rechercher un produit",
+                                  labelStyle:
+                                      const TextStyle(color: Colors.grey),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(40),
+                                  ),
+                                  isDense: true,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 5.0),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 5, left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "ACCES RAPIDE",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.blueR),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 1,
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 10, left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            //Boutique
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => Livraison()));
+                                },
+                                child: Container(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          width: 180,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Colors.blue),
+                                          child: Column(
+                                            children: [
+                                              Center(
+                                                  child: Icon(
+                                                Icons.local_shipping,
+                                                color: Colors.white,
+                                                size: 75,
+                                              )),
+                                              Text(
+                                                "Livraison",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                              )
+                                            ],
+                                          )),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            //Restaurant
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => Categories()));
+                                },
+                                child: Container(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          width: 180,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Colors.blue),
+                                          child: Column(
+                                            children: [
+                                              Center(
+                                                  child: Icon(
+                                                Icons.shopping_cart,
+                                                color: Colors.white,
+                                                size: 75,
+                                              )),
+                                              Text(
+                                                "Achat",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                              )
+                                            ],
+                                          )),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      TextFormField(
-                        //onChanged: ,
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.search,
-                            color: Colors.grey,
-                            size: 26,
-                          ),
-                          /*suffixIcon: const Icon(
-                            Icons.mic,
-                            color: Colors.blue,
-                            size: 26,
-                          ),*/
-                          // helperText: "Search your topic",
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          labelText: "Rechercher un produit",
-                          labelStyle: const TextStyle(color: Colors.grey),
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          isDense: true,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "CATEGORIE",
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.ecrit),
-                        /*style: 
-                         GoogleFonts.poppins(
-                          color: AppColors.ecrit,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),*/
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => Categories()));
-                        },
-                        child: Text("voir plus",
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle1!
-                                .copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red[800])),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 1,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      //Boutique
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) =>
-                                  Marchant(nomCategorie: "boutique")));
-                        },
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.black),
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.shopping_bag,
-                                    color: Colors.white,
-                                  ))),
-                              Text("Boutique")
-                            ],
-                          ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 5, left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "NOUVEAUTE",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.blueR),
+                            ),
+                          ],
                         ),
                       ),
-                      //Restaurant
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) =>
-                                  Marchant(nomCategorie: "restaurant")));
-                        },
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.black),
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.restaurant,
-                                    color: Colors.white,
-                                  ))),
-                              Text("Restaurant")
-                            ],
-                          ),
-                        ),
+                      const SizedBox(
+                        height: 10,
                       ),
-                      //Marcher
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) =>
-                                  Marchant(nomCategorie: "super marché")));
-                        },
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.black),
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.shopping_cart,
-                                    color: Colors.white,
-                                  ))),
-                              Text("Marcher")
-                            ],
-                          ),
-                        ),
-                      ),
-                      //Pharmacie
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) =>
-                                  Marchant(nomCategorie: "pharmacie")));
-                        },
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.black),
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.local_pharmacy,
-                                    color: Colors.white,
-                                  ))),
-                              Text("Pharmacie")
-                            ],
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) =>
-                                  Marchant(nomCategorie: "epicerie")));
-                        },
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.black),
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.dashboard,
-                                    color: Colors.white,
-                                  ))),
-                              Text("Epicerie")
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "NOUVEAUTE",
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.ecrit),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                FutureBuilder(
-                    future: recupProduitLimit(),
-                    builder: (context, snapshot) {
-                      List<Produit>? prod = snapshot.data as List<Produit>?;
-                      print("Le type de valeur dans home");
-                      print(prod.runtimeType);
-                      if (snapshot.hasData) {
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              /*ListView.builder(
+                      FutureBuilder(
+                          future: recupProduitLimit(),
+                          builder: (context, snapshot) {
+                            List<Produit>? prod =
+                                snapshot.data as List<Produit>?;
+                            print("Le type de valeur dans home");
+                            print(prod.runtimeType);
+                            if (snapshot.hasData) {
+                              return SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: prod!.length,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return ProduitCard(
-                                    prod: listProduitsLimit[index],
-                                  );
-                                },
-                              ),*/
-                              GridView.builder(
+                                padding: EdgeInsets.all(12),
+                                child: Row(
+                                  children: [
+                                    /*buildCard(1),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              buildCard(2),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              buildCard(3),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              buildCard(4),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              buildCard(5),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              buildCard(6),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              buildCard(7),
+                              SizedBox(
+                                width: 12,
+                              ),
+                              buildCard(8),*/
+                                    ListView.builder(
+                                      //scrollDirection: Axis.horizontal,
+                                      itemCount: prod!.length,
+                                      //physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return ProduitCard(
+                                          prod: listProduitsLimit[index],
+                                        );
+                                      },
+                                    ),
+                                    /*GridView.builder(
                                 shrinkWrap: true,
                                 itemCount: prod!.length,
                                 physics: NeverScrollableScrollPhysics(),
@@ -568,70 +580,76 @@ class _HomeState extends State<Home> {
                                     prod: listProduitsLimit[index],
                                   );
                                 },
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Center(child: Text("chargement des données..."));
-                      }
-                    }),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5, left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "LE TOP DES PRODUITS",
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.ecrit),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => Nouveaute()));
-                          },
-                          child: Text("voir plus",
+                              ),*/
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return Center(
+                                  child: Text("chargement des données..."));
+                            }
+                          }),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 5, left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "LE TOP DES PRODUITS",
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle1!
+                                  .headline6!
                                   .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.red[800])),
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.ecrit),
+                            ),
+                            InkWell(
+                              onTap: () {},
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => Nouveaute()));
+                                },
+                                child: Text("voir plus",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1!
+                                        .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red[800])),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
+                      ),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        //scrollDirection: Axis.horizontal,
+                        itemCount: listProduits.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 8,
+                        ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.8,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 24,
+                        ),
+                        itemBuilder: (context, index) {
+                          return ProduitCard(
+                            prod: listProduits[index],
+                          );
+                        },
+                      ),
+                    ])),
                   ),
-                ),
-                GridView.builder(
-                  shrinkWrap: true,
-                  //scrollDirection: Axis.horizontal,
-                  itemCount: listProduits.length,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 8,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.8,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 24,
-                  ),
-                  itemBuilder: (context, index) {
-                    return ProduitCard(
-                      prod: listProduits[index],
-                    );
-                  },
-                ),
-              ])),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Colors.blue,
@@ -683,7 +701,7 @@ class _HomeState extends State<Home> {
                 badgeContent: Consumer<PanierController>(
                   builder: ((context, value, child) {
                     return FutureBuilder(
-                        future: value.getNbrItemPanier(),
+                        future: value.getNbrItemPanier(ident ?? ""),
                         builder: (BuildContext context,
                             AsyncSnapshot<int> snapshot) {
                           if (snapshot.hasData) {
@@ -715,7 +733,7 @@ class _HomeState extends State<Home> {
                 badgeContent: Consumer<PanierController>(
                   builder: ((context, value, child) {
                     return FutureBuilder(
-                        future: value.getNbrItemPanier(),
+                        future: value.getNbrItemPanier(ident ?? ""),
                         builder: (BuildContext context,
                             AsyncSnapshot<int> snapshot) {
                           if (snapshot.hasData) {
@@ -775,5 +793,72 @@ class _HomeState extends State<Home> {
             });
           }),
     );
+  }
+
+  Widget buildCard(int i) => Container(
+        color: Colors.red,
+        width: 150,
+        height: 150,
+        child: Center(child: Text(i.toString())),
+      );
+}
+
+class _MyDelegate extends SearchDelegate {
+  List<Produit>? listDesProdRecherche;
+  _MyDelegate({this.listDesProdRecherche});
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+          onPressed: () {
+            if (query.isEmpty) {
+              close(context, null);
+            } else {
+              query = "";
+            }
+          },
+          icon: const Icon(Icons.clear))
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    // TODO: implement buildLeading
+    return IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: const Icon(Icons.arrow_back));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Center(child: Text(query));
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    /*List<Produit> ListSugestion =
+        listDesProdRecherche!.where((unProduit) => {
+          final resultat = unProduit!.toLowerCase();
+          final input = query.toLowerCase();
+          return resultat.contains(input);
+        }).toList();*/
+    return ListView.builder(
+        itemCount: listDesProdRecherche!.length,
+        itemBuilder: (context, index) {
+          final suggestion = listDesProdRecherche![index];
+          return ListTile(
+              title: Text(suggestion.nom!),
+              onTap: () {
+                query = suggestion.nom!;
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => Details(
+                          product: suggestion,
+                        )));
+                showResults(context);
+              });
+        });
   }
 }

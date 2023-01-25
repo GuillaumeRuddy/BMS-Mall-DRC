@@ -22,16 +22,16 @@ import '../db/db_mall.dart';
 import 'adresse.dart';
 import 'coordoner.dart';
 
-class DetailsCmd extends StatefulWidget {
+class DetailsLivraison extends StatefulWidget {
   bool? livraison;
   Commande? cmde;
-  DetailsCmd({Key? key, this.livraison, this.cmde}) : super(key: key);
+  DetailsLivraison({Key? key, this.livraison, this.cmde}) : super(key: key);
 
   @override
-  State<DetailsCmd> createState() => _CheckoutPageState();
+  State<DetailsLivraison> createState() => _CheckoutPageState();
 }
 
-class _CheckoutPageState extends State<DetailsCmd> {
+class _CheckoutPageState extends State<DetailsLivraison> {
   Commande? commande;
   bool? livrer;
   String? livr = "250";
@@ -52,7 +52,7 @@ class _CheckoutPageState extends State<DetailsCmd> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Détails de la commande",
+          "Détails de la livraison",
           style: Theme.of(context)
               .textTheme
               .subtitle1!

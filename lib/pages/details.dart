@@ -91,49 +91,57 @@ class _DetailsState extends State<Details> {
               padding: EdgeInsets.all(15),
               child: Image.network(
                 "${ApiUrl.baseUrl}/" + px.image!,
-                height: 300.0,
-                width: 300,
+                height: 280.0,
+                width: 280,
               ),
             ),
             Container(
               alignment: Alignment.topCenter,
               child: Text(
                 px.nom ?? "",
-                style: GoogleFonts.poppins(
-                  color: Colors.black,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+                style: Theme.of(context).textTheme.headline1!.copyWith(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 35,
+                    color: AppColors.blueR),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Text(
+                  "DESCRIPTION",
+                  textAlign: TextAlign.justify,
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      //fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                      color: AppColors.ecrit),
                 ),
               ),
             ),
             SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: Text(
-                "DESCRIPTION",
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                    fontSize: 17,
-                    color: AppColors.ecrit,
-                    fontWeight: FontWeight.bold),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Text(
+                  px.description ?? "",
+                  textAlign: TextAlign.justify,
+                  maxLines: 5,
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      //fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: AppColors.blueR),
+                ),
               ),
             ),
             SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: Text(
-                px.description ?? "",
-                textAlign: TextAlign.justify,
-                maxLines: 5,
-                style: TextStyle(fontSize: 17, color: AppColors.blueR),
-              ),
-            ),
-            SizedBox(
-              height: 10,
+              height: 20,
             ),
             Padding(
               padding: EdgeInsets.only(left: 10, right: 10),
@@ -141,23 +149,23 @@ class _DetailsState extends State<Details> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         "En Stock : ",
                         textAlign: TextAlign.justify,
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: AppColors.ecrit,
-                            fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                            //fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                            color: AppColors.ecrit),
                       ),
                       Text(
                         px.quantite ?? "",
                         textAlign: TextAlign.justify,
-                        style: TextStyle(
+                        style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            fontWeight: FontWeight.w700,
                             fontSize: 18,
-                            color: AppColors.blueR,
-                            fontWeight: FontWeight.bold),
+                            color: AppColors.blueR),
                       ),
                     ],
                   ),
@@ -168,15 +176,15 @@ class _DetailsState extends State<Details> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                          padding: EdgeInsets.all(4),
+                          padding: EdgeInsets.all(2),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 10)
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 0.3,
+                                    blurRadius: 5)
                               ]),
                           child: IconButton(
                               onPressed: () {
@@ -190,27 +198,28 @@ class _DetailsState extends State<Details> {
                               icon: Icon(
                                 CupertinoIcons.minus,
                                 size: 18,
+                                color: AppColors.ecrit,
                               ))),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        margin: EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
                           "${qteCommande}",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.blue),
+                              color: Colors.black),
                         ),
                       ),
                       Container(
-                          padding: EdgeInsets.all(4),
+                          padding: EdgeInsets.all(2),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 10)
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 0.3,
+                                    blurRadius: 5)
                               ]),
                           child: IconButton(
                               onPressed: () {
@@ -224,6 +233,7 @@ class _DetailsState extends State<Details> {
                               icon: Icon(
                                 CupertinoIcons.plus,
                                 size: 18,
+                                color: AppColors.ecrit,
                               )))
                     ],
                   )
@@ -238,12 +248,12 @@ class _DetailsState extends State<Details> {
               child: Row(
                 children: [
                   Text(
-                    "Prix : ",
+                    "Prix unitaire : ",
                     textAlign: TextAlign.justify,
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: AppColors.ecrit,
-                        fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        //fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                        color: AppColors.ecrit),
                   ),
                   /*SizedBox(
                   width: 10,
@@ -251,10 +261,10 @@ class _DetailsState extends State<Details> {
                   Text(
                     px.prix.toString(),
                     textAlign: TextAlign.justify,
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.w700,
                         fontSize: 18,
-                        color: AppColors.blueR,
-                        fontWeight: FontWeight.bold),
+                        color: AppColors.blueR),
                   ),
                   SizedBox(
                     width: 5,
@@ -262,16 +272,16 @@ class _DetailsState extends State<Details> {
                   Text(
                     px.monnaie ?? "",
                     textAlign: TextAlign.justify,
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        fontWeight: FontWeight.w700,
                         fontSize: 18,
-                        color: AppColors.blueR,
-                        fontWeight: FontWeight.bold),
+                        color: AppColors.blueR),
                   )
                 ],
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 15,
             ),
           ],
         ),
@@ -295,9 +305,9 @@ class _DetailsState extends State<Details> {
             children: [
               Text(
                 prixTotal.toString() + " ${px.monnaie}",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 17,
                     color: Colors.white),
               ),
               ElevatedButton.icon(
@@ -312,9 +322,9 @@ class _DetailsState extends State<Details> {
                 icon: Icon(CupertinoIcons.cart_badge_plus),
                 label: Text(
                   "Ajouter au panier",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  style: Theme.of(context).textTheme.button!.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
                       color: Colors.white),
                 ),
                 style: ButtonStyle(
@@ -333,9 +343,9 @@ class _DetailsState extends State<Details> {
 
   void ajouterAuPAnier() {
     var ctrlPanier = context.read<PanierController>();
+    print("voila l'image que j'envoie: ${px.image}");
     dbMAll!
         .InsertionProduit(Produit(
-            id: px.id,
             nom: px.nom,
             prix: px.prix,
             quantite: "${qteCommande}",

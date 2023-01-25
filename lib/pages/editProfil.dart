@@ -119,6 +119,7 @@ class _EditProfilState extends State<EditProfil> {
               decoration: InputDecoration(
                   hintText: "Saisisez l'email svp",
                   labelText: 'Email',
+                  enabled: false,
                   hintStyle: TextStyle(color: Colors.white),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -295,7 +296,6 @@ class _EditProfilState extends State<EditProfil> {
       "nom": nomController.text,
       "prenom": prenomController.text,
       "telephone": telephoneController.text,
-      "email": emailController.text,
       "motdepasse": (motdePVerif1Controller.text == "")
           ? motdePasseController.text
           : motdePVerif1Controller.text,

@@ -42,10 +42,10 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  Future savSession() async {
+  /*Future savSession() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString("utilisateur", user);
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +239,7 @@ class _LoginState extends State<Login> {
                                           : Colors.blueGrey),
                               onPressed: () {
                                 envoyerDonnees();
-                                savSession();
+                                //savSession();
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
@@ -319,14 +319,12 @@ class _LoginState extends State<Login> {
     if (resultat['status']) {
       Navigator.pop(context, true);
       saveInfosPersonnel();
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => Home()));
     }
   }
 
   //Sauvegarde dans le préférence
   void saveInfosPersonnel() async {
     print('Inside savepref');
-    //_password = _passcontroller.text;
     Map personne = resultat["utilisateur"];
     print("******** dans le shared preference ***********");
     print(personne);
@@ -340,6 +338,10 @@ class _LoginState extends State<Login> {
     await prefs.setString('nom', personne["nom"]);
     await prefs.setString('motdepasse', personne["motdepasse"]);
     await prefs.setString('image', personne["image"]);
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => Home(
+              idt: personne["id"].toString(),
+            )));
   } //fin savepref
 
   fermerClavier() {

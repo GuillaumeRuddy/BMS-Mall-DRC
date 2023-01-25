@@ -14,6 +14,7 @@ import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/success.dart';
 import 'package:mall_drc/widgets/cardPanier.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controler/panier/panierController.dart';
 import '../model/produit.dart';
@@ -28,11 +29,14 @@ class Panier extends StatefulWidget {
 
 class _PanierState extends State<Panier> {
   List<Produit> ListProduit = [];
+  String? ident;
+  bool voir = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    recupId();
     /*WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var ctrlPanier = context.read<PanierController>();
       ListProduit = await ctrlPanier.getData();
@@ -40,10 +44,27 @@ class _PanierState extends State<Panier> {
     });*/
   }
 
-  recupPanier() async {
+  recupId() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    ident = pref.getInt("id").toString();
+    setState(() {});
+  }
+
+  recupPanier(String id) async {
     var ctrlPanier = context.read<PanierController>();
-    ListProduit = await ctrlPanier.getData();
+    ListProduit = await ctrlPanier.getDataById(id);
     return ListProduit;
+  }
+
+  etatPanier() async {
+    List<Produit> produits = await recupPanier(ident ?? "");
+    if (produits.isEmpty) {
+      voir = false;
+      setState(() {});
+    } else {
+      voir = true;
+      setState(() {});
+    }
   }
 
   @override
@@ -62,7 +83,7 @@ class _PanierState extends State<Panier> {
         backgroundColor: AppColors.blueR,
       ),
       body: FutureBuilder(
-          future: recupPanier(),
+          future: recupPanier(ident ?? ""),
           builder: (context, snapshot) {
             List<Produit>? user = snapshot.data as List<Produit>?;
             print("Le type de valeur dans le produit");
@@ -71,6 +92,7 @@ class _PanierState extends State<Panier> {
               if (user!.isEmpty) {
                 return echecPanier();
               } else {
+                voir = true;
                 return SingleChildScrollView(
                   child: Column(
                     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -186,14 +208,14 @@ class _PanierState extends State<Panier> {
     return Container(
       alignment: Alignment.bottomCenter,
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      height: 140,
+      height: 160,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Consumer<PanierController>(
             builder: (context, value, child) {
               return Visibility(
-                visible: value.getPrixTotal() == 0 ? false : true,
+                visible: voir,
                 child: Container(
                   child: Column(
                     children: [
@@ -227,7 +249,7 @@ class _PanierState extends State<Panier> {
                         height: 10,
                       ),
                       Container(
-                        height: 24,
+                        height: 10,
                         child: VerticalDivider(),
                       ),
                       InkWell(

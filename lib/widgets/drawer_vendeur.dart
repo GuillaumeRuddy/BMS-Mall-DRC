@@ -6,6 +6,7 @@ import 'package:mall_drc/model/marchant.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/infos_vendeur.dart';
 import 'package:mall_drc/pages/map_adresse.dart';
+import 'package:mall_drc/pages/list_commande.dart';
 import 'package:mall_drc/pages/notification.dart';
 import 'package:mall_drc/pages/profil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -144,7 +145,7 @@ class _DrawerAddState extends State<DrawerVendeur> {
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => Message()));
+                          .push(MaterialPageRoute(builder: (_) => Activite()));
                     },
                     leading: Icon(
                       Icons.book,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mall_drc/controler/adresse/adresseController.dart';
 import 'package:mall_drc/controler/commande/commandeController.dart';
+import 'package:mall_drc/controler/livraison/livraisoncontroller.dart';
 import 'package:mall_drc/controler/marchants/marchandController.dart';
 import 'package:mall_drc/controler/panier/panierController.dart';
 import 'package:mall_drc/controler/produits/produitController.dart';
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CommandeController()),
         ChangeNotifierProvider(create: (_) => MarchandController()),
         ChangeNotifierProvider(create: (_) => CategorieController()),
-        ChangeNotifierProvider(create: (_) => adresseController())
+        ChangeNotifierProvider(create: (_) => adresseController()),
+        ChangeNotifierProvider(create: (_) => LivraisonController())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

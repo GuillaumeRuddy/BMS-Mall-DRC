@@ -29,20 +29,22 @@ class MapTracking extends StatefulWidget {
 class _MapTrackingesseState extends State<MapTracking> {
   //String cleAPIGoogle = "AIzaSyCOezElHw_-X9BTbMwFVkg-XLKllqrXA_E";
   String cleAPIGoogle = "AIzaSyCOezElHw_-X9BTbMwFVkg-XLKllqrXA_E";
-  LatLng currentLocation = LatLng(-4.3804066, 15.3473766);
-  LatLng driverLocation = LatLng(-14.3804066, 5.3473766);
+  LatLng currentLocation = LatLng(-4.3205782, 15.2949903);
+  LatLng driverLocation = LatLng(-4.3205782, 15.2949903);
   //LatLng driverLocation = LatLng(37.33429383, -122.06600055);
   late Completer<GoogleMapController> mapControle = Completer();
   List<LatLng> polylineCoordinates = [];
 
   final Set<Marker> markers = new Set();
+  CameraPosition? cameraPosition;
 
-  Map<String, Marker> mesMarkers = {};
-  /*String adresse = "";
-  Map<String, Marker> mesMarkers = {};
+  //Map<String, Marker> mesMarkers = {};
+  String adresse = "";
+  Placemark? monAdresse;
+  /*Map<String, Marker> mesMarkers = {};
   LatLng? unePosition;
   Driver? unDriver;
-  Placemark? monAdresse;*/
+  */
 
   getPolyPoint() async {
     print(
@@ -70,25 +72,40 @@ class _MapTrackingesseState extends State<MapTracking> {
   @override
   void initState() {
     // TODO: implement initState
-    markers.add(Marker(
-        markerId: MarkerId("Ma Position"),
-        position: currentLocation,
-        infoWindow: InfoWindow(
-          title: "Ma Position",
-          snippet: "Position: ${currentLocation}",
-        )));
-    markers.add(Marker(
-        markerId: MarkerId("Driver"),
-        position: driverLocation,
-        infoWindow: InfoWindow(
-          title: "Driver",
-          snippet: "Position: ${driverLocation}",
-        )));
-    getPolyPoint();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      //await getLocationDriver();
+      await getCurrentLocation();
+      markers.add(Marker(
+          markerId: MarkerId("Ma Position"),
+          position: currentLocation,
+          infoWindow: InfoWindow(
+            title: "Ma Position",
+            snippet: "Position: ${currentLocation}",
+          )));
+      markers.add(Marker(
+          markerId: MarkerId("Driver"),
+          position: driverLocation,
+          infoWindow: InfoWindow(
+            title: "Driver",
+            snippet: "Position: ${driverLocation}",
+          )));
+      cameraPosition = CameraPosition(target: currentLocation, zoom: 16);
+      setState(() {});
+      //getPolyPoint();
+    });
+
     super.initState();
   }
 
-  /*Future<Position> getCurrentLocation() async {
+  getLocationDriver() async {
+    var ctrlDriver = context.read<CommandeController>();
+    var infoDriver = ctrlDriver.recupDriver(widget.idDriver.toString());
+    setState(() {
+      driverLocation = infoDriver;
+    });
+  }
+
+  Future<Position> getCurrentLocation() async {
     //check si le service de location est activé
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
@@ -110,43 +127,49 @@ class _MapTrackingesseState extends State<MapTracking> {
     }
     // ici on retourne la position
     var loc = await Geolocator.getCurrentPosition();
+    print(loc);
     double lat = loc.latitude;
     double long = loc.longitude;
     print(lat);
     print(long);
-    currentLocation = LatLng(lat, long);
+
+    setState(() {
+      currentLocation = LatLng(lat, long);
+    });
     /*mapControle!.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(target: currentLocation, zoom: 20)));*/
-    List<Placemark> lieu = await placemarkFromCoordinates(lat, long);
+    /*List<Placemark> lieu = await placemarkFromCoordinates(lat, long);
     print("----------- Information de la place -------------");
     print(lieu);
-    monAdresse = lieu[0];
+    monAdresse = lieu[0];*/
     //mapControle.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: currentLocation, zoom: 20)));
     setState(() {});
     return loc;
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
     //utilitaire.afficherSnack(context, "Veuillez selectioner vôtre adresse");
     return WillPopScope(
-      onWillPop: () async {
-        Navigator.pop(context, true);
-        return true;
-      },
-      child: Center(
-        child: Container(
-          child: GoogleMap(
-            initialCameraPosition:
-                CameraPosition(target: currentLocation, zoom: 13),
-            polylines: {
-              Polyline(
-                  polylineId: PolylineId("Route"),
-                  points: polylineCoordinates,
-                  color: Colors.red),
-            },
-            markers: markers,
-            /*markers: {
+        onWillPop: () async {
+          Navigator.pop(context, true);
+          return true;
+        },
+        child: Scaffold(
+          body: (cameraPosition == null)
+              ? Center(child: Text('Chargement de la Carte...'))
+              : Center(
+                  child: Container(
+                    child: GoogleMap(
+                      initialCameraPosition: cameraPosition!,
+                      polylines: {
+                        Polyline(
+                            polylineId: PolylineId("Route"),
+                            points: polylineCoordinates,
+                            color: Colors.red),
+                      },
+                      markers: markers,
+                      /*markers: {
                 Marker(
                     markerId: MarkerId("Ma Position"),
                     position: currentLocation),
@@ -154,10 +177,10 @@ class _MapTrackingesseState extends State<MapTracking> {
                     markerId: MarkerId("Position driver"),
                     position: driverLocation)
               }*/
-          ),
-        ),
-      ),
-    );
+                    ),
+                  ),
+                ),
+        ));
   }
 
   AppBar entete() {

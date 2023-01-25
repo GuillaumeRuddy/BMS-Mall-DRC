@@ -68,11 +68,22 @@ class _DetailUserState extends State<DetailUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Profil utilisateur",
+          style: Theme.of(context)
+              .textTheme
+              .subtitle1!
+              .copyWith(fontWeight: FontWeight.w700, color: AppColors.ecrit),
+        ),
+        elevation: 0.0,
+        backgroundColor: AppColors.blueR,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
+              /*Container(
                 color: AppColors.blueR,
                 padding: EdgeInsets.all(15),
                 //entete
@@ -106,7 +117,7 @@ class _DetailUserState extends State<DetailUser> {
                   )*/
                   ],
                 ),
-              ),
+              ),*/
               SizedBox(
                 height: 40,
               ),
@@ -114,16 +125,20 @@ class _DetailUserState extends State<DetailUser> {
                 child: Column(
                   children: [
                     Center(
-                      child: ClipOval(
+                      child: CircleAvatar(
+                        radius: 80,
+                        backgroundColor: Colors.white,
                         child: Material(
                             color: Colors.transparent,
-                            child: imageProf == null
+                            child: photo == null || photo == ""
                                 ? Image.network(
                                     "${ApiUrl.baseUrl}/${image}",
+                                    fit: BoxFit.cover,
                                     height: 120.0,
                                   )
                                 : Image.file(
-                                    image_file,
+                                    photo!,
+                                    //height: 120.0,
                                     //fit: BoxFit.contain,
                                   )),
                       ),

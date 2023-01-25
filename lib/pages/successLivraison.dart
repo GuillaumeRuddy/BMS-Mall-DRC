@@ -3,14 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 
-class Success extends StatefulWidget {
-  const Success({Key? key}) : super(key: key);
+class SuccessLivraison extends StatefulWidget {
+  const SuccessLivraison({Key? key}) : super(key: key);
 
   @override
-  State<Success> createState() => _SuccessState();
+  State<SuccessLivraison> createState() => _SuccessState();
 }
 
-class _SuccessState extends State<Success> {
+class _SuccessState extends State<SuccessLivraison> {
   @override
   void initState() {
     // TODO: implement initState
@@ -26,12 +26,14 @@ class _SuccessState extends State<Success> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(
-              image: AssetImage("assets/img/success.gif"),
+              image: AssetImage("assets/img/L1.gif"),
+              height: 200,
+              width: 200,
             ),
             Padding(
               padding: EdgeInsets.all(10.0),
               child: Text(
-                "Commande envoyer avec succès",
+                "Demande de livraison envoyer avec succès",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   color: Colors.black,

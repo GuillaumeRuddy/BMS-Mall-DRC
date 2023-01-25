@@ -5,13 +5,17 @@ import 'package:mall_drc/app/app_constatns.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/infos_bms.dart';
 import 'package:mall_drc/pages/map_adresse.dart';
+import 'package:mall_drc/pages/notification.dart';
+import 'package:mall_drc/pages/panier.dart';
 import 'package:mall_drc/pages/profil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app/endPoint.dart';
 import '../pages/categories.dart';
 import '../pages/login.dart';
-import '../pages/notification.dart';
+import '../pages/map.dart';
+import '../pages/maps_page.dart';
+import '../pages/list_commande.dart';
 
 class DrawerAdd extends StatefulWidget {
   const DrawerAdd({
@@ -107,7 +111,7 @@ class _DrawerAddState extends State<DrawerAdd> {
             Container(
               padding: EdgeInsets.all(24),
               child: Wrap(
-                spacing: 16,
+                spacing: 15,
                 children: [
                   ListTile(
                     onTap: () {
@@ -142,7 +146,7 @@ class _DrawerAddState extends State<DrawerAdd> {
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (_) => Message()));
+                          .push(MaterialPageRoute(builder: (_) => Activite()));
                     },
                     leading: Icon(
                       Icons.book,
@@ -150,6 +154,21 @@ class _DrawerAddState extends State<DrawerAdd> {
                     ),
                     title: Text(
                       "Commande",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => Panier()));
+                    },
+                    leading: Icon(
+                      Icons.shopping_cart,
+                      color: Colors.blue,
+                    ),
+                    title: Text(
+                      "Mon Panier",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -187,10 +206,8 @@ class _DrawerAddState extends State<DrawerAdd> {
                   ListTile(
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MapAdresse()));
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => MapsPage()));
                     },
                     leading: Icon(
                       FontAwesomeIcons.map,

@@ -6,6 +6,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../app/app_constatns.dart';
+import 'home.dart';
+
 class MapAdr extends StatefulWidget {
   const MapAdr({super.key});
 
@@ -14,23 +17,45 @@ class MapAdr extends StatefulWidget {
 }
 
 class _MapAdrState extends State<MapAdr> {
-  LatLng pointD = LatLng(51.509364, -0.08);
+  LatLng pointD = LatLng(-4.3804076, 15.3473766);
+  LatLng pointM = LatLng(-4.3804066, 15.3473766);
   var location = [];
+  final List<Marker> _markers = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    /*WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    //getCurrentLocation();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await getCurrentLocation().then((value) {
         double lat = value.latitude;
         double long = value.longitude;
         print(lat);
         print(long);
-        pointD = LatLng(lat, long);
-        setState(() {});
+        setState(() {
+          pointM = LatLng(lat, long);
+        });
       });
-    });*/
+    });
+    _markers.add(Marker(
+        width: 100.0,
+        height: 100.0,
+        point: pointD,
+        builder: (ctx) => Icon(
+              Icons.location_on,
+              color: Colors.red,
+              size: 40.0,
+            )));
+    _markers.add(Marker(
+        width: 100.0,
+        height: 100.0,
+        point: pointM,
+        builder: (ctx) => Icon(
+              Icons.location_on,
+              color: Colors.red,
+              size: 40.0,
+            )));
   }
 
   Future<Position> getCurrentLocation() async {
@@ -59,50 +84,69 @@ class _MapAdrState extends State<MapAdr> {
     double long = loc.longitude;
     print(lat);
     print(long);
-    pointD = LatLng(lat, long);
     //mapControle.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: currentLocation, zoom: 20)));
-    setState(() {});
+    setState(() {
+      pointM = LatLng(lat, long);
+    });
     return loc;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-            child: Container(
-                child: Column(children: [
-      Flexible(
-          child: FlutterMap(
-              options: MapOptions(
-                onTap: ((tapPosition, point) {
-                  setState(() {
-                    print(point);
-                    pointD = point;
-                    print(tapPosition.runtimeType);
-                  });
-                }),
-                center: pointD,
-                zoom: 16,
+    return WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context, true);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Home()));
+          return true;
+          //return Future.value(true);
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: (() => Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => Home()))),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 25.0,
+                ),
               ),
-              layers: [
-            TileLayerOptions(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                subdomains: ['a', 'b', 'c']),
-            MarkerLayerOptions(
-              markers: [
-                Marker(
-                    width: 100.0,
-                    height: 100.0,
-                    point: pointD,
-                    builder: (ctx) => Icon(
-                          Icons.location_on,
-                          color: Colors.red,
-                          size: 40.0,
-                        ))
-              ],
-            )
-          ]))
-    ]))));
+              title: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text(
+                  "MAP",
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      fontWeight: FontWeight.w700, color: AppColors.ecrit),
+                ),
+              ),
+              elevation: 0.0,
+              backgroundColor: AppColors.blueR,
+            ),
+            body: Center(
+                child: Container(
+                    child: Column(children: [
+              Flexible(
+                  child: FlutterMap(
+                      options: MapOptions(
+                        onTap: ((tapPosition, point) {
+                          setState(() {
+                            print(point);
+                            pointM = point;
+                            print(tapPosition.runtimeType);
+                          });
+                        }),
+                        center: pointM,
+                        zoom: 16,
+                      ),
+                      layers: [
+                    TileLayerOptions(
+                        urlTemplate:
+                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        subdomains: ['a', 'b', 'c']),
+                    MarkerLayerOptions(markers: _markers)
+                  ]))
+            ])))));
   }
 }
 

@@ -59,7 +59,7 @@ class _MesAdressesState extends State<MesAdresses> {
             print(adr.runtimeType);
             if (snapshot.hasData) {
               if (adr!.isEmpty) {
-                return echecAdr();
+                return const echecAdr();
               } else {
                 return SingleChildScrollView(
                   child: Column(
@@ -96,7 +96,7 @@ class _MesAdressesState extends State<MesAdresses> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (_) => Coordonne()));
         }),
-        backgroundColor: AppColors.blueR,
+        backgroundColor: AppColors.ecrit,
         tooltip: "Ajouter une adresse",
         child: Icon(Icons.add),
       ),

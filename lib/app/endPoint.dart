@@ -32,4 +32,6 @@ class ApiUrl {
   //EndPoint pour envoie les commmandes
   String commande =
       "$baseUrl/api/mall/v1/commande/d033e22ae348aeb5660fc2140aec35850c4da997";
+  String livraison =
+      "$baseUrl/api/mall/v1/livraison/d033e22ae348aeb5660fc2140aec35850c4da997";
 }

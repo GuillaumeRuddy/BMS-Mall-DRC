@@ -79,7 +79,7 @@ class _CoordonneState extends State<Coordonne> {
               nomChampSaisie(),
               SizedBox(height: 20.0),
               adresseChampSaisie(),
-              SizedBox(height: 20.0),
+              /*SizedBox(height: 20.0),
               TextButton(
                   onPressed: () {
                     Navigator.of(context)
@@ -88,7 +88,7 @@ class _CoordonneState extends State<Coordonne> {
                   child: Icon(
                     Icons.place,
                     size: 40,
-                  )),
+                  )),*/
               SizedBox(height: 20.0),
               /*TextButton(
                   onPressed: () async {
@@ -213,12 +213,17 @@ class _CoordonneState extends State<Coordonne> {
             Icons.book,
             color: AppColors.blueR,
             size: 26,
-          ),
-          icon: Icon(
-            Icons.book,
-            color: AppColors.blueR,
-            size: 26,
           ),*/
+          prefixIcon: IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => MapAdr()));
+              },
+              icon: Icon(
+                Icons.map,
+                color: Colors.black,
+                size: 30,
+              )),
         ));
 
     /*TextFormField(

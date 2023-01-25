@@ -41,13 +41,25 @@ class DbMAll {
 //idsql INTEGER PRIMARY KEY AUTO_INCREMENT,
   Future<Produit> InsertionProduit(Produit prod) async {
     var dbMall = await BDD;
-    print("**** le reotur de MalL BD ****");
+    /*print("**** le reotur de MalL BD ****");
     print(dbMall);
     print("-------------------------");
     print(prod);
     print(prod.idClient);
-    print("**** fin du retour de MalL BD ****");
-    await dbMall!.insert('panier', prod.toMap());
+    print("**** fin du retour de MalL BD ****");*/
+
+    String sql =
+        "INSERT INTO panier (idClient, nom, prix, quantite, description, image, marchand_id, monnaie ) VALUES(?,?,?,?,?,?,?,?)";
+    await dbMall!.rawQuery(sql, [
+      '${prod.idClient}',
+      '${prod.nom}',
+      '${prod.prix! * int.parse(prod.quantite!)}',
+      '${prod.quantite}',
+      '${prod.description}',
+      '${prod.image}',
+      '${prod.marchand_id}',
+      'CDF'
+    ]);
     return prod;
   }
 
@@ -79,8 +91,8 @@ class DbMAll {
 
   Future<List<Produit>> getListPanierById(String id) async {
     var dbMall = await BDD;
-    final List<Map<String, Object?>> requet =
-        await dbMall!.rawQuery('SELECT * FROM panier WHERE id = ?', ['${id}']);
+    final List<Map<String, Object?>> requet = await dbMall!
+        .rawQuery('SELECT * FROM panier WHERE idClient = ?', ['${id}']);
     return requet.map((e) => Produit.fromJson(e)).toList();
   }
 
@@ -91,10 +103,12 @@ class DbMAll {
     return requet.map((e) => Adresse.fromJson(e)).toList();
   }
 
-  Future<int> getNbrListPanier() async {
-    var dbMall = await BDD;
+  Future<int> getNbrListPanier(String id) async {
+    /*var dbMall = await BDD;
     final List<Map<String, Object?>> requet = await dbMall!.query('panier');
-    return requet.length;
+    return requet.length;*/
+    List<Produit> ListProd = await getListPanierById(id);
+    return ListProd.length;
   }
 
   /*Future<int> getNbrListPanier(String id) async {
