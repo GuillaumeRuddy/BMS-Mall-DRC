@@ -36,6 +36,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   String monTotArt = "8.500";
   int? nombrePanier;
   var operateur;
+  int numOperateur = 0;
   List<Produit> ListProduit = [];
   Map resultat = {};
   TextEditingController telController = new TextEditingController();
@@ -90,7 +91,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
       );
     }
-    setState(() {});
   }
 
   @override
@@ -387,10 +387,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (recup == true) {
-                      typeMouv();
                       showModalBottomSheet(
                           context: context,
                           builder: (builder) {
+                            typeMouv();
                             return Padding(
                               padding: const EdgeInsets.all(12.0),
                               child: Container(
@@ -444,9 +444,27 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                         ),
                                         dropdownColor: AppColors.ecrit,
                                         onChanged: (value) {
-                                          setState(() {
-                                            operateur = value;
-                                          });
+                                          operateur = value;
+                                          /*setState(() {
+                                            switch (value) {
+                                              case "MPESA":
+                                                operateur = "9";
+                                                break;
+                                              case "AIRTEL-MONEY":
+                                                operateur = "17";
+                                                break;
+                                              case "ORANGE-MONEY":
+                                                operateur = "10";
+                                                break;
+                                              case "AFRI-MONEY":
+                                                operateur = "19";
+                                                break;
+                                              default:
+                                                null;
+                                            }
+                                            ;*/
+                                          //operateur = value;
+                                          /*});*/
                                         }),
                                     SizedBox(
                                       height: 10.0,
@@ -473,8 +491,26 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                             //Prend la couleur bleu si numero valid sinon grise
                                             primary: AppColors.ecrit),
                                         onPressed: () async {
-                                          //paiement();
-                                          envoyerCommande();
+                                          String? op;
+                                          switch (operateur) {
+                                            case "MPESA":
+                                              numOperateur = 9;
+                                              break;
+                                            case "AIRTEL-MONEY":
+                                              numOperateur = 17;
+                                              break;
+                                            case "ORANGE-MONEY":
+                                              numOperateur = 10;
+                                              break;
+                                            case "AFRI-MONEY":
+                                              numOperateur = 19;
+                                              break;
+                                            default:
+                                              null;
+                                          }
+                                          paiement(
+                                              codeInt: numOperateur.toString());
+                                          //envoyerCommande();
                                         },
                                         child: Padding(
                                           padding: EdgeInsets.all(12.0),
@@ -552,16 +588,17 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 
-  void paiement() async {
+  void paiement({String? codeInt}) async {
     utilitaire.lancerChargementDialog4(context);
 
     Map paie = {
       "customer": telController.text,
       "amount": "${livr + monTotArt}",
       "currency": "CDF",
-      "code": "9"
+      "code": codeInt!.isEmpty ? "9" : codeInt
     };
 
+    print(paie);
     // appel requete API
     var ctrlPaie = context.read<CommandeController>();
     var retour = await ctrlPaie.Payement(paie);
@@ -582,7 +619,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               context, "payement en cours...", Colors.green);
           await Future.delayed(Duration(milliseconds: 800));
           Navigator.pop(context, true);
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => Home()));
+          //Navigator.of(context).push(MaterialPageRoute(builder: (_) => Home()));
           break;
         case 2:
           envoyerCommande();
@@ -599,6 +636,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           Navigator.pop(context, true);
           break;
       }
+      Navigator.pop(context, true);
     }
   }
 
@@ -607,11 +645,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     var ctrlCommande = context.read<CommandeController>();
 
-    var ctrlPanier = context.read<PanierController>();
-    ListProduit = await ctrlPanier.getData();
-
     SharedPreferences pref = await SharedPreferences.getInstance();
     var idUser = pref.getInt("id").toString();
+
+    var ctrlPanier = context.read<PanierController>();
+    ListProduit = await ctrlPanier.getDataById(idUser);
+    print(ListProduit);
 
     for (var prod in ListProduit) {
       Map data = {

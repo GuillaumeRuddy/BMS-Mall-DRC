@@ -73,6 +73,7 @@ dependencies:
   proj4dart: any
   meta: any
   collection: any
+  lottie: ^2.2.0
 
 dev_dependencies:
   flutter_test:

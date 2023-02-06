@@ -61,6 +61,15 @@ class _NotificationState extends State<Activite> {
             )
           ],
         ),
+        /*floatingActionButton: FloatingActionButton(
+          onPressed: (() {
+            /*Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => Coordonne()));*/
+          }),
+          backgroundColor: AppColors.ecrit,
+          tooltip: "Tous supprimer",
+          child: Icon(Icons.delete_sweep_rounded),
+        ),*/
       ),
     );
   }

@@ -177,7 +177,7 @@ class UtilisateurController with ChangeNotifier {
         print(data);
         var reponse = await http
             .post(url, headers: utilitaire.header, body: data)
-            .timeout(const Duration(seconds: 20), onTimeout: () {
+            .timeout(const Duration(seconds: 30), onTimeout: () {
           print(" ******  tozo zela  ****** ");
           utilitaire.toast("temps dépasser");
           throw TimeoutException(
@@ -207,12 +207,13 @@ class UtilisateurController with ChangeNotifier {
           "utilisateur": body
         };
         return retour;
-      } on SocketException {
+      } /*on SocketException {
         return {
           "msg": "Connection avec le serveur impossible",
           "status": false
         };
-      } on TimeoutException {
+      }*/
+      on TimeoutException {
         return {
           "msg": "delait dattente dépaser, veuillez réessaie ultérieurement!",
           "status": false
@@ -271,6 +272,7 @@ class UtilisateurController with ChangeNotifier {
       var request = http.MultipartRequest("Post", url);
       print("-------- La requette 1: ${request}");
       request.fields["id"] = photoClient["id"].toString();
+      request.headers["Authorization"] = "";
       var pic = await http.MultipartFile.fromPath(
           "image", photoClient["image"].toString());
       print("La photo après conversion multipart: ${pic}");
@@ -281,10 +283,10 @@ class UtilisateurController with ChangeNotifier {
       var msg = "";
       if (rep.statusCode == 200) {
         print("image uploader avec succès");
-        //msg = rep.["msg"];
+        msg = "image uploader avec succès";
       } else {
         print("image n'a pas pus être uploader");
-        msg = "MAj photo reussit";
+        msg = "image n'a pas pus être uploader";
       }
 
       /*String data = json.encode(photoClient);
@@ -302,7 +304,7 @@ class UtilisateurController with ChangeNotifier {
         msg = "Echec de la MAJ photo";
       }*/
       //Map retour = {"msg": msg, "status": reponse.statusCode == 200};
-      Map retour = {"msg": msg, "status": "200"};
+      Map retour = {"msg": msg, "status": rep.statusCode == 200};
       return retour;
     } catch (e, stack) {
       print(e);

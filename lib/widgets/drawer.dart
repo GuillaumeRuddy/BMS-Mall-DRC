@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,10 +9,13 @@ import 'package:mall_drc/pages/map_adresse.dart';
 import 'package:mall_drc/pages/notification.dart';
 import 'package:mall_drc/pages/panier.dart';
 import 'package:mall_drc/pages/profil.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app/endPoint.dart';
+import '../controler/panier/panierController.dart';
 import '../pages/categories.dart';
+import '../pages/livraison.dart';
 import '../pages/login.dart';
 import '../pages/map.dart';
 import '../pages/maps_page.dart';
@@ -134,11 +138,51 @@ class _DrawerAddState extends State<DrawerAdd> {
                           MaterialPageRoute(builder: (_) => Categories()));
                     },
                     leading: Icon(
-                      Icons.category,
+                      Icons.shopify_sharp,
                       color: Colors.blue,
                     ),
                     title: Text(
-                      "Categorie",
+                      "Achat",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => EnvoieLivraison()));
+                    },
+                    leading: Badge(
+                        badgeColor: Colors.red,
+                        padding: EdgeInsets.all(5),
+                        badgeContent: Consumer<PanierController>(
+                          builder: ((context, value, child) {
+                            return FutureBuilder(
+                                future: value.getNbrItemPanier(ident ?? ""),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<int> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Text(
+                                      snapshot.data.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  }
+                                  return Text(
+                                    "0",
+                                    style: TextStyle(color: Colors.white),
+                                  );
+                                });
+                          }),
+                        ),
+                        child: Icon(
+                          Icons.local_shipping,
+                          color: Colors.blue,
+                          //size: 30,
+                        )),
+                    title: Text(
+                      "Livraison",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -148,10 +192,35 @@ class _DrawerAddState extends State<DrawerAdd> {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (_) => Activite()));
                     },
-                    leading: Icon(
-                      Icons.book,
-                      color: Colors.blue,
-                    ),
+                    leading: Badge(
+                        badgeColor: Colors.red,
+                        padding: EdgeInsets.all(5),
+                        badgeContent: Consumer<PanierController>(
+                          builder: ((context, value, child) {
+                            return FutureBuilder(
+                                future: value.getNbrItemPanier(ident ?? ""),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<int> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Text(
+                                      snapshot.data.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  }
+                                  return Text(
+                                    "0",
+                                    style: TextStyle(color: Colors.white),
+                                  );
+                                });
+                          }),
+                        ),
+                        child: Icon(
+                          Icons.book,
+                          //size: 30,
+                          color: Colors.blue,
+                        )),
                     title: Text(
                       "Commande",
                       style: TextStyle(fontSize: 18),
@@ -163,10 +232,35 @@ class _DrawerAddState extends State<DrawerAdd> {
                       Navigator.of(context)
                           .push(MaterialPageRoute(builder: (_) => Panier()));
                     },
-                    leading: Icon(
-                      Icons.shopping_cart,
-                      color: Colors.blue,
-                    ),
+                    leading: Badge(
+                        badgeColor: Colors.red,
+                        padding: EdgeInsets.all(5),
+                        badgeContent: Consumer<PanierController>(
+                          builder: ((context, value, child) {
+                            return FutureBuilder(
+                                future: value.getNbrItemPanier(ident ?? ""),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<int> snapshot) {
+                                  if (snapshot.hasData) {
+                                    return Text(
+                                      snapshot.data.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  }
+                                  return Text(
+                                    "0",
+                                    style: TextStyle(color: Colors.white),
+                                  );
+                                });
+                          }),
+                        ),
+                        child: Icon(
+                          Icons.shopping_cart,
+                          //size: 30,
+                          color: Colors.blue,
+                        )),
                     title: Text(
                       "Mon Panier",
                       style: TextStyle(fontSize: 18),
@@ -206,7 +300,7 @@ class _DrawerAddState extends State<DrawerAdd> {
                   ListTile(
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushReplacement(context,
+                      Navigator.push(context,
                           MaterialPageRoute(builder: (context) => MapsPage()));
                     },
                     leading: Icon(

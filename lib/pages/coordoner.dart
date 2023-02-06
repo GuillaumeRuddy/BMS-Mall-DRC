@@ -214,16 +214,29 @@ class _CoordonneState extends State<Coordonne> {
             color: AppColors.blueR,
             size: 26,
           ),*/
-          prefixIcon: IconButton(
+          suffixIcon: IconButton(
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (_) => MapAdr()));
               },
+              color: Colors.grey,
               icon: Icon(
                 Icons.map,
                 color: Colors.black,
                 size: 30,
               )),
+
+          /*IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => MapAdr()));
+              },
+              color: Colors.grey,
+              icon: Icon(
+                Icons.map,
+                color: Colors.black,
+                size: 30,
+              )),*/
         ));
 
     /*TextFormField(

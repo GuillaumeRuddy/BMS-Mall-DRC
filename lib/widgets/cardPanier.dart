@@ -120,7 +120,8 @@ class _PanierCardState extends State<PanierCard> {
                       widget.prix! * double.parse(widget.qte!.toString());
                   print(mont);
                   ctrlPanier.diminuerPrixTotal(mont);
-                  ctrlPanier.supressionItemPanier(widget.id!);
+                  //ctrlPanier.supressionItemPanier(widget.id!);
+                  bd.suppressionProduitPanier(widget.id!);
                   setState(() {});
                 },
                 icon: Icon(

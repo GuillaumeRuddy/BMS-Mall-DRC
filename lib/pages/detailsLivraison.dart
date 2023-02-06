@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mall_drc/app/appUtil.dart';
-import 'package:mall_drc/controler/commande/commandeController.dart';
+import 'package:mall_drc/controler/livraison/livraisonController.dart';
+import 'package:mall_drc/controler/livraison/livraisoncontroller.dart';
 import 'package:mall_drc/model/adresse.dart';
-import 'package:mall_drc/model/commande.dart';
+import 'package:mall_drc/model/livraison.dart';
 import 'package:mall_drc/model/produit.dart';
 import 'package:mall_drc/pages/home.dart';
 import 'package:mall_drc/pages/map.dart';
 import 'package:mall_drc/pages/map_adresse.dart';
 import 'package:mall_drc/pages/map_tracking.dart';
-import 'package:mall_drc/pages/list_commande.dart';
 import 'package:mall_drc/pages/notification.dart';
 import 'package:mall_drc/pages/success.dart';
 import 'package:mall_drc/widgets/cardAdresse.dart';
@@ -19,20 +19,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../app/app_constatns.dart';
 import '../controler/panier/panierController.dart';
 import '../db/db_mall.dart';
+import '../model/livraison.dart';
 import 'adresse.dart';
 import 'coordoner.dart';
 
 class DetailsLivraison extends StatefulWidget {
-  bool? livraison;
-  Commande? cmde;
-  DetailsLivraison({Key? key, this.livraison, this.cmde}) : super(key: key);
+  Livraison? livrsn;
+  DetailsLivraison({Key? key, this.livrsn}) : super(key: key);
 
   @override
   State<DetailsLivraison> createState() => _CheckoutPageState();
 }
 
 class _CheckoutPageState extends State<DetailsLivraison> {
-  Commande? commande;
+  Livraison? livraison;
   bool? livrer;
   String? livr = "250";
   bool voir = false;
@@ -42,8 +42,7 @@ class _CheckoutPageState extends State<DetailsLivraison> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    commande = widget.cmde;
-    livrer = widget.livraison;
+    livraison = widget.livrsn;
   }
 
   @override
@@ -72,13 +71,16 @@ class _CheckoutPageState extends State<DetailsLivraison> {
                 children: [
                   Text(
                     'Référence ',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6!
+                        .copyWith(fontSize: 18),
                   ),
                   SizedBox(
                     width: 15.0,
                   ),
                   Text(
-                    commande!.reference ?? "",
+                    livraison!.reference ?? "",
                     style: Theme.of(context)
                         .textTheme
                         .subtitle2!
@@ -88,211 +90,343 @@ class _CheckoutPageState extends State<DetailsLivraison> {
               ),
               Divider(),
               const SizedBox(height: 15.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Text(
+                "Informations sur le l'éxpéditeur",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: AppColors.ecrit),
+              ),
+              const SizedBox(height: 18.0),
+              Column(
                 children: [
-                  Text(
-                    'Addresse',
-                    style: Theme.of(context).textTheme.headline6,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Nom:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        livraison!.nom!,
+                        style:
+                            Theme.of(context).textTheme.subtitle2!.copyWith(),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.black,
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Adresse:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "${livraison!.adresse!}",
+                        style:
+                            Theme.of(context).textTheme.subtitle2!.copyWith(),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.black,
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Téléphone:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "${livraison!.telephone}",
+                        style:
+                            Theme.of(context).textTheme.subtitle2!.copyWith(),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40.0,
+                  ),
+                ],
+              ),
+              Text(
+                "Informations sur le colis",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: AppColors.ecrit),
+              ),
+              const SizedBox(height: 18.0),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Emplacement:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        livraison!.emplacement!,
+                        style:
+                            Theme.of(context).textTheme.subtitle2!.copyWith(),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.black,
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Détails:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "${livraison!.details!}",
+                        style:
+                            Theme.of(context).textTheme.subtitle2!.copyWith(),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40.0,
                   ),
                 ],
               ),
               const SizedBox(height: 8.0),
-              Container(
-                  child: Center(
-                      child: Text((commande!.aretirer! == "oui")
-                          ? "Aucune adresse pour ce mode de recepetion"
-                          : commande!.adresse!))),
-              const SizedBox(height: 24.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Text(
+                "Informations sur le destinataire",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: AppColors.ecrit),
+              ),
+              const SizedBox(height: 18.0),
+              Column(
                 children: [
-                  Center(
-                    child: Text(
-                      'Mode de reception',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Nom:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        livraison!.nomDestinataire!,
+                        style:
+                            Theme.of(context).textTheme.subtitle2!.copyWith(),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.black,
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Adresse:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "${livraison!.adresseDestination!}",
+                        style:
+                            Theme.of(context).textTheme.subtitle2!.copyWith(),
+                      ),
+                    ],
+                  ),
+                  Divider(
+                    color: Colors.black,
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Téléphone:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "${livraison!.telephoneDestination}",
+                        style:
+                            Theme.of(context).textTheme.subtitle2!.copyWith(),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30.0,
                   ),
                 ],
               ),
-              const SizedBox(height: 13.0),
               Container(
-                child: livrer != false
-                    ? Text(
-                        'Passer à la boutique',
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            fontSize: 17,
-                            color: AppColors.ecrit,
-                            fontWeight: FontWeight.bold),
-                      )
-                    : Text(
-                        'Livraison',
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                            fontSize: 17,
-                            color: AppColors.ecrit,
-                            fontWeight: FontWeight.bold),
-                      ),
+                alignment: Alignment.center,
+                child: Text(
+                  "Résumer",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(color: Colors.red),
+                ),
               ),
-              const SizedBox(height: 72.0),
-              Consumer<PanierController>(builder: (context, value, child) {
-                return Column(
+              const SizedBox(height: 18.0),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Status:",
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          status(),
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.black,
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Montant:",
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "18.000",
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2!
+                                .copyWith(),
+                          )
+                        ],
+                      ),
+                      Divider(
+                        color: Colors.black,
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Monnaie:",
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            " CDF",
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2!
+                                .copyWith(color: Colors.red),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+              Center(
+                child: Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Status:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        status(),
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.black,
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Quantite:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "${commande!.quantite}",
-                          style:
-                              Theme.of(context).textTheme.subtitle2!.copyWith(),
-                        ),
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.black,
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Montant:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "${commande!.prix} \CDF",
-                          style:
-                              Theme.of(context).textTheme.subtitle2!.copyWith(),
-                        ),
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.black,
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Livraison:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          livr! + " CDF",
-                          style:
-                              Theme.of(context).textTheme.subtitle2!.copyWith(),
-                        )
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.black,
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Montant TTC:",
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "${int.parse(livr!) + int.parse(commande!.prix!)} CDF",
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle2!
-                              .copyWith(color: Colors.red),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 50.0,
-                    ),
-                    Stack(
-                      children: [
-                        Visibility(
-                          visible: voir,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: AppColors.ecrit),
-                            onPressed: () async {
-                              print(
-                                  "******** ce que je passe comme valeur au tracking ${commande!.attribution}");
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => MapTracking(
-                                        idDriver: commande!.attribution,
-                                      )));
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: Text(
-                                "Tracker la commande",
-                                style: GoogleFonts.poppins(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                    Visibility(
+                      visible: voir,
+                      child: ElevatedButton(
+                        style:
+                            ElevatedButton.styleFrom(primary: AppColors.ecrit),
+                        onPressed: () async {
+                          print(
+                              "******** ce que je passe comme valeur au tracking ${livraison!.attribution}");
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => MapTracking(
+                                    idDriver: livraison!.attribution,
+                                  )));
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Text(
+                            "Tracker la livraison",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        Visibility(
-                          visible: acpt,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: AppColors.ecrit),
-                            onPressed: () {
-                              confimerRecup();
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: Text(
-                                "Commande recu",
-                                style: GoogleFonts.poppins(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: acpt,
+                      child: ElevatedButton(
+                        style:
+                            ElevatedButton.styleFrom(primary: AppColors.ecrit),
+                        onPressed: () {
+                          //confimerRecup();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Text(
+                            "livraison recu",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                    )
                   ],
-                );
-              }),
+                ),
+              ),
             ],
           ),
         ),
@@ -300,55 +434,19 @@ class _CheckoutPageState extends State<DetailsLivraison> {
     );
   }
 
-  void confimerRecup() async {
-    utilitaire.lancerChargementDialog4(context);
-
-    var ctrlCommande = context.read<CommandeController>();
-    String idCmd = commande!.id!.toString();
-
-    var resultat = await ctrlCommande.recupMoiMeme(idCmd);
-    print('la commande a afficher ++++++++++++');
-    print(resultat);
-
-    utilitaire.afficherSnack(context, resultat["msg"],
-        resultat["status"] ? Colors.green : Colors.red);
-
-    await Future.delayed(Duration(milliseconds: 800));
-
-    if (resultat['status']) {
-      Navigator.pop(context, true);
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => Activite()));
-    }
-  }
-
   status() {
-    if ((commande!.attribution == "vide" && commande!.statut == "non livré") ||
-        commande!.aretirer == "oui") {
-      /*setState(() {
-        voir = false;
-      });*/
+    if (livraison!.attribution == "nom" && livraison!.statut == "non livré") {
       voir = false;
       acpt = false;
       return Text(
-        "En préparation",
+        "En cours de traitement",
         style: Theme.of(context)
             .textTheme
             .subtitle2!
             .copyWith(color: AppColors.ecrit),
       );
-    } else if (commande!.attribution != "vide" &&
-        commande!.statut == "en cours") {
-      voir = true;
-      acpt = false;
-      return Text(
-        "En route",
-        style:
-            Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.blue),
-      );
-    } else if (commande!.attribution != "vide" && commande!.statut == "livré") {
-      /*setState(() {
-        voir = false;
-      });*/
+    } else if (livraison!.attribution == "nom" &&
+        livraison!.statut == "livré") {
       voir = false;
       acpt = false;
       return Text(
@@ -358,7 +456,8 @@ class _CheckoutPageState extends State<DetailsLivraison> {
             .subtitle2!
             .copyWith(color: Colors.green),
       );
-    } else if (commande!.attribution != "vide") {
+    } else if (livraison!.attribution != "non" &&
+        livraison!.statut == "non livré") {
       voir = true;
       acpt = false;
       return Text(
@@ -366,7 +465,146 @@ class _CheckoutPageState extends State<DetailsLivraison> {
         style:
             Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.blue),
       );
-    } else if (commande!.aretirer == "oui") {
+    } else if (livraison!.attribution != "non" &&
+        livraison!.statut == "livré") {
+      voir = false;
+      acpt = false;
+      return Text(
+        "livré",
+        style: Theme.of(context)
+            .textTheme
+            .subtitle2!
+            .copyWith(color: Colors.green),
+      );
+    } else if (livraison!.attribution != "non" &&
+        livraison!.statut == "en cours") {
+      voir = true;
+      acpt = false;
+      return Text(
+        "en cours",
+        style:
+            Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.blue),
+      );
+    } else {
+      voir = false;
+      acpt = false;
+      return Text(
+        "Annuler",
+        style:
+            Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.red),
+      );
+    }
+  }
+}
+
+
+
+
+
+/*
+
+
+Stack(
+                    children: [
+                      Visibility(
+                        visible: voir,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: AppColors.ecrit),
+                          onPressed: () async {
+                            print(
+                                "******** ce que je passe comme valeur au tracking ${livraison!.attribution}");
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => MapTracking(
+                                      idDriver: livraison!.attribution,
+                                    )));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Text(
+                              "Tracker la livraison",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: acpt,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: AppColors.ecrit),
+                          onPressed: () {
+                            //confimerRecup();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Text(
+                              "livraison recu",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+
+ */
+
+
+
+
+
+//Condition status
+/*
+
+status() {
+    if (livraison!.attribution == "nom" && livraison!.statut == "non livré") {
+      voir = false;
+      acpt = false;
+      return Text(
+        "En traitement",
+        style: Theme.of(context)
+            .textTheme
+            .subtitle2!
+            .copyWith(color: AppColors.ecrit),
+      );
+    } else if (livraison!.attribution == "non" &&
+        livraison!.statut == "en cours") {
+      voir = true;
+      acpt = false;
+      return Text(
+        "En route",
+        style:
+            Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.blue),
+      );
+    } else if (livraison!.attribution != "vide" &&
+        livraison!.statut == "livré") {
+      voir = false;
+      acpt = false;
+      return Text(
+        "livré",
+        style: Theme.of(context)
+            .textTheme
+            .subtitle2!
+            .copyWith(color: Colors.green),
+      );
+    } else if (livraison!.attribution != "vide") {
+      voir = true;
+      acpt = false;
+      return Text(
+        "En route",
+        style:
+            Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.blue),
+      );
+    } else if (livraison!.statut == "0") {
       /*setState(() {
         voir = false;
       });*/
@@ -395,4 +633,5 @@ class _CheckoutPageState extends State<DetailsLivraison> {
       );
     }
   }
-}
+
+ */

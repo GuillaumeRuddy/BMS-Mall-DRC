@@ -41,6 +41,7 @@ class _MapTrackingesseState extends State<MapTracking> {
   //Map<String, Marker> mesMarkers = {};
   String adresse = "";
   Placemark? monAdresse;
+  Driver? unDriver;
   /*Map<String, Marker> mesMarkers = {};
   LatLng? unePosition;
   Driver? unDriver;
@@ -73,7 +74,7 @@ class _MapTrackingesseState extends State<MapTracking> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      //await getLocationDriver();
+      await getLocationDriver();
       await getCurrentLocation();
       markers.add(Marker(
           markerId: MarkerId("Ma Position"),
@@ -91,7 +92,7 @@ class _MapTrackingesseState extends State<MapTracking> {
           )));
       cameraPosition = CameraPosition(target: currentLocation, zoom: 16);
       setState(() {});
-      //getPolyPoint();
+      getPolyPoint();
     });
 
     super.initState();
@@ -99,9 +100,11 @@ class _MapTrackingesseState extends State<MapTracking> {
 
   getLocationDriver() async {
     var ctrlDriver = context.read<CommandeController>();
-    var infoDriver = ctrlDriver.recupDriver(widget.idDriver.toString());
+    await ctrlDriver.recupDriver(widget.idDriver.toString());
+    unDriver = ctrlDriver.ListDriver;
+    print("*********le driver de la map que je recupere********** ${unDriver}");
     setState(() {
-      driverLocation = infoDriver;
+      //driverLocation = ctrlDriver.ListDriver;
     });
   }
 

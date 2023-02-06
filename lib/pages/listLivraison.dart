@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mall_drc/app/app_constatns.dart';
-import 'package:mall_drc/model/commande.dart';
-import 'package:mall_drc/pages/echecCommande.dart';
+import 'package:mall_drc/controler/livraison/livraisoncontroller.dart';
+import 'package:mall_drc/model/livraison.dart';
 import 'package:mall_drc/pages/echecLivraison.dart';
-import 'package:mall_drc/widgets/cardCommande.dart';
+import 'package:mall_drc/widgets/cardLivraison.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../controler/commande/commandeController.dart';
 
 class MesLivraisons extends StatefulWidget {
   const MesLivraisons({Key? key}) : super(key: key);
@@ -20,16 +14,16 @@ class MesLivraisons extends StatefulWidget {
 }
 
 class _MessageState extends State<MesLivraisons> {
-  List<Commande> listCommande = [];
+  List<Livraison> listCommande = [];
   String? idUse;
-  Commande? cmd;
+  Livraison? lvr;
 
-  recupCommande() async {
+  recupLivraison() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    idUse = await pref.getInt("id").toString();
-    var cmdCtrl = context.read<CommandeController>();
-    await cmdCtrl.CommandeByUser(idUse!);
-    var listCommande = cmdCtrl.listCommande;
+    idUse = pref.getInt("id").toString();
+    var cmdCtrl = context.read<LivraisonController>();
+    await cmdCtrl.RecupLivraionsById(idUse!);
+    var listCommande = cmdCtrl.listLivraison;
     return listCommande;
   }
 
@@ -37,10 +31,10 @@ class _MessageState extends State<MesLivraisons> {
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
-          future: recupCommande(),
+          future: recupLivraison(),
           builder: (context, snapshot) {
-            List<Commande>? user = snapshot.data as List<Commande>?;
-            print("Le type de valeur dans Commande");
+            List<Livraison>? user = snapshot.data as List<Livraison>?;
+            print("Le type de valeur dans Livraison");
             print(user.runtimeType);
             if (snapshot.hasData) {
               if (user!.isEmpty) {
@@ -54,7 +48,7 @@ class _MessageState extends State<MesLivraisons> {
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: user.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return CardCommande(cmd: user[index]);
+                          return CardLivraison(lvrsn: user[index]);
                         },
                       )
                     ],

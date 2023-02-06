@@ -2,26 +2,22 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:mall_drc/app/app_constatns.dart';
-import 'package:mall_drc/model/commande.dart';
-import 'package:mall_drc/pages/adresse.dart';
-import 'package:mall_drc/pages/checkout.dart';
-import 'package:mall_drc/pages/coordoner.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mall_drc/model/livraison.dart';
+import 'package:mall_drc/pages/detailsLivraison.dart';
 
 import '../pages/detailsCmd.dart';
 
 class CardLivraison extends StatelessWidget {
-  Commande? cmd;
-  CardLivraison({super.key, this.cmd});
+  Livraison? lvrsn;
+  CardLivraison({super.key, this.lvrsn});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => DetailsCmd(
-                  livraison: (cmd!.aretirer == "oui") ? true : false,
-                  cmde: cmd,
+            builder: (_) => DetailsLivraison(
+                  livrsn: lvrsn,
                 )));
       },
       child: Card(
@@ -43,28 +39,15 @@ class CardLivraison extends StatelessWidget {
                             fontWeight: FontWeight.w600, color: Colors.black),
                       ),
                       Text(
-                        cmd!.reference ?? "",
-                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        lvrsn!.reference ?? "",
+                        style: Theme.of(context).textTheme.subtitle2!.copyWith(
                             fontWeight: FontWeight.w600,
                             color: AppColors.ecrit),
                       ),
                     ],
                   ),
-                  /*InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => MesAdresses()));
-                    },
-                    child: Text(
-                      'Changer',
-                      style: Theme.of(context).textTheme.button!.copyWith(
-                            color: Colors.redAccent,
-                          ),
-                    ),
-                  ),*/
                 ],
               ),
-              //const SizedBox(height: 8.0),
               Row(
                 children: [
                   Text(
@@ -73,7 +56,7 @@ class CardLivraison extends StatelessWidget {
                         fontWeight: FontWeight.w600, color: Colors.black),
                   ),
                   Text(
-                    cmd!.adresse ?? "",
+                    lvrsn!.adresse ?? "",
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ],
@@ -86,9 +69,14 @@ class CardLivraison extends StatelessWidget {
                         fontWeight: FontWeight.w600, color: Colors.black),
                   ),
                   Text(
-                    cmd!.statut ?? "",
+                    lvrsn!.statut ?? "",
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                        fontWeight: FontWeight.w600, color: Colors.red),
+                        fontWeight: FontWeight.w600,
+                        color: (lvrsn!.statut! == "livré")
+                            ? Colors.green
+                            : (lvrsn!.statut! == "en cours")
+                                ? Colors.blue
+                                : Colors.red),
                   ),
                 ],
               ),

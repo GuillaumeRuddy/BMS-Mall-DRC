@@ -48,6 +48,8 @@ class PanierController with ChangeNotifier {
   void supressionItemPanier(String id) async {
     String reponse = "";
     reponse = await dbMAll!.suppressionProduitPanier(id);
+    print("Suppresion effectuer");
+    print(reponse);
     notifyListeners();
   }
 

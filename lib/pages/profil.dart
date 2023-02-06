@@ -396,7 +396,7 @@ class _DetailUserState extends State<DetailUser> {
     print("Voila my photo : ${myPhoto}");
 
     // appel requete API
-    Map data = {"id": ident, "image": myPhoto};
+    Map data = {"id": ident, "image": myPhoto.path};
 
     print(data);
 

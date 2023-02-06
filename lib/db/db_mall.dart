@@ -29,7 +29,7 @@ class DbMAll {
 
   creationBase(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE panier(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, prix DOUBLE, quantite INTEGER, description TEXT, image TEXT, marchand_id TEXT, monnaie TEXT, idClient TEXT)");
+        "CREATE TABLE panier(id INTEGER PRIMARY KEY, nom TEXT, prix DOUBLE, quantite INTEGER, description TEXT, image TEXT, marchand_id TEXT, monnaie TEXT, idClient TEXT)");
     await db.execute(
         "CREATE TABLE adresse(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, adresse TEXT, description TEXT, statut TEXT)");
   }
@@ -49,8 +49,9 @@ class DbMAll {
     print("**** fin du retour de MalL BD ****");*/
 
     String sql =
-        "INSERT INTO panier (idClient, nom, prix, quantite, description, image, marchand_id, monnaie ) VALUES(?,?,?,?,?,?,?,?)";
+        "INSERT INTO panier (id, idClient, nom, prix, quantite, description, image, marchand_id, monnaie ) VALUES(?,?,?,?,?,?,?,?,?)";
     await dbMall!.rawQuery(sql, [
+      '${prod.id}',
       '${prod.idClient}',
       '${prod.nom}',
       '${prod.prix! * int.parse(prod.quantite!)}',

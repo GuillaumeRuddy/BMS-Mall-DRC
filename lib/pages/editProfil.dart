@@ -54,10 +54,10 @@ class _EditProfilState extends State<EditProfil> {
       appBar: AppBar(
         title: Text(
           "Modification du profile",
-          style: Theme.of(context).textTheme.subtitle1!.copyWith(
-              fontWeight: FontWeight.w700,
-              fontSize: 20,
-              color: AppColors.ecrit),
+          style: Theme.of(context)
+              .textTheme
+              .subtitle1!
+              .copyWith(fontWeight: FontWeight.w700, color: AppColors.ecrit),
         ),
         elevation: 0.0,
         backgroundColor: AppColors.blueR,
@@ -67,6 +67,9 @@ class _EditProfilState extends State<EditProfil> {
         padding: const EdgeInsets.all(23.0),
         child: Column(
           children: [
+            SizedBox(
+              height: 10.0,
+            ),
             TextFormField(
               controller: nomController,
               decoration: InputDecoration(

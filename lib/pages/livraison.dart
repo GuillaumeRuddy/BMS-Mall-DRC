@@ -9,15 +9,17 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app/app_constatns.dart';
+import 'map.dart';
+import 'maps_page.dart';
 
-class Livraison extends StatefulWidget {
-  const Livraison({super.key});
+class EnvoieLivraison extends StatefulWidget {
+  const EnvoieLivraison({super.key});
 
   @override
-  State<Livraison> createState() => _LivraisonState();
+  State<EnvoieLivraison> createState() => _LivraisonState();
 }
 
-class _LivraisonState extends State<Livraison> {
+class _LivraisonState extends State<EnvoieLivraison> {
   TextEditingController nomExpCtrl = new TextEditingController();
   TextEditingController telExpCtrl = new TextEditingController();
   TextEditingController adrExpCtrl = new TextEditingController();
@@ -28,6 +30,9 @@ class _LivraisonState extends State<Livraison> {
   TextEditingController telDestCtrl = new TextEditingController();
   String? identId;
   Map resultat = {};
+  String? nom;
+  String? tel;
+  String? adresse;
 
   @override
   void initState() {
@@ -38,8 +43,10 @@ class _LivraisonState extends State<Livraison> {
 
   void rempliDonne() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    nomExpCtrl.text = pref.getString("nom").toString();
-    telExpCtrl.text = pref.getString("telephone").toString();
+    /*nomExpCtrl.text = pref.getString("nom").toString();
+    telExpCtrl.text = pref.getString("telephone").toString();*/
+    nom = pref.getString("nom").toString();
+    tel = pref.getString("telephone").toString();
     identId = pref.getInt("id").toString();
     setState(() {});
   }
@@ -49,7 +56,7 @@ class _LivraisonState extends State<Livraison> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Livraison",
+          "EnvoieLivraison",
           style: Theme.of(context)
               .textTheme
               .subtitle1!
@@ -64,7 +71,26 @@ class _LivraisonState extends State<Livraison> {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                TextFormField(
+                Row(
+                  children: [
+                    Text(
+                      "Nom :",
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          fontWeight: FontWeight.w700, color: AppColors.blueR),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(
+                      nom ?? "",
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(color: AppColors.blueR),
+                    )
+                  ],
+                ),
+                /*TextFormField(
                     keyboardType: TextInputType.text,
                     controller: nomExpCtrl,
                     enabled: false,
@@ -73,11 +99,30 @@ class _LivraisonState extends State<Livraison> {
                       border: OutlineInputBorder(),
                       labelText: 'Nom Expéditeur',
                       hintText: "Saisir le nom de l'expediteur",
-                    )),
+                    )),*/
                 SizedBox(
-                  height: 20.0,
+                  height: 10.0,
                 ),
-                TextFormField(
+                Row(
+                  children: [
+                    Text(
+                      "Telephone :",
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          fontWeight: FontWeight.w700, color: AppColors.blueR),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Text(
+                      tel ?? "",
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(color: AppColors.blueR),
+                    )
+                  ],
+                ),
+                /*TextFormField(
                     keyboardType: TextInputType.text,
                     controller: telExpCtrl,
                     enabled: false,
@@ -86,7 +131,8 @@ class _LivraisonState extends State<Livraison> {
                       border: OutlineInputBorder(),
                       labelText: 'Telephone Expediteur',
                       hintText: "Saisir le téléphone de l'éxpéditeur",
-                    )),
+                    )),*/
+                Divider(),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -95,10 +141,26 @@ class _LivraisonState extends State<Livraison> {
                     controller: adrExpCtrl,
                     enabled: true,
                     cursorColor: Colors.black,
+                    /*onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => MapsPage()));
+                    },*/
+
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Adresse Expéditeur',
                       hintText: "Saisir l'adresse de l'expediteur",
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => MapAdr()));
+                          },
+                          color: Colors.grey,
+                          icon: Icon(
+                            Icons.add_location_alt,
+                            color: Colors.black,
+                            size: 30,
+                          )),
                     )),
                 SizedBox(
                   height: 20.0,
@@ -111,6 +173,17 @@ class _LivraisonState extends State<Livraison> {
                       border: OutlineInputBorder(),
                       labelText: 'Emplacement du colis',
                       hintText: "Saisir les détails sur l'emplacement du colis",
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => MapAdr()));
+                          },
+                          color: Colors.grey,
+                          icon: Icon(
+                            Icons.add_location_alt,
+                            color: Colors.black,
+                            size: 30,
+                          )),
                     )),
                 SizedBox(
                   height: 20.0,
@@ -119,6 +192,7 @@ class _LivraisonState extends State<Livraison> {
                     keyboardType: TextInputType.text,
                     controller: detColisCtrl,
                     cursorColor: Colors.black,
+                    maxLines: 5,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Détails du colis',
@@ -135,6 +209,17 @@ class _LivraisonState extends State<Livraison> {
                       border: OutlineInputBorder(),
                       labelText: 'Adresse destination',
                       hintText: "Saisir l'adresse de destination",
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => MapAdr()));
+                          },
+                          color: Colors.grey,
+                          icon: Icon(
+                            Icons.add_location_alt,
+                            color: Colors.black,
+                            size: 30,
+                          )),
                     )),
                 SizedBox(
                   height: 20.0,
@@ -152,7 +237,7 @@ class _LivraisonState extends State<Livraison> {
                   height: 20.0,
                 ),
                 TextFormField(
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.number,
                     controller: telDestCtrl,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
@@ -162,6 +247,63 @@ class _LivraisonState extends State<Livraison> {
                     )),
                 SizedBox(
                   height: 20.0,
+                ),
+                Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Distance : ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.blueR),
+                            ),
+                            Text(
+                              "10 KM ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(color: AppColors.blueR),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Montant : ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.blueR),
+                            ),
+                            Text(
+                              "3400 CDF",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(color: AppColors.blueR),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
                 ),
                 Container(
                   child: Padding(
@@ -174,8 +316,8 @@ class _LivraisonState extends State<Livraison> {
                       onPressed: () {
                         Map alivre = {
                           "id": identId!,
-                          "nom": nomExpCtrl.text,
-                          "telephone": telExpCtrl.text,
+                          "nom": nom,
+                          "telephone": tel,
                           "adresse": adrExpCtrl.text,
                           "details": detColisCtrl.text,
                           "emplacement": lieuColisCtrl.text,

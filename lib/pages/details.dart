@@ -317,6 +317,7 @@ class _DetailsState extends State<Details> {
                   utilitaire.afficherSnack(
                       context, "un article ajouter au panier", Colors.green);
                   Navigator.pop(context);
+                  setState(() {});
                   //reinit();
                 },
                 icon: Icon(CupertinoIcons.cart_badge_plus),
@@ -346,6 +347,7 @@ class _DetailsState extends State<Details> {
     print("voila l'image que j'envoie: ${px.image}");
     dbMAll!
         .InsertionProduit(Produit(
+            id: px.id,
             nom: px.nom,
             prix: px.prix,
             quantite: "${qteCommande}",
@@ -363,6 +365,7 @@ class _DetailsState extends State<Details> {
       print(valtot);
       ctrlPanier.ajoutPrixTotal(valtot);
       ctrlPanier.ajoutCtrPanier();
+      setState(() {});
     }).onError((error, stackTrace) {
       print(error.toString());
       print(stackTrace);

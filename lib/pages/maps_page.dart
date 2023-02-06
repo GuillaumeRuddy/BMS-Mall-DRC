@@ -27,9 +27,8 @@ class MapsPage extends StatefulWidget {
 }
 
 class _MapTrackingesseState extends State<MapsPage> {
-  //String cleAPIGoogle = "AIzaSyCOezElHw_-X9BTbMwFVkg-XLKllqrXA_E";
   String cleAPIGoogle = "AIzaSyCOezElHw_-X9BTbMwFVkg-XLKllqrXA_E";
-  LatLng currentLocation = LatLng(-4.3205782, 15.2949903);
+  LatLng? currentLocation;
   late Completer<GoogleMapController> mapControle = Completer();
   List<LatLng> polylineCoordinates = [];
 
@@ -46,12 +45,16 @@ class _MapTrackingesseState extends State<MapsPage> {
       await getCurrentLocation();
       markers.add(Marker(
           markerId: MarkerId("Ma Position"),
-          position: currentLocation,
+          position: currentLocation!,
+          draggable: true,
+          onDragEnd: (value) {
+            print("++++++ la valeur lors du deplacement est : $value");
+          },
           infoWindow: InfoWindow(
             title: "Ma Position",
             snippet: "Position: ${currentLocation}",
           )));
-      cameraPosition = CameraPosition(target: currentLocation, zoom: 16);
+      cameraPosition = CameraPosition(target: currentLocation!, zoom: 16);
       setState(() {});
       //getPolyPoint();
     });
@@ -127,31 +130,23 @@ class _MapTrackingesseState extends State<MapsPage> {
                     },
                     markers: markers,
                     /*markers: {
-                    Marker(
-                        markerId: MarkerId("Ma Position"),
-                        position: currentLocation),
-                    Marker(
-                        markerId: MarkerId("Position driver"),
-                        position: driverLocation)
-                  }*/
+                        Marker(
+                            markerId: MarkerId("Ma Position"),
+                            position: currentLocation!,
+                            draggable: true,
+                            onDragEnd: (value) {
+                              print(
+                                  "++++++ la valeur lors du deplacement est : $value");
+                            },
+                            infoWindow: InfoWindow(
+                              title: "Ma Position",
+                              snippet: "Position: ${currentLocation}",
+                            ))
+                      }*/
                   ),
                 ),
               ),
       ),
-    );
-  }
-
-  AppBar entete() {
-    return AppBar(
-      title: Text(
-        "Carte",
-        style: Theme.of(context)
-            .textTheme
-            .subtitle1!
-            .copyWith(fontWeight: FontWeight.w700, color: AppColors.ecrit),
-      ),
-      elevation: 0.0,
-      backgroundColor: AppColors.blueR,
     );
   }
 

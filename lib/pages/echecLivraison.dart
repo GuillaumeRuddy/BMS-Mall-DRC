@@ -25,11 +25,13 @@ class _SuccessState extends State<echecLivr> {
         children: [
           Image(
             image: AssetImage("assets/img/L.png"),
+            height: 150,
+            width: 150,
           ),
           Padding(
             padding: EdgeInsets.all(10.0),
             child: Text(
-              "Vous avez aucune livraison pour le moment",
+              "Vous n'avez aucune livraison pour le moment",
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
