@@ -160,7 +160,11 @@ class _HomeState extends State<Home> {
                         if (snapshot.hasData) {
                           return Text(
                             snapshot.data.toString(),
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize:
+                                  snapshot.data.toString().length < 2 ? 12 : 8,
+                            ),
                           );
                         }
                         return Text(

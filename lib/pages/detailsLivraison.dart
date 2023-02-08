@@ -198,17 +198,23 @@ class _CheckoutPageState extends State<DetailsLivraison> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "Détails:",
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle1!
-                            .copyWith(fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Text(
+                          "Détails:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
                       ),
-                      Text(
-                        "${livraison!.details!}",
-                        style:
-                            Theme.of(context).textTheme.subtitle2!.copyWith(),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          "${livraison!.details!}",
+                          maxLines: 5,
+                          style:
+                              Theme.of(context).textTheme.subtitle2!.copyWith(),
+                        ),
                       ),
                     ],
                   ),

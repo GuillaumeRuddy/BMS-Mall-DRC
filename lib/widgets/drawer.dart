@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app/endPoint.dart';
+import '../controler/commande/commandeController.dart';
 import '../controler/panier/panierController.dart';
 import '../pages/categories.dart';
 import '../pages/livraison.dart';
@@ -113,9 +114,9 @@ class _DrawerAddState extends State<DrawerAdd> {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(24),
+              padding: EdgeInsets.all(20),
               child: Wrap(
-                spacing: 15,
+                spacing: 13,
                 children: [
                   ListTile(
                     onTap: () {
@@ -124,6 +125,7 @@ class _DrawerAddState extends State<DrawerAdd> {
                     },
                     leading: Icon(
                       Icons.home,
+                      size: 30,
                       color: Colors.blue,
                     ),
                     title: Text(
@@ -139,6 +141,7 @@ class _DrawerAddState extends State<DrawerAdd> {
                     },
                     leading: Icon(
                       Icons.shopify_sharp,
+                      size: 30,
                       color: Colors.blue,
                     ),
                     title: Text(
@@ -152,35 +155,11 @@ class _DrawerAddState extends State<DrawerAdd> {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (_) => EnvoieLivraison()));
                     },
-                    leading: Badge(
-                        badgeColor: Colors.red,
-                        padding: EdgeInsets.all(5),
-                        badgeContent: Consumer<PanierController>(
-                          builder: ((context, value, child) {
-                            return FutureBuilder(
-                                future: value.getNbrItemPanier(ident ?? ""),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<int> snapshot) {
-                                  if (snapshot.hasData) {
-                                    return Text(
-                                      snapshot.data.toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    );
-                                  }
-                                  return Text(
-                                    "0",
-                                    style: TextStyle(color: Colors.white),
-                                  );
-                                });
-                          }),
-                        ),
-                        child: Icon(
-                          Icons.local_shipping,
-                          color: Colors.blue,
-                          //size: 30,
-                        )),
+                    leading: Icon(
+                      Icons.local_shipping,
+                      color: Colors.blue,
+                      size: 30,
+                    ),
                     title: Text(
                       "Livraison",
                       style: TextStyle(fontSize: 18),
@@ -195,16 +174,20 @@ class _DrawerAddState extends State<DrawerAdd> {
                     leading: Badge(
                         badgeColor: Colors.red,
                         padding: EdgeInsets.all(5),
-                        badgeContent: Consumer<PanierController>(
+                        badgeContent: Consumer<CommandeController>(
                           builder: ((context, value, child) {
                             return FutureBuilder(
-                                future: value.getNbrItemPanier(ident ?? ""),
+                                future: value.recupNombreCmd(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<int> snapshot) {
                                   if (snapshot.hasData) {
                                     return Text(
                                       snapshot.data.toString(),
                                       style: TextStyle(
+                                        fontSize:
+                                            snapshot.data.toString().length < 2
+                                                ? 12
+                                                : 9,
                                         color: Colors.white,
                                       ),
                                     );
@@ -218,11 +201,11 @@ class _DrawerAddState extends State<DrawerAdd> {
                         ),
                         child: Icon(
                           Icons.book,
-                          //size: 30,
+                          size: 30,
                           color: Colors.blue,
                         )),
                     title: Text(
-                      "Commande",
+                      "Notificaton",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
@@ -235,6 +218,7 @@ class _DrawerAddState extends State<DrawerAdd> {
                     leading: Badge(
                         badgeColor: Colors.red,
                         padding: EdgeInsets.all(5),
+                        //position: BadgePosition.topStart(),
                         badgeContent: Consumer<PanierController>(
                           builder: ((context, value, child) {
                             return FutureBuilder(
@@ -245,20 +229,25 @@ class _DrawerAddState extends State<DrawerAdd> {
                                     return Text(
                                       snapshot.data.toString(),
                                       style: TextStyle(
+                                        fontSize:
+                                            snapshot.data.toString().length < 2
+                                                ? 12
+                                                : 9,
                                         color: Colors.white,
                                       ),
                                     );
                                   }
                                   return Text(
                                     "0",
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
                                   );
                                 });
                           }),
                         ),
                         child: Icon(
                           Icons.shopping_cart,
-                          //size: 30,
+                          size: 30,
                           color: Colors.blue,
                         )),
                     title: Text(
@@ -274,6 +263,7 @@ class _DrawerAddState extends State<DrawerAdd> {
                     },
                     leading: Icon(
                       Icons.person,
+                      size: 30,
                       color: Colors.blue,
                     ),
                     title: Text(
@@ -290,6 +280,7 @@ class _DrawerAddState extends State<DrawerAdd> {
                     },
                     leading: Icon(
                       Icons.info,
+                      size: 30,
                       color: Colors.blue,
                     ),
                     title: Text(

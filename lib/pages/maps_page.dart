@@ -83,7 +83,8 @@ class _MapTrackingesseState extends State<MapsPage> {
           'la permission de la localisation permanente a été réfuse, nous ne pouvons pas repondre à votre requette.');
     }
     // ici on retourne la position
-    var loc = await Geolocator.getCurrentPosition();
+    var loc = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     print(loc);
     double lat = loc.latitude;
     double long = loc.longitude;

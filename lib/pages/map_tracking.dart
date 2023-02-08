@@ -55,7 +55,7 @@ class _MapTrackingesseState extends State<MapTracking> {
         'dirver: lattitude --> ${driverLocation.latitude}, longitude: ---> ${driverLocation.longitude}');
     PolylinePoints polylinePoint = new PolylinePoints();
     PolylineResult result = await polylinePoint.getRouteBetweenCoordinates(
-        cleAPIGoogle,
+        "API_KEY",
         PointLatLng(currentLocation.latitude, currentLocation.longitude),
         PointLatLng(driverLocation.latitude, driverLocation.longitude));
     print("le resultat de polyPoint: ${result}");
@@ -129,7 +129,8 @@ class _MapTrackingesseState extends State<MapTracking> {
           'la permission de la localisation permanente a été réfuse, nous ne pouvons pas repondre à votre requette.');
     }
     // ici on retourne la position
-    var loc = await Geolocator.getCurrentPosition();
+    var loc = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best);
     print(loc);
     double lat = loc.latitude;
     double long = loc.longitude;

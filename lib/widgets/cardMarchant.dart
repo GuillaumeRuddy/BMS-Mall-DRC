@@ -110,22 +110,26 @@ class MarchantCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              vendeur?.nomEntreprise ?? "",
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.ecrit,
+                            Expanded(
+                              child: Text(
+                                vendeur?.nomEntreprise ?? "",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.ecrit,
+                                ),
                               ),
                             ),
-                            Text(
-                              vendeur?.apropos ?? "",
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                            Expanded(
+                              child: Text(
+                                vendeur?.apropos ?? "",
+                                maxLines: 2,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                             vendeur!.disponibilite == "1"

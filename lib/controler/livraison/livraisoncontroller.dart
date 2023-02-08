@@ -5,11 +5,13 @@ import 'package:http/http.dart' as http;
 import 'package:mall_drc/app/appUtil.dart';
 import 'package:mall_drc/model/livraison.dart';
 import 'package:mall_drc/pages/livraison.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app/endPoint.dart';
 
 class LivraisonController with ChangeNotifier {
   List<Livraison> listLivraison = [];
+  int nombreLivr = 0;
   LancerLivraison(Map maLivraison) async {
     var url = Uri.parse(ApiUrl().livraison);
     print("----- Mon URL est: $url ----");
@@ -62,6 +64,7 @@ class LivraisonController with ChangeNotifier {
         bodyList = json.decode(reponse.body);
         print(bodyList);
         listLivraison = bodyList.map((e) => Livraison.fromJson(e)).toList();
+        //nombreLivr = listLivraison.length;
       } else {
         msg = body["msg"];
       }
@@ -72,5 +75,13 @@ class LivraisonController with ChangeNotifier {
       //print("******* Détails probleme : ${stack}");
       return {"msg": "Erreur inattendue", "status": false};
     }
+  }
+
+  Future<int> recupNombreLivr() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var idUse = await pref.getInt("id").toString();
+    await RecupLivraionsById(idUse);
+    nombreLivr = listLivraison.length;
+    return nombreLivr;
   }
 }

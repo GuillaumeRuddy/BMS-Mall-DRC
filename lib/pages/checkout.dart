@@ -41,6 +41,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   Map resultat = {};
   TextEditingController telController = new TextEditingController();
   DbMAll baseDD = DbMAll();
+  double? montantTot;
 
   void recupValSelect() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -79,8 +80,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
     listOpe.clear();
     for (var com in listeOperateur) {
       print(com);
-      print(com.runtimeType);
-      print("super commmm");
       listOpe.add(
         DropdownMenuItem(
           value: com, //com["id"],
@@ -293,6 +292,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ),
               const SizedBox(height: 72.0),
               Consumer<PanierController>(builder: (context, value, child) {
+                montantTot = int.parse(livr) + value.getPrixTotal();
                 return Column(
                   children: [
                     Row(
@@ -369,7 +369,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "${int.parse(livr) + value.getPrixTotal()} CDF",
+                          "${montantTot!} CDF",
                           style: Theme.of(context)
                               .textTheme
                               .subtitle2!
@@ -510,7 +510,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                           }
                                           paiement(
                                               codeInt: numOperateur.toString());
-                                          //envoyerCommande();
+                                          envoyerCommande();
                                         },
                                         child: Padding(
                                           padding: EdgeInsets.all(12.0),
@@ -593,7 +593,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     Map paie = {
       "customer": telController.text,
-      "amount": "${livr + monTotArt}",
+      "amount": "${montantTot!}", //"${livr + monTotArt}",
       "currency": "CDF",
       "code": codeInt!.isEmpty ? "9" : codeInt
     };
@@ -637,6 +637,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           break;
       }
       Navigator.pop(context, true);
+      //Navigator.pop(context, true);
     }
   }
 
@@ -678,10 +679,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
     await Future.delayed(Duration(milliseconds: 800));*/
 
     if (resultat['status']) {
-      /*Navigator.pop(context, true);*/
+      Navigator.pop(context, true);
       baseDD.suppressionTousProduitPanier();
       reinit();
       Navigator.of(context).push(MaterialPageRoute(builder: (_) => Success()));
+      //Navigator.pop(context, true);
     }
   }
 

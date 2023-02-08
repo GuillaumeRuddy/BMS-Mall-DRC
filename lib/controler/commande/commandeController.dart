@@ -54,7 +54,7 @@ class CommandeController with ChangeNotifier {
 
   CommandeByUser(String idUser) async {
     var url = Uri.parse(
-        "https://malldrc.mithap.org/api/mall/v1/getcommande/${idUser}/d033e22ae348aeb5660fc2140aec35850c4da997");
+        "${ApiUrl.baseUrl}/api/mall/v1/getcommande/${idUser}/${ApiUrl.token}");
     print("----- Mon URL est: $url ----");
     try {
       print("debut try");
@@ -91,8 +91,7 @@ class CommandeController with ChangeNotifier {
   }
 
   Payement(Map lignePayement) async {
-    var url = Uri.parse(
-        "https://malldrc.mithap.org/api/mall/v1/paiement/MobileMoney");
+    var url = Uri.parse("${ApiUrl.baseUrl}/api/mall/v1/paiement/MobileMoney");
     print("----- Mon URL est: $url ----");
     try {
       print("debut try");
